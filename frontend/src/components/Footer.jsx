@@ -127,7 +127,7 @@ export default function Footer() {
         <hr className="my-8 border-blue-700" />
 
         <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
-          <span className="text-sm text-blue-200">© {year} SafeTech. Todos los derechos reservados.</span>
+          <span className="text-sm text-blue-200">© {year} CK Systems. Todos los derechos reservados.</span>
           <ul className="flex items-center gap-6">
             <li><a href="https://safetech-ec.com/politica-de-privacidad" className="text-sm text-blue-200 hover:text-white transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-white/70">Política de Privacidad</a></li>
             <li><a href="https://safetech-ec.com/terminos" className="text-sm text-blue-200 hover:text-white transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-white/70">Términos y Condiciones</a></li>
