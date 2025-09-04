@@ -15,22 +15,37 @@ import schoolImg from "../assets/school.png";
 import autobusImg from "../assets/autobus.jpg";
 
 export default function Navbar() {
+  // ----- Estado principal -----
   const [menuOpen, setMenuOpen] = useState(false);
-  const [activeDropdown, setActiveDropdown] = useState(null);
+  const [activeDropdown, setActiveDropdown] = useState(null); // Desktop
   const [scrolled, setScrolled] = useState(false);
 
-  // Acceder
+  // Desktop tabs
   const [accederActiveOption, setAccederActiveOption] = useState("administrador");
-
-  // Principal: activo por defecto = "quienes"
   const [menuPrincipalActive, setMenuPrincipalActive] = useState("quienes");
-
-  // Nosotros: navegación tipo “servicios” (Misión / Visión)
   const [nosotrosActiveOption, setNosotrosActiveOption] = useState("mision");
+
+  // Móvil: acordeones independientes (pueden abrirse varias a la vez)
+  const [mobileSectionsOpen, setMobileSectionsOpen] = useState({
+    Principal: false,
+    Nosotros: false,
+    Acceder: false,
+    "Soporte en línea": false,
+  });
+  // Subacordeones móviles (varios abiertos)
+  const [mobileNosotrosOpen, setMobileNosotrosOpen] = useState({
+    mision: false,
+    vision: false,
+  });
+  const [mobileAccederOpen, setMobileAccederOpen] = useState({
+    administrador: false,
+    padres: false,
+    school: false,
+  });
 
   const navRef = useRef(null);
 
-  // Data Acceder
+  // ----- Data -----
   const accederData = {
     administrador: {
       title: "Safe Administrador",
@@ -71,20 +86,18 @@ export default function Navbar() {
   };
   const currentAccederData = accederData[accederActiveOption];
 
-  // Data Principal: solo "quienes"
   const menuPrincipalData = {
     quienes: {
       title: "¿Quiénes somos?",
       description:
-        "En SafeTech somos una empresa dedicada a brindar soluciones inteligentes de seguridad. " +
-        "Combinamos experiencia y tecnología de vanguardia en CCTV, control de accesos y monitoreo 24/7 " +
+        "En SafeTech somos una empresa dedicada a brindar soluciones inteligentes de seguridad.\n" +
+        "Combinamos experiencia y tecnología de vanguardia en CCTV, control de accesos y monitoreo 24/7\n" +
         "para proteger lo que más importa con confianza y compromiso.",
       image: autobusImg,
     },
   };
   const currentMenuPrincipalData = menuPrincipalData[menuPrincipalActive];
 
-  // Data Nosotros (como “servicios”: Misión / Visión)
   const nosotrosData = {
     mision: {
       title: "Misión",
@@ -97,8 +110,6 @@ export default function Navbar() {
         "Acompañamiento cercano a instituciones y familias.",
       ],
       image: autobusImg,
-      buttonLink: "#mision",
-      buttonText: "Conocer más",
     },
     vision: {
       title: "Visión",
@@ -110,13 +121,10 @@ export default function Navbar() {
         "Impacto social positivo y sostenible.",
       ],
       image: autobusImg,
-      buttonLink: "#vision",
-      buttonText: "Conocer más",
     },
   };
   const currentNosotrosData = nosotrosData[nosotrosActiveOption];
 
-  // Items del menú
   const menuItems = [
     { name: "Principal", isMenuPrincipal: true },
     { name: "Nosotros", isNosotros: true },
@@ -124,25 +132,13 @@ export default function Navbar() {
     { name: "Soporte en línea", isSoporte: true },
   ];
 
-  // Efectos
+  // ----- Efectos -----
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 50);
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // Cerrar por click fuera
-  useEffect(() => {
-    const handleClickOutside = (e) => {
-      if (navRef.current && !navRef.current.contains(e.target)) {
-        setActiveDropdown(null);
-      }
-    };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
-
-  // Cerrar por ESC
   useEffect(() => {
     const onEsc = (e) => {
       if (e.key === "Escape") {
@@ -154,20 +150,17 @@ export default function Navbar() {
     return () => document.removeEventListener("keydown", onEsc);
   }, []);
 
-  // Cerrar por scroll
-  useEffect(() => {
-    const onScrollClose = () => setActiveDropdown(null);
-    window.addEventListener("scroll", onScrollClose, { passive: true });
-    return () => window.removeEventListener("scroll", onScrollClose);
-  }, []);
-
-  // Helpers
-  const toggleDropdown = (name) => {
-    setActiveDropdown((prev) => (prev === name ? null : name));
-  };
+  // ----- Helpers -----
   const isMdUp = () => window.matchMedia("(min-width: 768px)").matches;
+  const toggleDropdown = (name) => {
+    if (isMdUp()) {
+      setActiveDropdown((prev) => (prev === name ? null : name));
+    } else {
+      // en móvil, controlamos por mobileSectionsOpen (multi-open)
+      setMobileSectionsOpen((s) => ({ ...s, [name]: !s[name] }));
+    }
+  };
 
-  // Panel wrapper
   const PanelWrapper = ({ children, label }) => (
     <div
       className="fixed inset-x-0 top-[56px] md:top-[64px] z-[60]"
@@ -182,6 +175,38 @@ export default function Navbar() {
     </div>
   );
 
+  // ---- UI: móvil (componentes pequeños) ----
+  const MRow = ({ open, onToggle, title }) => (
+    <button
+      type="button"
+      onClick={onToggle}
+      className="w-full flex items-center justify-between text-left px-3 py-3 rounded-md bg-white/10 hover:bg-white/15"
+      aria-expanded={open}
+    >
+      {/* 👇 Solo el título en azul de tu paleta */}
+      <span className={`font-semibold ${open ? "text-safetech-300" : "text-safetech-400"}`}>
+        {title}
+      </span>
+      <FaChevronDown
+        className={`w-3 h-3 text-white transition-transform ${open ? "rotate-180" : ""}`}
+        aria-hidden="true"
+      />
+    </button>
+  );
+
+  const MCollapse = ({ open, children }) => (
+    <div className={`grid transition-all ${open ? "grid-rows-[1fr]" : "grid-rows-[0fr]"}`}>
+      <div className="overflow-hidden">
+        <div className="mt-2 bg-white text-gray-800 rounded-md shadow border border-gray-200 p-4">
+          {children}
+        </div>
+      </div>
+    </div>
+  );
+
+  // ============================================================
+  //                          RENDER
+  // ============================================================
   return (
     <nav
       ref={navRef}
@@ -197,18 +222,15 @@ export default function Navbar() {
           {/* Logo */}
           <a
             href="https://safetech-ec.com"
-            className="flex min-w-0 items-center gap-2 shrink-0"
+            className="flex items-center gap-2 shrink-0"
             aria-label="SafeTech - Inicio"
           >
             <img
               src={scrolled ? logoBlanco : logoAzul}
               className="h-8 md:h-10 w-auto object-contain transition-all duration-300"
               alt="Logo de SafeTech"
-              loading="eager"
-              width={120}
-              height={40}
             />
-            <span className="inline text-base md:text-2xl font-bold text-white whitespace-nowrap max-w-[40vw] md:max-w-none truncate">
+            <span className="inline text-base md:text-2xl font-bold text-white">
               SafeTech
             </span>
           </a>
@@ -222,546 +244,283 @@ export default function Navbar() {
             aria-expanded={menuOpen}
             aria-label={menuOpen ? "Cerrar menú" : "Abrir menú"}
           >
-            <svg
-              className="w-6 h-6"
-              aria-hidden="true"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 17 14"
-            >
-              <path
-                stroke="currentColor"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M1 1h15M1 7h15M1 13h15"
-              />
+            <svg className="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 14">
+              <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M1 1h15M1 7h15M1 13h15"/>
             </svg>
           </button>
 
           {/* Menú desktop */}
           <div className="hidden md:flex">
-            <ul
-              id="primary-menu"
-              className="flex items-center gap-2 lg:gap-4 font-medium"
-              role="menubar"
-            >
-              {menuItems.map((item) => (
+            <ul className="flex items-center gap-2 lg:gap-4 font-medium" role="menubar">
+              {[
+                { name: "Principal", panel:
+                  <PanelWrapper label="Menú Principal">
+                    <div className="flex">
+                      <div className="w-1/4 border-r border-gray-200">
+                        <button
+                          onMouseEnter={() => setMenuPrincipalActive("quienes")}
+                          className={`w-full text-left p-5 ${menuPrincipalActive==="quienes"?"bg-blue-50 border-l-4 border-blue-600 text-blue-800":"hover:bg-gray-50 text-gray-700"}`}
+                        >
+                          ¿Quiénes somos?
+                        </button>
+                      </div>
+                      <div className="w-2/4 p-6 border-r border-gray-200">
+                        <h2 className="text-xl font-bold mb-3">{currentMenuPrincipalData.title}</h2>
+                        <p className="text-gray-600 whitespace-pre-line">{currentMenuPrincipalData.description}</p>
+                      </div>
+                      <div className="w-1/4 bg-blue-50 p-6 flex items-center justify-center">
+                        <img src={currentMenuPrincipalData.image} alt={currentMenuPrincipalData.title} className="max-h-48"/>
+                      </div>
+                    </div>
+                  </PanelWrapper>
+                },
+                { name: "Nosotros", panel:
+                  <PanelWrapper label="Menú Nosotros">
+                    <div className="flex">
+                      <div className="w-1/4 border-r border-gray-200">
+                        {[
+                          { key:"mision", label:"Misión" },
+                          { key:"vision", label:"Visión" },
+                        ].map(opt=>(
+                          <button
+                            key={opt.key}
+                            onMouseEnter={()=>setNosotrosActiveOption(opt.key)}
+                            className={`w-full text-left p-5 ${nosotrosActiveOption===opt.key?"bg-blue-50 border-l-4 border-blue-600 text-blue-800":"hover:bg-gray-50 text-gray-700"}`}
+                          >
+                            {opt.label}
+                          </button>
+                        ))}
+                      </div>
+                      <div className="w-2/4 p-6 border-r border-gray-200">
+                        <h2 className="text-xl font-bold mb-3">{currentNosotrosData.title}</h2>
+                        <p className="text-gray-600 mb-4">{currentNosotrosData.description}</p>
+                        <ul className="space-y-2">
+                          {currentNosotrosData.details.map((d,i)=>(
+                            <li key={i} className="flex items-start">
+                              <FaShieldAlt className="text-blue-500 mr-2 mt-1"/>{d}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                      <div className="w-1/4 bg-blue-50 p-6 flex items-center justify-center">
+                        <img src={currentNosotrosData.image} alt={currentNosotrosData.title} className="max-h-48"/>
+                      </div>
+                    </div>
+                  </PanelWrapper>
+                },
+                { name: "Acceder", panel:
+                  <PanelWrapper label="Menú Acceder">
+                    <div className="flex">
+                      <div className="w-1/4 border-r border-gray-200">
+                        {Object.keys(accederData).map((key)=>(
+                          <button
+                            key={key}
+                            onMouseEnter={()=>setAccederActiveOption(key)}
+                            className={`w-full text-left p-5 ${accederActiveOption===key?"bg-blue-50 border-l-4 border-blue-600 text-blue-800":"hover:bg-gray-50 text-gray-700"}`}
+                          >
+                            {accederData[key].title}
+                          </button>
+                        ))}
+                      </div>
+                      <div className="w-2/4 p-6 border-r border-gray-200">
+                        <h2 className="text-xl font-bold mb-3">{currentAccederData.title}</h2>
+                        <p className="text-gray-600 mb-4">{currentAccederData.description}</p>
+                        <ul className="space-y-2">
+                          {currentAccederData.details.map((d,i)=>(
+                            <li key={i} className="flex items-start"><FaShieldAlt className="text-blue-500 mr-2 mt-1"/>{d}</li>
+                          ))}
+                        </ul>
+                      </div>
+                      <div className="w-1/4 bg-blue-50 p-6 flex items-center justify-center">
+                        <div className="w-36 h-36 bg-white shadow flex items-center justify-center p-4">
+                          <img src={currentAccederData.image} alt={currentAccederData.title} className="max-h-full object-contain"/>
+                        </div>
+                        <a href={currentAccederData.buttonLink} className="mt-4 inline-flex items-center gap-2 px-5 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">
+                          {currentAccederData.buttonText} <FaChevronRight/>
+                        </a>
+                      </div>
+                    </div>
+                  </PanelWrapper>
+                },
+                { name: "Soporte en línea", panel:
+                  <PanelWrapper label="Menú Soporte en línea">
+                    <div className="flex">
+                      <div className="w-1/3 p-6 border-r border-gray-200">
+                        <h3 className="font-semibold">Centro de Ayuda</h3>
+                        <p className="text-sm text-gray-600 mt-2">Guías, tutoriales y documentación.</p>
+                      </div>
+                      <div className="w-1/3 p-6 border-r border-gray-200">
+                        <h3 className="font-semibold">Soporte Técnico</h3>
+                        <ul className="mt-2 text-sm text-gray-600 space-y-1">
+                          <li>✔ Preguntas frecuentes</li>
+                          <li>✔ Tutoriales interactivos</li>
+                          <li>✔ Reportar incidencias</li>
+                        </ul>
+                      </div>
+                      <div className="w-1/3 p-6 bg-blue-50 flex flex-col items-center justify-center">
+                        <a href="https://wa.me/593999047935" target="_blank" rel="noopener noreferrer" className="px-6 py-3 bg-green-600 text-white rounded-md mb-2">WhatsApp</a>
+                        <a href="mailto:soporte@safetech-ec.com" className="px-6 py-3 bg-red-600 text-white rounded-md flex items-center gap-2"><FaEnvelope/> Gmail</a>
+                      </div>
+                    </div>
+                  </PanelWrapper>
+                },
+              ].map(({name, panel})=>(
                 <li
-                  key={item.name}
+                  key={name}
                   className="relative"
-                  role="none"
-                  onMouseEnter={() => isMdUp() && setActiveDropdown(item.name)}
-                  onMouseLeave={() => isMdUp() && setActiveDropdown(null)}
+                  onMouseEnter={()=>isMdUp() && setActiveDropdown(name)}
+                  onMouseLeave={()=>isMdUp() && setActiveDropdown(null)}
                 >
-                  <button
-                    type="button"
-                    className="flex items-center gap-1 px-3 py-2 text-white hover:text-blue-200 focus-visible:ring-2 focus-visible:ring-white/70 rounded-md"
-                    aria-haspopup="true"
-                    aria-expanded={activeDropdown === item.name}
-                    onClick={() => toggleDropdown(item.name)}
-                  >
-                    <span className="text-sm lg:text-base">{item.name}</span>
-                    <FaChevronDown className="w-3 h-3" aria-hidden="true" />
+                  <button onClick={()=>toggleDropdown(name)} className="flex items-center gap-1 px-3 py-2 text-white hover:text-blue-200 rounded-md">
+                    {name}
+                    <FaChevronDown className="w-3 h-3"/>
                   </button>
-
-                  {/* Mega-menús */}
-                  {item.isMenuPrincipal && activeDropdown === "Principal" && (
-                    <PanelWrapper label="Menú Principal">
-                      <div className="flex flex-col md:flex-row">
-                        {/* Columna 1 */}
-                        <div className="md:w-1/4 border-b md:border-b-0 md:border-r border-gray-200">
-                          {[
-                            { key: "quienes", label: "¿Quiénes somos?" }, // único item
-                          ].map((opt) => (
-                            <button
-                              key={opt.key}
-                              onMouseEnter={() => setMenuPrincipalActive(opt.key)}
-                              onFocus={() => setMenuPrincipalActive(opt.key)}
-                              className={`w-full text-left p-5 transition ${
-                                menuPrincipalActive === opt.key
-                                  ? "bg-blue-50 border-l-4 border-blue-600"
-                                  : "hover:bg-gray-50"
-                              }`}
-                            >
-                              <span
-                                className={`${
-                                  menuPrincipalActive === opt.key
-                                    ? "text-blue-800"
-                                    : "text-gray-700"
-                                } font-medium`}
-                              >
-                                {opt.label}
-                              </span>
-                            </button>
-                          ))}
-                        </div>
-
-                        {/* Columna 2 */}
-                        <div className="md:w-2/4 p-6 md:border-r border-gray-200">
-                          <h2 className="text-xl lg:text-2xl font-bold text-gray-800 mb-3">
-                            {currentMenuPrincipalData.title}
-                          </h2>
-                          <p className="text-gray-600 whitespace-pre-line">
-                            {currentMenuPrincipalData.description}
-                          </p>
-                        </div>
-
-                        {/* Columna 3 */}
-                        <div className="md:w-1/4 bg-blue-50 p-6 flex items-center justify-center">
-                          <img
-                            src={currentMenuPrincipalData.image}
-                            alt={currentMenuPrincipalData.title}
-                            className="max-w-full max-h-48 object-contain"
-                            loading="lazy"
-                          />
-                        </div>
-                      </div>
-                    </PanelWrapper>
-                  )}
-
-                  {/* NOSOTROS: estilo “servicios” (Misión / Visión) */}
-                  {item.isNosotros && activeDropdown === "Nosotros" && (
-                    <PanelWrapper label="Menú Nosotros">
-                      <div className="flex flex-col md:flex-row">
-                        {/* Columna 1: opciones */}
-                        <div className="md:w-1/4 border-b md:border-b-0 md:border-r border-gray-200">
-                          {[
-                            { key: "mision", label: "Misión" },
-                            { key: "vision", label: "Visión" },
-                          ].map((opt) => (
-                            <button
-                              key={opt.key}
-                              onMouseEnter={() => setNosotrosActiveOption(opt.key)}
-                              onFocus={() => setNosotrosActiveOption(opt.key)}
-                              className={`w-full text-left p-5 transition ${
-                                nosotrosActiveOption === opt.key
-                                  ? "bg-blue-50 border-l-4 border-blue-600"
-                                  : "hover:bg-gray-50"
-                              }`}
-                            >
-                              <span
-                                className={`${
-                                  nosotrosActiveOption === opt.key
-                                    ? "text-blue-800"
-                                    : "text-gray-700"
-                                } font-medium`}
-                              >
-                                {opt.label}
-                              </span>
-                            </button>
-                          ))}
-                        </div>
-
-                        {/* Columna 2: contenido */}
-                        <div className="md:w-2/4 p-6 md:border-r border-gray-200">
-                          <h2 className="text-xl lg:text-2xl font-bold text-gray-800 mb-3">
-                            {currentNosotrosData.title}
-                          </h2>
-                          <p className="text-gray-600 mb-6">
-                            {currentNosotrosData.description}
-                          </p>
-                          <ul className="space-y-3">
-                            {currentNosotrosData.details.map((detail, idx) => (
-                              <li key={idx} className="flex items-start">
-                                <FaShieldAlt
-                                  className="text-blue-500 mt-1 mr-3 shrink-0"
-                                  aria-hidden="true"
-                                />
-                                <span className="text-gray-700">{detail}</span>
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
-
-                        {/* Columna 3: imagen + botón */}
-                        <div className="md:w-1/4 bg-blue-50 p-6 flex flex-col items-center justify-center">
-                          <div className="mb-6 w-36 h-36 md:w-40 md:h-40 bg-white shadow-md flex items-center justify-center p-4">
-                            <img
-                              src={currentNosotrosData.image}
-                              alt={currentNosotrosData.title}
-                              className="max-w-full max-h-full object-contain"
-                              loading="lazy"
-                            />
-                          </div>
-                          <a
-                            href={currentNosotrosData.buttonLink}
-                            className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-blue-600 text-white font-medium hover:bg-blue-700 focus-visible:ring-2 focus-visible:ring-blue-300 w-full text-center rounded-md"
-                          >
-                            {currentNosotrosData.buttonText}{" "}
-                            <FaChevronRight className="inline" aria-hidden="true" />
-                          </a>
-                        </div>
-                      </div>
-                    </PanelWrapper>
-                  )}
-
-                  {/* ACCEDER */}
-                  {item.isAcceder && activeDropdown === "Acceder" && (
-                    <PanelWrapper label="Menú Acceder">
-                      <div className="flex flex-col md:flex-row">
-                        {/* Columna 1 */}
-                        <div className="md:w-1/4 border-b md:border-b-0 md:border-r border-gray-200">
-                          {Object.keys(accederData).map((key) => (
-                            <button
-                              key={key}
-                              onMouseEnter={() => setAccederActiveOption(key)}
-                              onFocus={() => setAccederActiveOption(key)}
-                              className={`w-full text-left p-5 transition ${
-                                accederActiveOption === key
-                                  ? "bg-blue-50 border-l-4 border-blue-600"
-                                  : "hover:bg-gray-50"
-                              }`}
-                            >
-                              <span
-                                className={`${
-                                  accederActiveOption === key
-                                    ? "text-blue-800"
-                                    : "text-gray-700"
-                                } font-medium`}
-                              >
-                                {accederData[key].title}
-                              </span>
-                            </button>
-                          ))}
-                        </div>
-
-                        {/* Columna 2 */}
-                        <div className="md:w-2/4 p-6 md:border-r border-gray-200">
-                          <h2 className="text-xl lg:text-2xl font-bold text-gray-800 mb-3">
-                            {currentAccederData.title}
-                          </h2>
-                          <p className="text-gray-600 mb-6">
-                            {currentAccederData.description}
-                          </p>
-                          <ul className="space-y-3">
-                            {currentAccederData.details.map((detail, idx) => (
-                              <li key={idx} className="flex items-start">
-                                <FaShieldAlt
-                                  className="text-blue-500 mt-1 mr-3 shrink-0"
-                                  aria-hidden="true"
-                                />
-                                <span className="text-gray-700">{detail}</span>
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
-
-                        {/* Columna 3 */}
-                        <div className="md:w-1/4 bg-blue-50 p-6 flex flex-col items-center justify-center">
-                          <div className="mb-6 w-36 h-36 md:w-40 md:h-40 bg-white shadow-md flex items-center justify-center p-4">
-                            <img
-                              src={currentAccederData.image}
-                              alt={currentAccederData.title}
-                              className="max-w-full max-h-full object-contain"
-                              loading="lazy"
-                            />
-                          </div>
-                          <a
-                            href={currentAccederData.buttonLink}
-                            className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-blue-600 text-white font-medium hover:bg-blue-700 focus-visible:ring-2 focus-visible:ring-blue-300 w-full text-center rounded-md"
-                          >
-                            {currentAccederData.buttonText}{" "}
-                            <FaChevronRight className="inline" aria-hidden="true" />
-                          </a>
-                        </div>
-                      </div>
-                    </PanelWrapper>
-                  )}
-
-                  {/* SOPORTE */}
-                  {item.isSoporte && activeDropdown === "Soporte en línea" && (
-                    <PanelWrapper label="Menú Soporte en línea">
-                      <div className="flex flex-col md:flex-row">
-                        {/* Columna 1 */}
-                        <div className="md:w-1/4 border-b md:border-b-0 md:border-r border-gray-200 p-6">
-                          <h3 className="text-lg font-semibold text-gray-800">
-                            Centro de Ayuda
-                          </h3>
-                          <p className="text-sm text-gray-600 mt-2">
-                            Encuentra guías, tutoriales y documentación.
-                          </p>
-                        </div>
-
-                        {/* Columna 2 */}
-                        <div className="md:w-2/4 p-6 md:border-r border-gray-200">
-                          <h3 className="text-lg font-semibold text-gray-800">
-                            Soporte Técnico
-                          </h3>
-                          <p className="text-sm text-gray-600 mt-2">
-                            Asistencia inmediata y resolución de problemas 24/7.
-                          </p>
-                          <ul className="mt-4 space-y-2 text-sm text-gray-600">
-                            <li>✔ Preguntas frecuentes</li>
-                            <li>✔ Tutoriales interactivos</li>
-                            <li>✔ Reportar incidencias</li>
-                          </ul>
-                        </div>
-
-                        {/* Columna 3 */}
-                        <div className="md:w-1/4 bg-blue-50 p-6 flex flex-col items-center justify-center">
-                          <h3 className="text-lg font-semibold text-gray-800 mb-2">
-                            Contáctanos
-                          </h3>
-                          <p className="text-sm text-gray-600 mb-4 text-center">
-                            ¿Necesitas ayuda inmediata? Escríbenos:
-                          </p>
-                          <a
-                            href="https://wa.me/593999047935"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="px-6 py-3 bg-green-600 text-white font-medium hover:bg-green-700 focus-visible:ring-2 focus-visible:ring-green-300 w-full text-center mb-3 rounded-md"
-                            aria-label="Chatear por WhatsApp"
-                          >
-                            WhatsApp
-                          </a>
-                          <a
-                            href="mailto:soporte@safetech-ec.com"
-                            className="px-6 py-3 bg-red-600 text-white font-medium hover:bg-red-700 focus-visible:ring-2 focus-visible:ring-red-300 w-full text-center flex items-center justify-center gap-2 rounded-md"
-                            aria-label="Enviar correo a soporte@safetech-ec.com"
-                          >
-                            <FaEnvelope aria-hidden="true" /> Gmail
-                          </a>
-                        </div>
-                      </div>
-                    </PanelWrapper>
-                  )}
+                  {activeDropdown===name && panel}
                 </li>
               ))}
             </ul>
           </div>
         </div>
 
-        {/* Menú móvil */}
-        <div
-          className={`md:hidden origin-top transition-all ${
-            menuOpen ? "max-h-[1200px] opacity-100" : "max-h-0 opacity-0"
-          } overflow-hidden`}
-          id="primary-menu"
-        >
-          <ul className="flex flex-col gap-1 py-2" role="menu">
-            {menuItems.map((item) => {
-              const open = activeDropdown === item.name;
-              return (
-                <li key={item.name} className="border-b border-white/20">
-                  <button
-                    type="button"
-                    className="w-full flex items-center justify-between text-left text-white px-2 py-3 rounded-md hover:bg-white/10"
-                    onClick={() => toggleDropdown(item.name)}
-                    aria-expanded={open}
-                  >
-                    <span>{item.name}</span>
-                    <FaChevronDown
-                      className={`w-3 h-3 transition-transform ${
-                        open ? "rotate-180" : ""
-                      }`}
-                      aria-hidden="true"
+        {/* MÓVIL: acordeones multi-open */}
+        <div className={`md:hidden origin-top transition-all ${menuOpen ? "max-h-[2200px] opacity-100" : "max-h-0 opacity-0"} overflow-hidden`} id="primary-menu">
+          <ul className="flex flex-col gap-3 py-3" role="menu">
+            {/* Principal */}
+            <li>
+              <MRow
+                title="Principal"
+                open={mobileSectionsOpen["Principal"]}
+                onToggle={()=>setMobileSectionsOpen((s)=>({...s, Principal: !s.Principal}))}
+              />
+              <MCollapse open={mobileSectionsOpen["Principal"]}>
+                <MRow
+                  title="¿Quiénes somos?"
+                  open={!!mobileSectionsOpen.__quienes}
+                  onToggle={()=>setMobileSectionsOpen((s)=>({...s, __quienes: !s.__quienes}))}
+                />
+                <MCollapse open={!!mobileSectionsOpen.__quienes}>
+                  <h4 className="font-semibold mb-2">{menuPrincipalData.quienes.title}</h4>
+                  <p className="text-sm text-gray-700 whitespace-pre-line">{menuPrincipalData.quienes.description}</p>
+                  <img src={menuPrincipalData.quienes.image} alt={menuPrincipalData.quienes.title} className="mt-3 w-full max-h-44 object-cover border border-gray-200"/>
+                </MCollapse>
+              </MCollapse>
+            </li>
+
+            {/* Nosotros */}
+            <li>
+              <MRow
+                title="Nosotros"
+                open={mobileSectionsOpen["Nosotros"]}
+                onToggle={()=>setMobileSectionsOpen((s)=>({...s, Nosotros: !s.Nosotros}))}
+              />
+              <MCollapse open={mobileSectionsOpen["Nosotros"]}>
+                {/* Misión */}
+                <MRow
+                  title="Misión"
+                  open={mobileNosotrosOpen.mision}
+                  onToggle={()=>setMobileNosotrosOpen((s)=>({...s, mision: !s.mision}))}
+                />
+                <MCollapse open={mobileNosotrosOpen.mision}>
+                  <h4 className="font-semibold mb-2">{nosotrosData.mision.title}</h4>
+                  <p className="text-sm text-gray-700">{nosotrosData.mision.description}</p>
+                  <ul className="mt-2 space-y-2">
+                    {nosotrosData.mision.details.map((d,i)=>(
+                      <li key={i} className="flex items-start text-sm"><FaShieldAlt className="text-blue-500 mr-2 mt-0.5"/>{d}</li>
+                    ))}
+                  </ul>
+                  <img src={nosotrosData.mision.image} alt="Misión" className="mt-3 w-full max-h-44 object-cover border border-gray-200"/>
+                </MCollapse>
+
+                {/* Visión */}
+                <MRow
+                  title="Visión"
+                  open={mobileNosotrosOpen.vision}
+                  onToggle={()=>setMobileNosotrosOpen((s)=>({...s, vision: !s.vision}))}
+                />
+                <MCollapse open={mobileNosotrosOpen.vision}>
+                  <h4 className="font-semibold mb-2">{nosotrosData.vision.title}</h4>
+                  <p className="text-sm text-gray-700">{nosotrosData.vision.description}</p>
+                  <ul className="mt-2 space-y-2">
+                    {nosotrosData.vision.details.map((d,i)=>(
+                      <li key={i} className="flex items-start text-sm"><FaShieldAlt className="text-blue-500 mr-2 mt-0.5"/>{d}</li>
+                    ))}
+                  </ul>
+                  <img src={nosotrosData.vision.image} alt="Visión" className="mt-3 w-full max-h-44 object-cover border border-gray-200"/>
+                </MCollapse>
+              </MCollapse>
+            </li>
+
+            {/* Acceder */}
+            <li>
+              <MRow
+                title="Acceder"
+                open={mobileSectionsOpen["Acceder"]}
+                onToggle={()=>setMobileSectionsOpen((s)=>({...s, Acceder: !s.Acceder}))}
+              />
+              <MCollapse open={mobileSectionsOpen["Acceder"]}>
+                {Object.keys(accederData).map((key)=>(
+                  <div key={key} className="mb-2 last:mb-0">
+                    <MRow
+                      title={accederData[key].title}
+                      open={mobileAccederOpen[key]}
+                      onToggle={()=>setMobileAccederOpen((s)=>({...s, [key]: !s[key]}))}
                     />
-                  </button>
-
-                  <div
-                    className={`grid transition-all ${
-                      open ? "grid-rows-[1fr]" : "grid-rows-[0fr]"
-                    }`}
-                  >
-                    <div className="overflow-hidden">
-                      {/* Principal móvil: ¿Quiénes somos? */}
-                      {item.isMenuPrincipal && (
-                        <div className="bg-white text-gray-800 p-4 space-y-3">
-                          {[
-                            { key: "quienes", label: "¿Quiénes somos?" },
-                          ].map((opt) => (
-                            <button
-                              key={opt.key}
-                              className={`w-full text-left px-3 py-2 rounded-md ${
-                                menuPrincipalActive === opt.key
-                                  ? "bg-blue-50 text-blue-800"
-                                  : "hover:bg-gray-50"
-                              }`}
-                              onClick={() => setMenuPrincipalActive(opt.key)}
-                            >
-                              {opt.label}
-                            </button>
-                          ))}
-
-                          <div className="pt-3 grid grid-cols-5 gap-3 items-start">
-                            <div className="col-span-3">
-                              <h4 className="font-semibold">
-                                {currentMenuPrincipalData.title}
-                              </h4>
-                              <p className="text-sm text-gray-600 whitespace-pre-line">
-                                {currentMenuPrincipalData.description}
-                              </p>
-                            </div>
-                            <div className="col-span-2 justify-self-end">
-                              <img
-                                src={currentMenuPrincipalData.image}
-                                alt={currentMenuPrincipalData.title}
-                                loading="lazy"
-                                className="w-24 h-24 object-cover border border-gray-200 rounded-none"
-                              />
-                            </div>
-                          </div>
-                        </div>
-                      )}
-
-                      {/* Nosotros móvil: tabs Misión / Visión (como Acceder) */}
-                      {item.isNosotros && (
-                        <div className="bg-white text-gray-800 p-4">
-                          <div className="grid grid-cols-5 gap-3 items-start">
-                            {/* Izquierda: opciones */}
-                            <div className="col-span-3">
-                              {[
-                                { key: "mision", label: "Misión" },
-                                { key: "vision", label: "Visión" },
-                              ].map((opt) => (
-                                <button
-                                  key={opt.key}
-                                  className={`w-full text-left px-3 py-2 rounded-md ${
-                                    nosotrosActiveOption === opt.key
-                                      ? "bg-blue-50 text-blue-800"
-                                      : "hover:bg-gray-50"
-                                  }`}
-                                  onClick={() => setNosotrosActiveOption(opt.key)}
-                                >
-                                  {opt.label}
-                                </button>
-                              ))}
-
-                              <div className="pt-2">
-                                <h4 className="font-semibold">
-                                  {currentNosotrosData.title}
-                                </h4>
-                                <p className="text-sm text-gray-600">
-                                  {currentNosotrosData.description}
-                                </p>
-                                <ul className="mt-2 space-y-2">
-                                  {currentNosotrosData.details.map((d, i) => (
-                                    <li key={i} className="flex items-start text-sm">
-                                      <FaShieldAlt className="text-blue-500 mt-0.5 mr-2" />
-                                      {d}
-                                    </li>
-                                  ))}
-                                </ul>
-                                <a
-                                  href={currentNosotrosData.buttonLink}
-                                  className="mt-3 inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white hover:bg-blue-700 rounded-md"
-                                >
-                                  {currentNosotrosData.buttonText}{" "}
-                                  <FaChevronRight aria-hidden="true" />
-                                </a>
-                              </div>
-                            </div>
-
-                            {/* Derecha: miniatura */}
-                            <div className="col-span-2 flex items-start justify-end">
-                              <img
-                                src={currentNosotrosData.image}
-                                alt={currentNosotrosData.title}
-                                loading="lazy"
-                                className="w-24 h-24 object-contain border border-gray-200 rounded-none"
-                              />
-                            </div>
-                          </div>
-                        </div>
-                      )}
-
-                      {/* Acceder móvil */}
-                      {item.isAcceder && (
-                        <div className="bg-white text-gray-800 p-4">
-                          <div className="grid grid-cols-5 gap-3 items-start">
-                            <div className="col-span-3">
-                              {Object.keys(accederData).map((key) => (
-                                <button
-                                  key={key}
-                                  className={`w-full text-left px-3 py-2 rounded-md ${
-                                    accederActiveOption === key
-                                      ? "bg-blue-50 text-blue-800"
-                                      : "hover:bg-gray-50"
-                                  }`}
-                                  onClick={() => setAccederActiveOption(key)}
-                                >
-                                  {accederData[key].title}
-                                </button>
-                              ))}
-
-                              <div className="pt-2">
-                                <h4 className="font-semibold">
-                                  {currentAccederData.title}
-                                </h4>
-                                <p className="text-sm text-gray-600">
-                                  {currentAccederData.description}
-                                </p>
-                                <ul className="mt-2 space-y-2">
-                                  {currentAccederData.details.map((d, i) => (
-                                    <li key={i} className="flex items-start text-sm">
-                                      <FaShieldAlt className="text-blue-500 mt-0.5 mr-2" />
-                                      {d}
-                                    </li>
-                                  ))}
-                                </ul>
-                                <a
-                                  href={currentAccederData.buttonLink}
-                                  className="mt-3 inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white hover:bg-blue-700 rounded-md"
-                                >
-                                  {currentAccederData.buttonText}{" "}
-                                  <FaChevronRight aria-hidden="true" />
-                                </a>
-                              </div>
-                            </div>
-
-                            <div className="col-span-2 flex items-start justify-end">
-                              <img
-                                src={currentAccederData.image}
-                                alt={currentAccederData.title}
-                                loading="lazy"
-                                className="w-24 h-24 object-contain border border-gray-200 rounded-none"
-                              />
-                            </div>
-                          </div>
-                        </div>
-                      )}
-
-                      {/* Soporte móvil */}
-                      {item.isSoporte && (
-                        <div className="bg-white text-gray-800 p-4 space-y-3">
-                          <h4 className="font-semibold">Centro de Ayuda</h4>
-                          <p className="text-sm text-gray-600">
-                            Guías, tutoriales y documentación.
-                          </p>
-                          <h4 className="text-lg font-semibold mt-2">Soporte Técnico</h4>
-                          <ul className="mt-1 space-y-1 text-sm text-gray-600">
-                            <li>✔ Preguntas frecuentes</li>
-                            <li>✔ Tutoriales interactivos</li>
-                            <li>✔ Reportar incidencias</li>
-                          </ul>
-                          <div className="pt-2">
-                            <a
-                              href="https://wa.me/593999047935"
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="block w-full text-center px-4 py-2 bg-green-600 text-white hover:bg-green-700 rounded-md"
-                              aria-label="Chatear por WhatsApp"
-                            >
-                              WhatsApp
-                            </a>
-                            <a
-                              href="mailto:soporte@safetech-ec.com"
-                              className="mt-2 block w-full text-center px-4 py-2 bg-red-600 text-white hover:bg-red-700 rounded-md"
-                              aria-label="Enviar correo a soporte@safetech-ec.com"
-                            >
-                              <span className="inline-flex items-center gap-2 justify-center">
-                                <FaEnvelope aria-hidden="true" /> Gmail
-                              </span>
-                            </a>
-                          </div>
-                        </div>
-                      )}
-                    </div>
+                    <MCollapse open={mobileAccederOpen[key]}>
+                      <h4 className="font-semibold">{accederData[key].title}</h4>
+                      <p className="text-sm text-gray-700">{accederData[key].description}</p>
+                      <ul className="mt-2 space-y-2">
+                        {accederData[key].details.map((d,i)=>(
+                          <li key={i} className="flex items-start text-sm"><FaShieldAlt className="text-blue-500 mr-2 mt-0.5"/>{d}</li>
+                        ))}
+                      </ul>
+                      <img src={accederData[key].image} alt={accederData[key].title} className="mt-3 w-full max-h-44 object-contain border border-gray-200"/>
+                      <a href={accederData[key].buttonLink} className="mt-3 inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">
+                        {accederData[key].buttonText} <FaChevronRight/>
+                      </a>
+                    </MCollapse>
                   </div>
-                </li>
-              );
-            })}
+                ))}
+              </MCollapse>
+            </li>
+
+            {/* Soporte en línea */}
+            <li>
+              <MRow
+                title="Soporte en línea"
+                open={mobileSectionsOpen["Soporte en línea"]}
+                onToggle={()=>setMobileSectionsOpen((s)=>({...s, ["Soporte en línea"]: !s["Soporte en línea"]}))}
+              />
+              <MCollapse open={mobileSectionsOpen["Soporte en línea"]}>
+                <h4 className="font-semibold">Centro de Ayuda</h4>
+                <p className="text-sm text-gray-600">Guías, tutoriales y documentación.</p>
+                <h4 className="font-semibold mt-3">Soporte Técnico</h4>
+                <ul className="mt-1 space-y-1 text-sm text-gray-600">
+                  <li>✔ Preguntas frecuentes</li>
+                  <li>✔ Tutoriales interactivos</li>
+                  <li>✔ Reportar incidencias</li>
+                </ul>
+                <div className="pt-3">
+                  <a
+                    href="https://wa.me/593999047935"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="block w-full text-center px-4 py-2 bg-green-600 text-white hover:bg-green-700 rounded-md"
+                    aria-label="Chatear por WhatsApp"
+                  >
+                    WhatsApp
+                  </a>
+                  <a
+                    href="mailto:soporte@safetech-ec.com"
+                    className="mt-2 block w-full text-center px-4 py-2 bg-red-600 text-white hover:bg-red-700 rounded-md"
+                    aria-label="Enviar correo a soporte@safetech-ec.com"
+                  >
+                    <span className="inline-flex items-center gap-2 justify-center">
+                      <FaEnvelope aria-hidden="true" /> Gmail
+                    </span>
+                  </a>
+                </div>
+              </MCollapse>
+            </li>
           </ul>
         </div>
       </div>
