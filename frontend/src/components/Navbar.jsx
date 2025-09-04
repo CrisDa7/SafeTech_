@@ -18,8 +18,16 @@ export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState(null);
   const [scrolled, setScrolled] = useState(false);
+
+  // Acceder
   const [accederActiveOption, setAccederActiveOption] = useState("administrador");
-  const [menuPrincipalActive, setMenuPrincipalActive] = useState("quees");
+
+  // Principal: activo por defecto = "quienes"
+  const [menuPrincipalActive, setMenuPrincipalActive] = useState("quienes");
+
+  // Nosotros: navegación tipo “servicios” (Misión / Visión)
+  const [nosotrosActiveOption, setNosotrosActiveOption] = useState("mision");
+
   const navRef = useRef(null);
 
   // Data Acceder
@@ -34,6 +42,7 @@ export default function Navbar() {
       ],
       image: adminImg,
       buttonLink: "#admin",
+      buttonText: "Acceder",
     },
     padres: {
       title: "Safe Padres",
@@ -45,6 +54,7 @@ export default function Navbar() {
       ],
       image: padresImg,
       buttonLink: "#padres",
+      buttonText: "Acceder",
     },
     school: {
       title: "Safe School",
@@ -56,36 +66,60 @@ export default function Navbar() {
       ],
       image: schoolImg,
       buttonLink: "#school",
+      buttonText: "Acceder",
     },
   };
   const currentAccederData = accederData[accederActiveOption];
 
-  // Data Principal
+  // Data Principal: solo "quienes"
   const menuPrincipalData = {
-    quees: {
-      title: "¿Qué es SafeTech?",
+    quienes: {
+      title: "¿Quiénes somos?",
       description:
-        "SafeTech es más que un simple sistema de seguridad escolar: es una forma inteligente de garantizar la protección de los estudiantes. Diseñado para instituciones educativas, administradores y padres de familia, SafeTech moderniza toda la experiencia de seguridad escolar con tecnología avanzada y características fáciles de usar.\n\nDesde el monitoreo en tiempo real hasta la comunicación transparente, SafeTech hace que cada día escolar sea más seguro, tranquilo y sin preocupaciones para toda la comunidad educativa.",
-      image: autobusImg,
-    },
-    mision: {
-      title: "Nuestra Misión",
-      description:
-        "Proteger la seguridad de los estudiantes con herramientas digitales que permiten controlar, supervisar y optimizar las rutas escolares con eficiencia y confianza.",
-      image: autobusImg,
-    },
-    vision: {
-      title: "Nuestra Visión",
-      description:
-        "Transformar la gestión del transporte escolar en un ecosistema inteligente, seguro y eficiente, donde cada estudiante viaje protegido y cada familia tenga certeza de su bienestar.",
+        "En SafeTech somos una empresa dedicada a brindar soluciones inteligentes de seguridad. " +
+        "Combinamos experiencia y tecnología de vanguardia en CCTV, control de accesos y monitoreo 24/7 " +
+        "para proteger lo que más importa con confianza y compromiso.",
       image: autobusImg,
     },
   };
   const currentMenuPrincipalData = menuPrincipalData[menuPrincipalActive];
 
+  // Data Nosotros (como “servicios”: Misión / Visión)
+  const nosotrosData = {
+    mision: {
+      title: "Misión",
+      description:
+        "Proteger a las comunidades educativas mediante soluciones inteligentes de seguridad. " +
+        "Garantizamos trayectos escolares seguros, confianza para las familias y herramientas eficientes para las instituciones.",
+      details: [
+        "Enfoque en prevención y monitoreo 24/7.",
+        "Tecnología accesible y confiable.",
+        "Acompañamiento cercano a instituciones y familias.",
+      ],
+      image: autobusImg,
+      buttonLink: "#mision",
+      buttonText: "Conocer más",
+    },
+    vision: {
+      title: "Visión",
+      description:
+        "Ser el referente regional en seguridad escolar inteligente, construyendo un futuro donde cada estudiante viaje protegido y cada familia tenga tranquilidad.",
+      details: [
+        "Innovación continua y escalabilidad.",
+        "Estándares altos en protección y datos.",
+        "Impacto social positivo y sostenible.",
+      ],
+      image: autobusImg,
+      buttonLink: "#vision",
+      buttonText: "Conocer más",
+    },
+  };
+  const currentNosotrosData = nosotrosData[nosotrosActiveOption];
+
   // Items del menú
   const menuItems = [
     { name: "Principal", isMenuPrincipal: true },
+    { name: "Nosotros", isNosotros: true },
     { name: "Acceder", isAcceder: true },
     { name: "Soporte en línea", isSoporte: true },
   ];
@@ -120,7 +154,7 @@ export default function Navbar() {
     return () => document.removeEventListener("keydown", onEsc);
   }, []);
 
-  // Cerrar por scroll (porque ahora usamos fixed)
+  // Cerrar por scroll
   useEffect(() => {
     const onScrollClose = () => setActiveDropdown(null);
     window.addEventListener("scroll", onScrollClose, { passive: true });
@@ -133,13 +167,7 @@ export default function Navbar() {
   };
   const isMdUp = () => window.matchMedia("(min-width: 768px)").matches;
 
-  /**
-   * PanelWrapper:
-   * Fila fija a lo ancho de la ventana, con un contenedor centrado (max-w-screen-xl)
-   * y el panel alineado a la DERECHA del contenedor (justify-end) para que
-   * SIEMPRE salga desde donde termina el navbar (último ítem).
-   * Sin bordes redondeados (recto).
-   */
+  // Panel wrapper
   const PanelWrapper = ({ children, label }) => (
     <div
       className="fixed inset-x-0 top-[56px] md:top-[64px] z-[60]"
@@ -244,9 +272,7 @@ export default function Navbar() {
                         {/* Columna 1 */}
                         <div className="md:w-1/4 border-b md:border-b-0 md:border-r border-gray-200">
                           {[
-                            { key: "quees", label: "¿Qué es SafeTech?" },
-                            { key: "mision", label: "Misión" },
-                            { key: "vision", label: "Visión" },
+                            { key: "quienes", label: "¿Quiénes somos?" }, // único item
                           ].map((opt) => (
                             <button
                               key={opt.key}
@@ -294,6 +320,83 @@ export default function Navbar() {
                     </PanelWrapper>
                   )}
 
+                  {/* NOSOTROS: estilo “servicios” (Misión / Visión) */}
+                  {item.isNosotros && activeDropdown === "Nosotros" && (
+                    <PanelWrapper label="Menú Nosotros">
+                      <div className="flex flex-col md:flex-row">
+                        {/* Columna 1: opciones */}
+                        <div className="md:w-1/4 border-b md:border-b-0 md:border-r border-gray-200">
+                          {[
+                            { key: "mision", label: "Misión" },
+                            { key: "vision", label: "Visión" },
+                          ].map((opt) => (
+                            <button
+                              key={opt.key}
+                              onMouseEnter={() => setNosotrosActiveOption(opt.key)}
+                              onFocus={() => setNosotrosActiveOption(opt.key)}
+                              className={`w-full text-left p-5 transition ${
+                                nosotrosActiveOption === opt.key
+                                  ? "bg-blue-50 border-l-4 border-blue-600"
+                                  : "hover:bg-gray-50"
+                              }`}
+                            >
+                              <span
+                                className={`${
+                                  nosotrosActiveOption === opt.key
+                                    ? "text-blue-800"
+                                    : "text-gray-700"
+                                } font-medium`}
+                              >
+                                {opt.label}
+                              </span>
+                            </button>
+                          ))}
+                        </div>
+
+                        {/* Columna 2: contenido */}
+                        <div className="md:w-2/4 p-6 md:border-r border-gray-200">
+                          <h2 className="text-xl lg:text-2xl font-bold text-gray-800 mb-3">
+                            {currentNosotrosData.title}
+                          </h2>
+                          <p className="text-gray-600 mb-6">
+                            {currentNosotrosData.description}
+                          </p>
+                          <ul className="space-y-3">
+                            {currentNosotrosData.details.map((detail, idx) => (
+                              <li key={idx} className="flex items-start">
+                                <FaShieldAlt
+                                  className="text-blue-500 mt-1 mr-3 shrink-0"
+                                  aria-hidden="true"
+                                />
+                                <span className="text-gray-700">{detail}</span>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+
+                        {/* Columna 3: imagen + botón */}
+                        <div className="md:w-1/4 bg-blue-50 p-6 flex flex-col items-center justify-center">
+                          <div className="mb-6 w-36 h-36 md:w-40 md:h-40 bg-white shadow-md flex items-center justify-center p-4">
+                            <img
+                              src={currentNosotrosData.image}
+                              alt={currentNosotrosData.title}
+                              className="max-w-full max-h-full object-contain"
+                              loading="lazy"
+                            />
+                          </div>
+                          <a
+                            href={currentNosotrosData.buttonLink}
+                            className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-blue-600 text-white font-medium hover:bg-blue-700 focus-visible:ring-2 focus-visible:ring-blue-300 w-full text-center rounded-md"
+                          >
+                            {currentNosotrosData.buttonText}{" "}
+                            <FaChevronRight className="inline" aria-hidden="true" />
+                          </a>
+                        </div>
+                      </div>
+                    </PanelWrapper>
+                  )}
+
+                  {/* ACCEDER */}
                   {item.isAcceder && activeDropdown === "Acceder" && (
                     <PanelWrapper label="Menú Acceder">
                       <div className="flex flex-col md:flex-row">
@@ -358,13 +461,15 @@ export default function Navbar() {
                             href={currentAccederData.buttonLink}
                             className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-blue-600 text-white font-medium hover:bg-blue-700 focus-visible:ring-2 focus-visible:ring-blue-300 w-full text-center rounded-md"
                           >
-                            Acceder <FaChevronRight className="inline" aria-hidden="true" />
+                            {currentAccederData.buttonText}{" "}
+                            <FaChevronRight className="inline" aria-hidden="true" />
                           </a>
                         </div>
                       </div>
                     </PanelWrapper>
                   )}
 
+                  {/* SOPORTE */}
                   {item.isSoporte && activeDropdown === "Soporte en línea" && (
                     <PanelWrapper label="Menú Soporte en línea">
                       <div className="flex flex-col md:flex-row">
@@ -406,9 +511,9 @@ export default function Navbar() {
                             target="_blank"
                             rel="noopener noreferrer"
                             className="px-6 py-3 bg-green-600 text-white font-medium hover:bg-green-700 focus-visible:ring-2 focus-visible:ring-green-300 w-full text-center mb-3 rounded-md"
-                            aria-label="Chatear por WhatsApp al 099 904 7935"
+                            aria-label="Chatear por WhatsApp"
                           >
-                            WhatsApp 099 904 7935
+                            WhatsApp
                           </a>
                           <a
                             href="mailto:soporte@safetech-ec.com"
@@ -447,7 +552,9 @@ export default function Navbar() {
                   >
                     <span>{item.name}</span>
                     <FaChevronDown
-                      className={`w-3 h-3 transition-transform ${open ? "rotate-180" : ""}`}
+                      className={`w-3 h-3 transition-transform ${
+                        open ? "rotate-180" : ""
+                      }`}
                       aria-hidden="true"
                     />
                   </button>
@@ -458,12 +565,11 @@ export default function Navbar() {
                     }`}
                   >
                     <div className="overflow-hidden">
+                      {/* Principal móvil: ¿Quiénes somos? */}
                       {item.isMenuPrincipal && (
                         <div className="bg-white text-gray-800 p-4 space-y-3">
                           {[
-                            { key: "quees", label: "¿Qué es SafeTech?" },
-                            { key: "mision", label: "Misión" },
-                            { key: "vision", label: "Visión" },
+                            { key: "quienes", label: "¿Quiénes somos?" },
                           ].map((opt) => (
                             <button
                               key={opt.key}
@@ -478,7 +584,6 @@ export default function Navbar() {
                             </button>
                           ))}
 
-                          {/* Contenido + miniatura a la derecha */}
                           <div className="pt-3 grid grid-cols-5 gap-3 items-start">
                             <div className="col-span-3">
                               <h4 className="font-semibold">
@@ -500,10 +605,71 @@ export default function Navbar() {
                         </div>
                       )}
 
+                      {/* Nosotros móvil: tabs Misión / Visión (como Acceder) */}
+                      {item.isNosotros && (
+                        <div className="bg-white text-gray-800 p-4">
+                          <div className="grid grid-cols-5 gap-3 items-start">
+                            {/* Izquierda: opciones */}
+                            <div className="col-span-3">
+                              {[
+                                { key: "mision", label: "Misión" },
+                                { key: "vision", label: "Visión" },
+                              ].map((opt) => (
+                                <button
+                                  key={opt.key}
+                                  className={`w-full text-left px-3 py-2 rounded-md ${
+                                    nosotrosActiveOption === opt.key
+                                      ? "bg-blue-50 text-blue-800"
+                                      : "hover:bg-gray-50"
+                                  }`}
+                                  onClick={() => setNosotrosActiveOption(opt.key)}
+                                >
+                                  {opt.label}
+                                </button>
+                              ))}
+
+                              <div className="pt-2">
+                                <h4 className="font-semibold">
+                                  {currentNosotrosData.title}
+                                </h4>
+                                <p className="text-sm text-gray-600">
+                                  {currentNosotrosData.description}
+                                </p>
+                                <ul className="mt-2 space-y-2">
+                                  {currentNosotrosData.details.map((d, i) => (
+                                    <li key={i} className="flex items-start text-sm">
+                                      <FaShieldAlt className="text-blue-500 mt-0.5 mr-2" />
+                                      {d}
+                                    </li>
+                                  ))}
+                                </ul>
+                                <a
+                                  href={currentNosotrosData.buttonLink}
+                                  className="mt-3 inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white hover:bg-blue-700 rounded-md"
+                                >
+                                  {currentNosotrosData.buttonText}{" "}
+                                  <FaChevronRight aria-hidden="true" />
+                                </a>
+                              </div>
+                            </div>
+
+                            {/* Derecha: miniatura */}
+                            <div className="col-span-2 flex items-start justify-end">
+                              <img
+                                src={currentNosotrosData.image}
+                                alt={currentNosotrosData.title}
+                                loading="lazy"
+                                className="w-24 h-24 object-contain border border-gray-200 rounded-none"
+                              />
+                            </div>
+                          </div>
+                        </div>
+                      )}
+
+                      {/* Acceder móvil */}
                       {item.isAcceder && (
                         <div className="bg-white text-gray-800 p-4">
                           <div className="grid grid-cols-5 gap-3 items-start">
-                            {/* Columna izquierda: opciones + texto */}
                             <div className="col-span-3">
                               {Object.keys(accederData).map((key) => (
                                 <button
@@ -520,7 +686,9 @@ export default function Navbar() {
                               ))}
 
                               <div className="pt-2">
-                                <h4 className="font-semibold">{currentAccederData.title}</h4>
+                                <h4 className="font-semibold">
+                                  {currentAccederData.title}
+                                </h4>
                                 <p className="text-sm text-gray-600">
                                   {currentAccederData.description}
                                 </p>
@@ -536,12 +704,12 @@ export default function Navbar() {
                                   href={currentAccederData.buttonLink}
                                   className="mt-3 inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white hover:bg-blue-700 rounded-md"
                                 >
-                                  Acceder <FaChevronRight aria-hidden="true" />
+                                  {currentAccederData.buttonText}{" "}
+                                  <FaChevronRight aria-hidden="true" />
                                 </a>
                               </div>
                             </div>
 
-                            {/* Columna derecha: miniatura */}
                             <div className="col-span-2 flex items-start justify-end">
                               <img
                                 src={currentAccederData.image}
@@ -554,11 +722,14 @@ export default function Navbar() {
                         </div>
                       )}
 
+                      {/* Soporte móvil */}
                       {item.isSoporte && (
                         <div className="bg-white text-gray-800 p-4 space-y-3">
                           <h4 className="font-semibold">Centro de Ayuda</h4>
-                          <p className="text-sm text-gray-600">Guías, tutoriales y documentación.</p>
-                          <h4 className="font-semibold mt-2">Soporte Técnico</h4>
+                          <p className="text-sm text-gray-600">
+                            Guías, tutoriales y documentación.
+                          </p>
+                          <h4 className="text-lg font-semibold mt-2">Soporte Técnico</h4>
                           <ul className="mt-1 space-y-1 text-sm text-gray-600">
                             <li>✔ Preguntas frecuentes</li>
                             <li>✔ Tutoriales interactivos</li>
@@ -570,9 +741,9 @@ export default function Navbar() {
                               target="_blank"
                               rel="noopener noreferrer"
                               className="block w-full text-center px-4 py-2 bg-green-600 text-white hover:bg-green-700 rounded-md"
-                              aria-label="Chatear por WhatsApp al 099 904 7935"
+                              aria-label="Chatear por WhatsApp"
                             >
-                              WhatsApp 099 904 7935
+                              WhatsApp
                             </a>
                             <a
                               href="mailto:soporte@safetech-ec.com"
