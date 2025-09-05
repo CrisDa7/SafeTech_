@@ -5,37 +5,29 @@ import padresImg from "../assets/padres.png";
 
 const serviciosData = [
   {
-    title: "Safe Administrador",
-    features: [
-      "Rastreo en tiempo real de buses",
-      "Reportes automáticos de rutas y tiempos",
-      "Optimización con inteligencia artificial",
-      "Gestión eficiente para directivos",
-    ],
+    title: "Safe Escolar", // <- cambiado
+    // La primera tarjeta ahora muestra estas "features" con check
+    features: ["Safe School", "Safe Padres", "Safe Administración"],
     img: adminImg,
-    link: "/safe-administrador",
+    link: "/safe-escolar", // puedes cambiar esta ruta si quieres
+    cta: "Ver más",
+    soon: false,
   },
   {
     title: "Safe School",
-    features: [
-      "Monitoreo en vivo de unidades",
-      "Alertas de llegada y salida",
-      "Plataforma intuitiva para coordinadores",
-      "Tranquilidad para familias",
-    ],
+    features: [], // sin descripción
     img: schoolImg,
-    link: "/safe-school",
+    link: "#",
+    cta: "Muy pronto",
+    soon: true,
   },
   {
     title: "Safe Padres",
-    features: [
-      "Notificaciones instantáneas",
-      "Localización en tiempo real",
-      "Confianza al alcance de su mano",
-      "Saber dónde están los estudiantes",
-    ],
+    features: [], // sin descripción
     img: padresImg,
-    link: "/safe-padres",
+    link: "#",
+    cta: "Muy pronto",
+    soon: true,
   },
 ];
 
@@ -43,6 +35,7 @@ export default function Servicios() {
   const BTN_BASE =
     "inline-flex items-center justify-center px-5 py-3 text-base font-medium focus:outline-none transition";
   const BTN_PRIMARY = `${BTN_BASE} rounded-md text-white bg-blue-600 hover:bg-blue-700 focus-visible:ring-4 focus-visible:ring-blue-300`;
+  const BTN_DISABLED = `${BTN_BASE} rounded-md bg-gray-200 text-gray-500 cursor-not-allowed`;
   const CARD =
     "group relative flex h-full flex-col rounded-2xl border border-gray-200/70 bg-white shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg hover:ring-1 hover:ring-blue-100";
   const CARD_MEDIA =
@@ -79,7 +72,7 @@ export default function Servicios() {
           </h2>
           <p className="mx-auto mt-4 max-w-3xl text-lg text-gray-600 md:text-xl">
             Soluciones especializadas para cada integrante de la comunidad
-            educativa.
+            
           </p>
           <div className="mx-auto mt-6 h-[3px] w-24 rounded-full bg-blue-600" />
         </header>
@@ -101,43 +94,58 @@ export default function Servicios() {
               </div>
 
               <div className={CARD_BODY}>
-                <h3 id={`card-${item.title}-title`} className="sr-only">
+                {/* Título visible (antes estaba sr-only) */}
+                <h3
+                  id={`card-${item.title}-title`}
+                  className="text-xl font-semibold text-gray-900"
+                >
                   {item.title}
                 </h3>
 
-                <ul className="mt-2 space-y-2.5">
-                  {item.features.map((feature) => (
-                    <li key={feature} className="flex items-start gap-3">
-                      <span className="mt-1 inline-flex h-5 w-5 items-center justify-center rounded-md border border-blue-200 bg-blue-50 text-blue-600">
-                        {CHECK_ICON}
-                      </span>
-                      <span className="text-gray-800">{feature}</span>
-                    </li>
-                  ))}
-                </ul>
+                {/* Solo la primera tarjeta muestra lista con checks */}
+                {item.features.length > 0 && (
+                  <ul className="mt-2 space-y-2.5">
+                    {item.features.map((feature) => (
+                      <li key={feature} className="flex items-start gap-3">
+                        <span className="mt-1 inline-flex h-5 w-5 items-center justify-center rounded-md border border-blue-200 bg-blue-50 text-blue-600">
+                          {CHECK_ICON}
+                        </span>
+                        <span className="text-gray-800">{feature}</span>
+                      </li>
+                    ))}
+                  </ul>
+                )}
 
                 <div className="mt-4">
                   <a
-                    href={item.link}
-                    className={BTN_PRIMARY}
-                    aria-label={`Acceder a ${item.title}`}
+                    href={item.soon ? undefined : item.link}
+                    className={item.soon ? BTN_DISABLED : BTN_PRIMARY}
+                    aria-label={
+                      item.soon ? `${item.title} próximamente` : `Acceder a ${item.title}`
+                    }
+                    aria-disabled={item.soon ? "true" : "false"}
+                    onClick={(e) => {
+                      if (item.soon) e.preventDefault();
+                    }}
                   >
-                    Acceder
-                    <svg
-                      className="ml-2 h-4 w-4 rtl:rotate-180"
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 14 10"
-                      fill="none"
-                      aria-hidden="true"
-                    >
-                      <path
-                        stroke="currentColor"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="2"
-                        d="M1 5h12m0 0L9 1m4 4L9 9"
-                      />
-                    </svg>
+                    {item.cta}
+                    {!item.soon && (
+                      <svg
+                        className="ml-2 h-4 w-4 rtl:rotate-180"
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 14 10"
+                        fill="none"
+                        aria-hidden="true"
+                      >
+                        <path
+                          stroke="currentColor"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth="2"
+                          d="M1 5h12m0 0L9 1m4 4L9 9"
+                        />
+                      </svg>
+                    )}
                   </a>
                 </div>
               </div>

@@ -56,7 +56,7 @@ export default function Hero() {
         <div className="flex flex-col gap-4 sm:flex-row sm:justify-center">
           {/* Scroll a Nosotros */}
           <a href="#nosotros" className={BTN_PRIMARY} aria-label="Ir a la sección Acerca de nosotros">
-            Acerca de
+            Nosotros
             <svg
               className="ms-2 h-3.5 w-3.5 rtl:rotate-180"
               aria-hidden="true"
