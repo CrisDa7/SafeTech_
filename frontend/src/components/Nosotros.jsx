@@ -30,7 +30,7 @@ export default function Nosotros() {
           <div className="lg:w-1/2 flex justify-center mt-8 lg:mt-0">
             <div className="relative w-full max-w-md">
               <img 
-                src="/src/assets/qq.jpg" 
+                src="../src/assets/si.jpg" 
                 alt="Equipo de SafeTech" 
                 className="rounded-2xl shadow-lg w-full h-auto object-cover max-h-80"
               />
