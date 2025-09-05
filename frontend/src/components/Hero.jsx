@@ -2,21 +2,18 @@ import React from "react";
 
 /**
  * Hero de portada
- * - Semántica: <section> con aria-labelledby apuntando al H1
- * - Accesibilidad: foco visible en CTAs, contraste alto
- * - Reutilización: clases base para botones (sin repetir)
- * - Responsive: mobile-first, tipografías fluidas y contenedor centrado
+ * - Usa la paleta pavlova
  */
 export default function Hero() {
   // Clases base (evita repetición)
   const BTN_BASE =
     "inline-flex items-center justify-center px-5 py-3 text-base font-medium focus:outline-none transition";
   const BTN_PRIMARY =
-    `${BTN_BASE} text-white rounded-lg bg-blue-600 hover:bg-blue-700 ` +
-    `focus-visible:ring-4 focus-visible:ring-blue-300`;
+    `${BTN_BASE} text-white rounded-lg bg-pavlova-600 hover:bg-pavlova-700 ` +
+    `focus-visible:ring-4 focus-visible:ring-pavlova-300`;
   const BTN_OUTLINE =
-    `${BTN_BASE} text-white rounded-lg border border-white hover:bg-white hover:text-gray-900 ` +
-    `focus-visible:ring-4 focus-visible:ring-gray-400`;
+    `${BTN_BASE} text-white rounded-lg border border-white hover:bg-white hover:text-pavlova-900 ` +
+    `focus-visible:ring-4 focus-visible:ring-pavlova-400`;
 
   return (
     <section

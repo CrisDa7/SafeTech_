@@ -1,30 +1,28 @@
 import React from "react";
-import adminImg from "../assets/admin.png";
-import schoolImg from "../assets/school.png";
-import padresImg from "../assets/padres.png";
+import adminImg from "../assets/safe.png";
+import configuracionImg from "../assets/configuracion.png"; // nueva imagen
 
 const serviciosData = [
   {
-    title: "Safe Escolar", // <- cambiado
-    // La primera tarjeta ahora muestra estas "features" con check
+    title: "Safe Escolar",
     features: ["Safe School", "Safe Padres", "Safe Administración"],
     img: adminImg,
-    link: "/safe-escolar", // puedes cambiar esta ruta si quieres
+    link: "/safe-escolar",
     cta: "Ver más",
     soon: false,
   },
   {
-    title: "Safe School",
-    features: [], // sin descripción
-    img: schoolImg,
+    title: "Configurando",
+    features: [],
+    img: configuracionImg,
     link: "#",
     cta: "Muy pronto",
     soon: true,
   },
   {
-    title: "Safe Padres",
-    features: [], // sin descripción
-    img: padresImg,
+    title: "Configurando",
+    features: [],
+    img: configuracionImg,
     link: "#",
     cta: "Muy pronto",
     soon: true,
@@ -34,12 +32,12 @@ const serviciosData = [
 export default function Servicios() {
   const BTN_BASE =
     "inline-flex items-center justify-center px-5 py-3 text-base font-medium focus:outline-none transition";
-  const BTN_PRIMARY = `${BTN_BASE} rounded-md text-white bg-blue-600 hover:bg-blue-700 focus-visible:ring-4 focus-visible:ring-blue-300`;
+  const BTN_PRIMARY = `${BTN_BASE} rounded-md text-white bg-pavlova-600 hover:bg-pavlova-700 focus-visible:ring-4 focus-visible:ring-pavlova-300`;
   const BTN_DISABLED = `${BTN_BASE} rounded-md bg-gray-200 text-gray-500 cursor-not-allowed`;
   const CARD =
-    "group relative flex h-full flex-col rounded-2xl border border-gray-200/70 bg-white shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg hover:ring-1 hover:ring-blue-100";
+    "group relative flex h-full flex-col rounded-2xl border border-gray-200/70 bg-white shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg hover:ring-1 hover:ring-pavlova-100";
   const CARD_MEDIA =
-    "flex items-center justify-center bg-gradient-to-b from-blue-200 via-blue-50 to-white border-b border-gray-100 px-6 pt-8 pb-6";
+    "flex items-center justify-center bg-gradient-to-b from-pavlova-200 via-pavlova-50 to-white border-b border-gray-100 px-6 pt-8 pb-6";
   const CARD_BODY = "flex flex-col gap-4 p-6";
   const CHECK_ICON = (
     <svg
@@ -60,7 +58,7 @@ export default function Servicios() {
     <section
       id="servicios"
       aria-labelledby="servicios-title"
-      className="bg-gray-50 px-4 py-16 md:py-24"
+      className="bg-pavlova-50 px-4 py-16 md:py-24"
     >
       <div className="mx-auto max-w-6xl">
         <header className="mb-12 text-center md:mb-16">
@@ -68,13 +66,12 @@ export default function Servicios() {
             id="servicios-title"
             className="text-4xl font-bold text-gray-900 md:text-5xl"
           >
-            Nuestros <span className="text-blue-600">Servicios</span>
+            Nuestros <span className="text-pavlova-600">Servicios</span>
           </h2>
           <p className="mx-auto mt-4 max-w-3xl text-lg text-gray-600 md:text-xl">
             Soluciones especializadas para cada integrante de la comunidad
-            
           </p>
-          <div className="mx-auto mt-6 h-[3px] w-24 rounded-full bg-blue-600" />
+          <div className="mx-auto mt-6 h-[3px] w-24 rounded-full bg-pavlova-600" />
         </header>
 
         <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
@@ -94,7 +91,6 @@ export default function Servicios() {
               </div>
 
               <div className={CARD_BODY}>
-                {/* Título visible (antes estaba sr-only) */}
                 <h3
                   id={`card-${item.title}-title`}
                   className="text-xl font-semibold text-gray-900"
@@ -102,12 +98,11 @@ export default function Servicios() {
                   {item.title}
                 </h3>
 
-                {/* Solo la primera tarjeta muestra lista con checks */}
                 {item.features.length > 0 && (
                   <ul className="mt-2 space-y-2.5">
                     {item.features.map((feature) => (
                       <li key={feature} className="flex items-start gap-3">
-                        <span className="mt-1 inline-flex h-5 w-5 items-center justify-center rounded-md border border-blue-200 bg-blue-50 text-blue-600">
+                        <span className="mt-1 inline-flex h-5 w-5 items-center justify-center rounded-md border border-pavlova-200 bg-pavlova-50 text-pavlova-600">
                           {CHECK_ICON}
                         </span>
                         <span className="text-gray-800">{feature}</span>
@@ -150,7 +145,7 @@ export default function Servicios() {
                 </div>
               </div>
 
-              <div className="pointer-events-none absolute inset-x-0 bottom-0 h-1 origin-left scale-x-0 bg-blue-600 transition-transform duration-300 group-hover:scale-x-100" />
+              <div className="pointer-events-none absolute inset-x-0 bottom-0 h-1 origin-left scale-x-0 bg-pavlova-600 transition-transform duration-300 group-hover:scale-x-100" />
             </article>
           ))}
         </div>

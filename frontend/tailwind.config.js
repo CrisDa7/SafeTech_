@@ -8,20 +8,23 @@ export default {
   theme: {
     extend: {
       colors: {
-        safetech: {
-          50:  "#f3f7ff",
-          100: "#e6efff",
-          200: "#c5d9ff",
-          300: "#9fbfff",
-          400: "#6d9aff",
-          500: "#3b74ff",  // primario
-          600: "#2f5bd6",
-          700: "#2546a6",
-          800: "#1c357d",
-          900: "#132454",
-        }
+        pavlova: {
+          50:  "#fbf8f1",
+          100: "#f6f0de",
+          200: "#ebddbd",
+          300: "#dfc696",
+          400: "#d0a567",
+          500: "#c68e49",  // tono principal (dorado cálido)
+          600: "#b87a3e",
+          700: "#996135",
+          800: "#7b4e31",
+          900: "#64422a",
+          950: "#352115",
+        },
       },
-      boxShadow: { soft: "0 8px 30px rgba(0,0,0,0.06)" }
+      boxShadow: {
+        soft: "0 8px 30px rgba(0,0,0,0.06)",
+      },
     },
   },
   plugins: [require("flowbite/plugin")],

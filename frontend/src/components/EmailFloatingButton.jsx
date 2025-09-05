@@ -44,9 +44,9 @@ export default function ProfessionalEmailFloatingButton() {
       <div className="fixed bottom-28 right-6 z-50">
         <button
           onClick={() => setOpenPopover(true)}
-          className="flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-r from-blue-600 to-blue-500 shadow-lg transition-transform duration-300 hover:scale-110 hover:from-blue-700 hover:to-blue-600"
+          className="flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-r from-pavlova-600 to-pavlova-500 shadow-lg transition-transform duration-300 hover:scale-110 hover:from-pavlova-700 hover:to-pavlova-600"
           style={{
-            boxShadow: "0 4px 20px rgba(37, 99, 235, 0.5)",
+            boxShadow: "0 4px 20px rgba(184, 122, 62, 0.5)", // pavlova-600
             animation: "pulse-email 2s infinite",
           }}
           aria-label="Contactar por correo"
@@ -58,13 +58,13 @@ export default function ProfessionalEmailFloatingButton() {
         <style jsx>{`
           @keyframes pulse-email {
             0% {
-              box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.7);
+              box-shadow: 0 0 0 0 rgba(184, 122, 62, 0.7); /* pavlova-600 */
             }
             70% {
-              box-shadow: 0 0 0 10px rgba(37, 99, 235, 0);
+              box-shadow: 0 0 0 10px rgba(184, 122, 62, 0);
             }
             100% {
-              box-shadow: 0 0 0 0 rgba(37, 99, 235, 0);
+              box-shadow: 0 0 0 0 rgba(184, 122, 62, 0);
             }
           }
         `}</style>
@@ -92,19 +92,19 @@ export default function ProfessionalEmailFloatingButton() {
             <div className="pointer-events-none absolute -right-3 top-1/2 hidden h-6 w-6 -translate-y-1/2 rotate-45 bg-white md:block" />
 
             {/* Header */}
-            <div className="flex items-center justify-between bg-gradient-to-r from-blue-600 to-blue-500 p-4">
+            <div className="flex items-center justify-between bg-gradient-to-r from-pavlova-600 to-pavlova-500 p-4">
               <div className="flex items-center">
                 <div className="mr-2 rounded-full bg-white p-1">
-                  <MdEmail className="h-6 w-6 text-blue-600" aria-hidden="true" />
+                  <MdEmail className="h-6 w-6 text-pavlova-600" aria-hidden="true" />
                 </div>
                 <div>
                   <h2 className="text-lg font-bold text-white">Chatea por correo</h2>
-                  <p className="text-sm text-blue-100">Estamos aquí para ayudarte</p>
+                  <p className="text-sm text-pavlova-100">Estamos aquí para ayudarte</p>
                 </div>
               </div>
               <button
                 onClick={() => setOpenPopover(false)}
-                className="text-white transition-colors duration-200 hover:text-blue-200"
+                className="text-white transition-colors duration-200 hover:text-pavlova-200"
                 aria-label="Cerrar panel de correo"
               >
                 <MdClose className="h-4 w-4" aria-hidden="true" />
@@ -114,8 +114,8 @@ export default function ProfessionalEmailFloatingButton() {
             {/* Cuerpo */}
             <div className="p-4">
               <div className="mb-4 flex items-center">
-                <div className="mr-3 flex h-10 w-10 items-center justify-center rounded-full bg-blue-100">
-                  <MdSupportAgent className="h-5 w-5 text-blue-600" aria-hidden="true" />
+                <div className="mr-3 flex h-10 w-10 items-center justify-center rounded-full bg-pavlova-100">
+                  <MdSupportAgent className="h-5 w-5 text-pavlova-600" aria-hidden="true" />
                 </div>
                 <div>
                   <h3 className="text-sm font-semibold text-gray-800">Soporte SafeTech</h3>
@@ -132,7 +132,7 @@ export default function ProfessionalEmailFloatingButton() {
                   </span>
                   <button
                     onClick={copyToClipboard}
-                    className="ml-2 text-blue-500 transition-colors hover:text-blue-700"
+                    className="ml-2 text-pavlova-600 transition-colors hover:text-pavlova-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-pavlova-300/70 rounded"
                     aria-label="Copiar correo"
                     title="Copiar correo"
                   >
@@ -173,7 +173,7 @@ export default function ProfessionalEmailFloatingButton() {
                 target="_blank"
                 rel="noreferrer"
                 onClick={() => setOpenPopover(false)}
-                className="flex items-center justify-center rounded-lg bg-gradient-to-r from-blue-600 to-blue-500 px-4 py-3 text-sm font-semibold text-white transition-colors duration-200 hover:from-blue-700 hover:to-blue-600"
+                className="flex items-center justify-center rounded-lg bg-gradient-to-r from-pavlova-600 to-pavlova-500 px-4 py-3 text-sm font-semibold text-white transition-colors duration-200 hover:from-pavlova-700 hover:to-pavlova-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-pavlova-300/70"
                 aria-label="Abrir Gmail para escribirnos"
               >
                 <MdEmail className="mr-2 h-5 w-5" aria-hidden="true" />
@@ -185,7 +185,7 @@ export default function ProfessionalEmailFloatingButton() {
             <div className="bg-gray-100 p-3 text-center">
               <p className="text-xs text-gray-500">
                 Email:{" "}
-                <span className="font-medium text-blue-600">{emailDestino}</span>
+                <span className="font-medium text-pavlova-600">{emailDestino}</span>
               </p>
             </div>
           </div>

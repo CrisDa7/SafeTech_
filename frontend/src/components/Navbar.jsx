@@ -164,7 +164,7 @@ export default function Navbar() {
   );
 
   // =============== MOBILE SMALL PARTS ===============
-  // Botón de fila principal (solo título en azul)
+  // Botón de fila principal (solo título sobre fondo oscuro)
   const MRow = ({ open, onToggle, title }) => (
     <button
       type="button"
@@ -172,7 +172,7 @@ export default function Navbar() {
       className="w-full flex items-center justify-between text-left px-3 py-3 rounded-md bg-white/10 hover:bg-white/15"
       aria-expanded={open}
     >
-      <span className={`font-semibold ${open ? "text-safetech-300" : "text-safetech-400"}`}>
+      <span className={`font-semibold ${open ? "text-pavlova-200" : "text-pavlova-100"}`}>
         {title}
       </span>
       <FaChevronDown
@@ -182,17 +182,17 @@ export default function Navbar() {
     </button>
   );
 
-  // Sub-fila suave (estilo de la captura)
+  // Sub-fila suave (acordeón interno)
   const SubRow = ({ open, onToggle, title }) => (
     <button
       type="button"
       onClick={onToggle}
       className={`w-full flex items-center justify-between text-left px-3 py-2 rounded-md border
-        ${open ? "bg-safetech-100/70 border-safetech-200" : "bg-safetech-50 border-safetech-100"} `}
+        ${open ? "bg-pavlova-100/70 border-pavlova-200" : "bg-pavlova-50 border-pavlova-100"} `}
     >
-      <span className="font-medium text-safetech-600">{title}</span>
+      <span className="font-medium text-pavlova-700">{title}</span>
       <FaChevronDown
-        className={`w-3 h-3 text-safetech-500 transition-transform ${open ? "rotate-180" : ""}`}
+        className={`w-3 h-3 text-pavlova-600 transition-transform ${open ? "rotate-180" : ""}`}
         aria-hidden="true"
       />
     </button>
@@ -215,7 +215,7 @@ export default function Navbar() {
       ref={navRef}
       className={`fixed w-full z-50 transition-all duration-300 ${
         scrolled
-          ? "bg-blue-900/80 backdrop-blur supports-[backdrop-filter]:bg-blue-900/60 shadow-lg py-2"
+          ? "bg-pavlova-900/80 backdrop-blur supports-[backdrop-filter]:bg-pavlova-900/60 shadow-lg py-2"
           : "bg-transparent py-3"
       }`}
       aria-label="Barra de navegación principal"
@@ -245,7 +245,7 @@ export default function Navbar() {
           <button
             onClick={() => setMenuOpen((v) => !v)}
             type="button"
-            className="inline-flex items-center justify-center rounded-md p-2 md:hidden text-white hover:bg-white/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/70"
+            className="inline-flex items-center justify-center rounded-md p-2 md:hidden text-white hover:bg-white/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-pavlova-300/70"
             aria-controls="primary-menu"
             aria-expanded={menuOpen}
             aria-label={menuOpen ? "Cerrar menú" : "Abrir menú"}
@@ -255,7 +255,7 @@ export default function Navbar() {
             </svg>
           </button>
 
-          {/* Menú desktop (igual que tenías) */}
+          {/* Menú desktop */}
           <div className="hidden md:flex">
             <ul id="primary-menu" className="flex items-center gap-2 lg:gap-4 font-medium" role="menubar">
               {menuItems.map((item) => (
@@ -268,7 +268,7 @@ export default function Navbar() {
                 >
                   <button
                     type="button"
-                    className="flex items-center gap-1 px-3 py-2 text-white hover:text-blue-200 focus-visible:ring-2 focus-visible:ring-white/70 rounded-md"
+                    className="flex items-center gap-1 px-3 py-2 text-white hover:text-pavlova-200 focus-visible:ring-2 focus-visible:ring-pavlova-300/70 rounded-md"
                     aria-haspopup="true"
                     aria-expanded={activeDropdown === item.name}
                     onClick={() => toggleDropdown(item.name)}
@@ -287,11 +287,11 @@ export default function Navbar() {
                             onFocus={() => setMenuPrincipalActive("quienes")}
                             className={`w-full text-left p-5 transition ${
                               menuPrincipalActive === "quienes"
-                                ? "bg-blue-50 border-l-4 border-blue-600"
+                                ? "bg-pavlova-50 border-l-4 border-pavlova-600"
                                 : "hover:bg-gray-50"
                             }`}
                           >
-                            <span className={`${menuPrincipalActive === "quienes" ? "text-blue-800" : "text-gray-700"} font-medium`}>
+                            <span className={`${menuPrincipalActive === "quienes" ? "text-pavlova-800" : "text-gray-700"} font-medium`}>
                               ¿Quiénes somos?
                             </span>
                           </button>
@@ -306,7 +306,7 @@ export default function Navbar() {
                           </p>
                         </div>
 
-                        <div className="md:w-1/4 bg-blue-50 p-6 flex items-center justify-center">
+                        <div className="md:w-1/4 bg-pavlova-50 p-6 flex items-center justify-center">
                           <img src={currentMenuPrincipalData.image} alt={currentMenuPrincipalData.title} className="max-w-full max-h-48 object-contain" loading="lazy" />
                         </div>
                       </div>
@@ -328,11 +328,11 @@ export default function Navbar() {
                               onFocus={() => setNosotrosActiveOption(opt.key)}
                               className={`w-full text-left p-5 transition ${
                                 nosotrosActiveOption === opt.key
-                                  ? "bg-blue-50 border-l-4 border-blue-600"
+                                  ? "bg-pavlova-50 border-l-4 border-pavlova-600"
                                   : "hover:bg-gray-50"
                               }`}
                             >
-                              <span className={`${nosotrosActiveOption === opt.key ? "text-blue-800" : "text-gray-700"} font-medium`}>
+                              <span className={`${nosotrosActiveOption === opt.key ? "text-pavlova-800" : "text-gray-700"} font-medium`}>
                                 {opt.label}
                               </span>
                             </button>
@@ -347,14 +347,14 @@ export default function Navbar() {
                           <ul className="space-y-3">
                             {currentNosotrosData.details.map((detail, idx) => (
                               <li key={idx} className="flex items-start">
-                                <FaShieldAlt className="text-blue-500 mt-1 mr-3 shrink-0" aria-hidden="true" />
+                                <FaShieldAlt className="text-pavlova-500 mt-1 mr-3 shrink-0" aria-hidden="true" />
                                 <span className="text-gray-700">{detail}</span>
                               </li>
                             ))}
                           </ul>
                         </div>
 
-                        <div className="md:w-1/4 bg-blue-50 p-6 flex items-center justify-center">
+                        <div className="md:w-1/4 bg-pavlova-50 p-6 flex items-center justify-center">
                           <img src={currentNosotrosData.image} alt={currentNosotrosData.title} className="max-w-full max-h-48 object-contain" loading="lazy" />
                         </div>
                       </div>
@@ -373,11 +373,11 @@ export default function Navbar() {
                               onFocus={() => setAccederActiveOption(key)}
                               className={`w-full text-left p-5 transition ${
                                 accederActiveOption === key
-                                  ? "bg-blue-50 border-l-4 border-blue-600"
+                                  ? "bg-pavlova-50 border-l-4 border-pavlova-600"
                                   : "hover:bg-gray-50"
                               }`}
                             >
-                              <span className={`${accederActiveOption === key ? "text-blue-800" : "text-gray-700"} font-medium`}>
+                              <span className={`${accederActiveOption === key ? "text-pavlova-800" : "text-gray-700"} font-medium`}>
                                 {accederData[key].title}
                               </span>
                             </button>
@@ -390,18 +390,21 @@ export default function Navbar() {
                           <ul className="space-y-3">
                             {currentAccederData.details.map((detail, idx) => (
                               <li key={idx} className="flex items-start">
-                                <FaShieldAlt className="text-blue-500 mt-1 mr-3 shrink-0" aria-hidden="true" />
+                                <FaShieldAlt className="text-pavlova-500 mt-1 mr-3 shrink-0" aria-hidden="true" />
                                 <span className="text-gray-700">{detail}</span>
                               </li>
                             ))}
                           </ul>
                         </div>
 
-                        <div className="md:w-1/4 bg-blue-50 p-6 flex flex-col items-center justify-center">
+                        <div className="md:w-1/4 bg-pavlova-50 p-6 flex flex-col items-center justify-center">
                           <div className="mb-6 w-36 h-36 md:w-40 md:h-40 bg-white shadow-md flex items-center justify-center p-4">
                             <img src={currentAccederData.image} alt={currentAccederData.title} className="max-w-full max-h-full object-contain" loading="lazy" />
                           </div>
-                          <a href={currentAccederData.buttonLink} className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-blue-600 text-white font-medium hover:bg-blue-700 focus-visible:ring-2 focus-visible:ring-blue-300 w-full text-center rounded-md">
+                          <a
+                            href={currentAccederData.buttonLink}
+                            className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-pavlova-600 text-white font-medium hover:bg-pavlova-700 focus-visible:ring-2 focus-visible:ring-pavlova-300 w-full text-center rounded-md"
+                          >
                             {currentAccederData.buttonText} <FaChevronRight className="inline" aria-hidden="true" />
                           </a>
                         </div>
@@ -425,7 +428,7 @@ export default function Navbar() {
                             <li>✔ Reportar incidencias</li>
                           </ul>
                         </div>
-                        <div className="md:w-1/4 bg-blue-50 p-6 flex flex-col items-center justify-center">
+                        <div className="md:w-1/4 bg-pavlova-50 p-6 flex flex-col items-center justify-center">
                           <a href="https://wa.me/593999047935" target="_blank" rel="noopener noreferrer" className="px-6 py-3 bg-green-600 text-white font-medium hover:bg-green-700 w-full text-center mb-3 rounded-md" aria-label="Chatear por WhatsApp">
                             WhatsApp
                           </a>
@@ -509,7 +512,7 @@ export default function Navbar() {
                     <ul className="mt-2 space-y-2">
                       {nosotrosData.mision.details.map((d, i) => (
                         <li key={i} className="flex items-start text-sm">
-                          <FaShieldAlt className="text-blue-500 mt-0.5 mr-2" />
+                          <FaShieldAlt className="text-pavlova-500 mt-0.5 mr-2" />
                           {d}
                         </li>
                       ))}
@@ -536,7 +539,7 @@ export default function Navbar() {
                     <ul className="mt-2 space-y-2">
                       {nosotrosData.vision.details.map((d, i) => (
                         <li key={i} className="flex items-start text-sm">
-                          <FaShieldAlt className="text-blue-500 mt-0.5 mr-2" />
+                          <FaShieldAlt className="text-pavlova-500 mt-0.5 mr-2" />
                           {d}
                         </li>
                       ))}
@@ -580,7 +583,7 @@ export default function Navbar() {
                         <ul className="mt-2 space-y-2">
                           {accederData[key].details.map((d, i) => (
                             <li key={i} className="flex items-start text-sm">
-                              <FaShieldAlt className="text-blue-500 mt-0.5 mr-2" />
+                              <FaShieldAlt className="text-pavlova-500 mt-0.5 mr-2" />
                               {d}
                             </li>
                           ))}
@@ -593,7 +596,7 @@ export default function Navbar() {
                         />
                         <a
                           href={accederData[key].buttonLink}
-                          className="mt-3 inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+                          className="mt-3 inline-flex items-center gap-2 px-4 py-2 bg-pavlova-600 text-white rounded-md hover:bg-pavlova-700 focus-visible:ring-2 focus-visible:ring-pavlova-300"
                         >
                           {accederData[key].buttonText} <FaChevronRight aria-hidden="true" />
                         </a>
