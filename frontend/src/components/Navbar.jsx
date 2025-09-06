@@ -20,21 +20,9 @@ export default function Navbar() {
   const [menuPrincipalActive, setMenuPrincipalActive] = useState("quienes");
   const [nosotrosActiveOption, setNosotrosActiveOption] = useState("mision");
 
-  // Móvil: permite abrir varios a la vez
-  const [mobileSectionsOpen, setMobileSectionsOpen] = useState({
-    Principal: false,
-    Nosotros: false,
-    Acceder: false,
-    Productos: false,
-    "Soporte en línea": false,
-  });
-  const [mobilePrincipalOpen, setMobilePrincipalOpen] = useState({ quienes: false });
-  const [mobileNosotrosOpen, setMobileNosotrosOpen] = useState({ mision: false, vision: false });
-  const [mobileAccederOpen, setMobileAccederOpen] = useState({
-    administrador: false,
-    padres: false,
-    school: false,
-  });
+  // Móvil: UNA sola sección abierta
+  const [mobileActiveSection, setMobileActiveSection] = useState(null); // 'Principal' | 'Nosotros' | 'Acceder' | 'Productos' | 'Soporte en línea' | null
+  const [mobileSubKey, setMobileSubKey] = useState(null); // sub-acordeón único (ej. 'quienes' | 'mision' | 'vision' | 'administrador' | ...)
 
   const navRef = useRef(null);
 
@@ -83,9 +71,7 @@ export default function Navbar() {
     quienes: {
       title: "¿Quiénes somos?",
       description:
-        "En SafeTech somos una empresa dedicada a brindar soluciones inteligentes de seguridad.\n" +
-        "Combinamos experiencia y tecnología de vanguardia en CCTV, control de accesos y monitoreo 24/7\n" +
-        "para proteger lo que más importa con confianza y compromiso.",
+        "En SafeTech somos una empresa dedicada a brindar soluciones inteligentes de seguridad.\nCombinamos experiencia y tecnología de vanguardia en CCTV, control de accesos y monitoreo 24/7 para proteger lo que más importa con confianza y compromiso.",
       image: autobusImg,
     },
   };
@@ -95,8 +81,7 @@ export default function Navbar() {
     mision: {
       title: "Misión",
       description:
-        "Proteger a las comunidades educativas mediante soluciones inteligentes de seguridad. " +
-        "Garantizamos trayectos escolares seguros, confianza para las familias y herramientas eficientes para las instituciones.",
+        "Proteger a las comunidades educativas mediante soluciones inteligentes de seguridad. Garantizamos trayectos escolares seguros, confianza para las familias y herramientas eficientes para las instituciones.",
       details: [
         "Enfoque en prevención y monitoreo 24/7.",
         "Tecnología accesible y confiable.",
@@ -123,11 +108,7 @@ export default function Navbar() {
       title: "Productos",
       description:
         "Esta parte está en configuración. Muy pronto podrás explorar nuestro catálogo de soluciones.",
-      details: [
-        "Catálogo en preparación",
-        "Integraciones y precios",
-        "Demos y documentación",
-      ],
+      details: ["Catálogo en preparación", "Integraciones y precios", "Demos y documentación"],
       image: configuracionImg,
       buttonText: "Muy pronto",
     },
@@ -148,16 +129,30 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  // Cerrar con ESC (desktop y mobile)
   useEffect(() => {
     const onEsc = (e) => {
       if (e.key === "Escape") {
         setActiveDropdown(null);
         setMenuOpen(false);
+        setMobileActiveSection(null);
+        setMobileSubKey(null);
       }
     };
     document.addEventListener("keydown", onEsc);
     return () => document.removeEventListener("keydown", onEsc);
   }, []);
+
+  // Bloqueo de scroll al abrir menú móvil
+  useEffect(() => {
+    if (menuOpen) {
+      const prev = document.body.style.overflow;
+      document.body.style.overflow = "hidden";
+      return () => {
+        document.body.style.overflow = prev;
+      };
+    }
+  }, [menuOpen]);
 
   // Helpers
   const isMdUp = () => window.matchMedia("(min-width: 768px)").matches;
@@ -166,8 +161,16 @@ export default function Navbar() {
     if (isMdUp()) {
       setActiveDropdown((prev) => (prev === name ? null : name)); // desktop
     } else {
-      setMobileSectionsOpen((s) => ({ ...s, [name]: !s[name] })); // móvil multi-open
+      // móvil: abrimos esa sección y cerramos las demás
+      setMobileActiveSection((prev) => (prev === name ? null : name));
+      setMobileSubKey(null);
     }
+  };
+
+  const closeMobileMenu = () => {
+    setMenuOpen(false);
+    setMobileActiveSection(null);
+    setMobileSubKey(null);
   };
 
   // Panel wrapper (desktop) —> oscuro
@@ -175,52 +178,6 @@ export default function Navbar() {
     <div className="fixed inset-x-0 top-[56px] md:top-[64px] z-[60]" role="menu" aria-label={label}>
       <div className="mx-auto max-w-screen-xl px-4 flex justify-end">
         <div className="w-[min(92vw,920px)] bg-neutral-900 text-neutral-100 shadow-2xl border border-neutral-700 overflow-hidden">
-          {children}
-        </div>
-      </div>
-    </div>
-  );
-
-  // =============== MOBILE SMALL PARTS ===============
-  // Botón de fila principal (sobre fondo del navbar)
-  const MRow = ({ open, onToggle, title }) => (
-    <button
-      type="button"
-      onClick={onToggle}
-      className="w-full flex items-center justify-between text-left px-3 py-3 rounded-md bg-white/10 hover:bg-white/15"
-      aria-expanded={open}
-    >
-      <span className={`font-semibold ${open ? "text-hawkes-blue-200" : "text-hawkes-blue-100"}`}>
-        {title}
-      </span>
-      <FaChevronDown
-        className={`w-3 h-3 text-white transition-transform ${open ? "rotate-180" : ""}`}
-        aria-hidden="true"
-      />
-    </button>
-  );
-
-  // Sub-fila suave (acordeón interno) —> oscuro
-  const SubRow = ({ open, onToggle, title }) => (
-    <button
-      type="button"
-      onClick={onToggle}
-      className={`w-full flex items-center justify-between text-left px-3 py-2 rounded-md border
-        ${open ? "bg-neutral-800 border-neutral-700" : "bg-neutral-900 border-neutral-800"} `}
-    >
-      <span className="font-medium text-neutral-100">{title}</span>
-      <FaChevronDown
-        className={`w-3 h-3 text-hawkes-blue-300 transition-transform ${open ? "rotate-180" : ""}`}
-        aria-hidden="true"
-      />
-    </button>
-  );
-
-  const MCollapse = ({ open, children }) => (
-    <div className={`grid transition-all ${open ? "grid-rows-[1fr]" : "grid-rows-[0fr]"}`}>
-      <div className="overflow-hidden">
-        {/* scroll táctil dentro del bloque */}
-        <div className="mt-2 bg-neutral-900 text-neutral-100 rounded-md shadow border border-neutral-800 p-4 max-h-[60vh] overflow-y-auto">
           {children}
         </div>
       </div>
@@ -269,7 +226,7 @@ export default function Navbar() {
             onClick={() => setMenuOpen((v) => !v)}
             type="button"
             className="inline-flex items-center justify-center rounded-md p-2 md:hidden text-white hover:bg-white/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-hawkes-blue-300/70"
-            aria-controls="primary-menu"
+            aria-controls="mobile-drawer"
             aria-expanded={menuOpen}
             aria-label={menuOpen ? "Cerrar menú" : "Abrir menú"}
           >
@@ -278,7 +235,7 @@ export default function Navbar() {
             </svg>
           </button>
 
-          {/* Menú desktop */}
+          {/* Menú desktop (igual que tenías) */}
           <div className="hidden md:flex">
             <ul id="primary-menu" className="flex items-center gap-2 lg:gap-4 font-medium" role="menubar">
               {menuItems.map((item) => (
@@ -504,250 +461,227 @@ export default function Navbar() {
           </div>
         </div>
 
-        {/* MÓVIL: acordeones multi-open y sub-acordeones suaves */}
+        {/* ============= MÓVIL: DRAWER A PANTALLA COMPLETA ============= */}
+        {/* Backdrop */}
         <div
-          className={`md:hidden origin-top transition-all ${
-            menuOpen ? "max-h-[2400px] opacity-100" : "max-h-0 opacity-0"
-          } overflow-hidden`}
-          id="primary-menu"
+          className={`md:hidden fixed inset-0 z-[60] transition ${
+            menuOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
+          } bg-black/50`}
+          onClick={closeMobileMenu}
+          aria-hidden="true"
+        />
+
+        {/* Drawer */}
+        <aside
+          id="mobile-drawer"
+          className={`md:hidden fixed right-0 top-0 h-full w-[88%] max-w-sm z-[61] transform transition-transform duration-300
+            ${menuOpen ? "translate-x-0" : "translate-x-full"} bg-neutral-900 border-l border-neutral-800`}
+          role="dialog"
+          aria-modal="true"
+          aria-label="Menú de navegación"
         >
-          <ul className="flex flex-col gap-3 py-3" role="menu">
-            {/* PRINCIPAL */}
-            <li>
-              <MRow
-                title="Principal"
-                open={mobileSectionsOpen["Principal"]}
-                onToggle={() =>
-                  setMobileSectionsOpen((s) => ({ ...s, Principal: !s.Principal }))
-                }
-              />
-              <MCollapse open={mobileSectionsOpen["Principal"]}>
-                <div className="space-y-2">
-                  <SubRow
-                    title="¿Quiénes somos?"
-                    open={mobilePrincipalOpen.quienes}
-                    onToggle={() =>
-                      setMobilePrincipalOpen((s) => ({ ...s, quienes: !s.quienes }))
-                    }
-                  />
-                  <MCollapse open={mobilePrincipalOpen.quienes}>
-                    <h4 className="font-semibold mb-2">¿Quiénes somos?</h4>
-                    <p className="text-sm text-neutral-300 whitespace-pre-line">
-                      {menuPrincipalData.quienes.description}
-                    </p>
-                    <img
-                      src={menuPrincipalData.quienes.image}
-                      alt={menuPrincipalData.quienes.title}
-                      className="mt-3 w-full max-h-44 object-cover border border-neutral-800"
-                      loading="lazy"
-                    />
-                  </MCollapse>
-                </div>
-              </MCollapse>
-            </li>
-
-            {/* NOSOTROS */}
-            <li>
-              <MRow
-                title="Nosotros"
-                open={mobileSectionsOpen["Nosotros"]}
-                onToggle={() =>
-                  setMobileSectionsOpen((s) => ({ ...s, Nosotros: !s.Nosotros }))
-                }
-              />
-              <MCollapse open={mobileSectionsOpen["Nosotros"]}>
-                <div className="space-y-2">
-                  {/* Misión */}
-                  <SubRow
-                    title="Misión"
-                    open={mobileNosotrosOpen.mision}
-                    onToggle={() =>
-                      setMobileNosotrosOpen((s) => ({ ...s, mision: !s.mision }))
-                    }
-                  />
-                  <MCollapse open={mobileNosotrosOpen.mision}>
-                    <h4 className="font-semibold mb-2">{nosotrosData.mision.title}</h4>
-                    <p className="text-sm text-neutral-300">{nosotrosData.mision.description}</p>
-                    <ul className="mt-2 space-y-2">
-                      {nosotrosData.mision.details.map((d, i) => (
-                        <li key={i} className="flex items-start text-sm">
-                          <FaShieldAlt className="text-hawkes-blue-400 mt-0.5 mr-2" />
-                          <span className="text-neutral-200">{d}</span>
-                        </li>
-                      ))}
-                    </ul>
-                    <img
-                      src={nosotrosData.mision.image}
-                      alt="Misión"
-                      className="mt-3 w-full max-h-44 object-cover border border-neutral-800"
-                      loading="lazy"
-                    />
-                  </MCollapse>
-
-                  {/* Visión */}
-                  <SubRow
-                    title="Visión"
-                    open={mobileNosotrosOpen.vision}
-                    onToggle={() =>
-                      setMobileNosotrosOpen((s) => ({ ...s, vision: !s.vision }))
-                    }
-                  />
-                  <MCollapse open={mobileNosotrosOpen.vision}>
-                    <h4 className="font-semibold mb-2">{nosotrosData.vision.title}</h4>
-                    <p className="text-sm text-neutral-300">{nosotrosData.vision.description}</p>
-                    <ul className="mt-2 space-y-2">
-                      {nosotrosData.vision.details.map((d, i) => (
-                        <li key={i} className="flex items-start text-sm">
-                          <FaShieldAlt className="text-hawkes-blue-400 mt-0.5 mr-2" />
-                          <span className="text-neutral-200">{d}</span>
-                        </li>
-                      ))}
-                    </ul>
-                    <img
-                      src={nosotrosData.vision.image}
-                      alt="Visión"
-                      className="mt-3 w-full max-h-44 object-cover border border-neutral-800"
-                      loading="lazy"
-                    />
-                  </MCollapse>
-                </div>
-              </MCollapse>
-            </li>
-
-            {/* ACCEDER */}
-            <li>
-              <MRow
-                title="Acceder"
-                open={mobileSectionsOpen["Acceder"]}
-                onToggle={() =>
-                  setMobileSectionsOpen((s) => ({ ...s, Acceder: !s.Acceder }))
-                }
-              />
-              <MCollapse open={mobileSectionsOpen["Acceder"]}>
-                <div className="space-y-2">
-                  {Object.keys(accederData).map((key) => (
-                    <div key={key} className="space-y-2">
-                      <SubRow
-                        title={accederData[key].title}
-                        open={mobileAccederOpen[key]}
-                        onToggle={() =>
-                          setMobileAccederOpen((s) => ({ ...s, [key]: !s[key] }))
-                        }
-                      />
-                      <MCollapse open={mobileAccederOpen[key]}>
-                        <h4 className="font-semibold">{accederData[key].title}</h4>
-                        <p className="text-sm text-neutral-300">
-                          {accederData[key].description}
-                        </p>
-                        <ul className="mt-2 space-y-2">
-                          {accederData[key].details.map((d, i) => (
-                            <li key={i} className="flex items-start text-sm">
-                              <FaShieldAlt className="text-hawkes-blue-400 mt-0.5 mr-2" />
-                              <span className="text-neutral-200">{d}</span>
-                            </li>
-                          ))}
-                        </ul>
-                        <img
-                          src={accederData[key].image}
-                          alt={accederData[key].title}
-                          className="mt-3 w-full max-h-44 object-contain border border-neutral-800"
-                          loading="lazy"
-                        />
-                        <a
-                          href={accederData[key].buttonLink}
-                          className="mt-3 inline-flex items-center gap-2 px-4 py-2 bg-hawkes-blue-600 text-white rounded-md hover:bg-hawkes-blue-700 focus-visible:ring-2 focus-visible:ring-hawkes-blue-300"
-                        >
-                          {accederData[key].buttonText} <FaChevronRight aria-hidden="true" />
-                        </a>
-                      </MCollapse>
-                    </div>
-                  ))}
-                </div>
-              </MCollapse>
-            </li>
-
-            {/* PRODUCTOS */}
-            <li>
-              <MRow
-                title="Productos"
-                open={mobileSectionsOpen["Productos"]}
-                onToggle={() =>
-                  setMobileSectionsOpen((s) => ({ ...s, Productos: !s.Productos }))
-                }
-              />
-              <MCollapse open={mobileSectionsOpen["Productos"]}>
-                <h4 className="font-semibold">Productos</h4>
-                <p className="text-sm text-neutral-300">
-                  Esta parte está en configuración. Muy pronto podrás explorar nuestro catálogo de soluciones.
-                </p>
-                <ul className="mt-2 space-y-2 text-sm">
-                  <li className="flex items-start text-neutral-200">
-                    <FaShieldAlt className="text-hawkes-blue-400 mt-0.5 mr-2" /> Catálogo en preparación
-                  </li>
-                  <li className="flex items-start text-neutral-200">
-                    <FaShieldAlt className="text-hawkes-blue-400 mt-0.5 mr-2" /> Integraciones y precios
-                  </li>
-                  <li className="flex items-start text-neutral-200">
-                    <FaShieldAlt className="text-hawkes-blue-400 mt-0.5 mr-2" /> Demos y documentación
-                  </li>
-                </ul>
-                <img
-                  src={configuracionImg}
-                  alt="Sección en configuración"
-                  className="mt-3 w-full max-h-44 object-contain border border-neutral-800"
-                  loading="lazy"
+          {/* Header del drawer */}
+          <div className="flex items-center justify-between px-4 h-14 border-b border-neutral-800">
+            <div className="flex items-center gap-2">
+              <img src={logoBlanco} className="h-6 w-auto" alt="" />
+              <span className="text-white font-semibold">Menú</span>
+            </div>
+            <button
+              onClick={closeMobileMenu}
+              className="p-2 rounded-md text-neutral-200 hover:bg-white/10"
+              aria-label="Cerrar menú"
+            >
+              <svg className="w-5 h-5" viewBox="0 0 20 20" fill="currentColor">
+                <path
+                  fillRule="evenodd"
+                  d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                  clipRule="evenodd"
                 />
-                <div className="mt-3 inline-flex items-center justify-center w-full px-4 py-2 bg-neutral-800 text-neutral-300 border border-neutral-700 rounded-md cursor-not-allowed">
-                  Muy pronto
-                </div>
-              </MCollapse>
-            </li>
+              </svg>
+            </button>
+          </div>
 
-            {/* SOPORTE EN LÍNEA */}
-            <li>
-              <MRow
-                title="Soporte en línea"
-                open={mobileSectionsOpen["Soporte en línea"]}
-                onToggle={() =>
-                  setMobileSectionsOpen((s) => ({
-                    ...s,
-                    ["Soporte en línea"]: !s["Soporte en línea"],
-                  }))
-                }
-              />
-              <MCollapse open={mobileSectionsOpen["Soporte en línea"]}>
-                <h4 className="font-semibold">Centro de Ayuda</h4>
-                <p className="text-sm text-neutral-300">Guías, tutoriales y documentación.</p>
-                <h4 className="text-lg font-semibold mt-2">Soporte Técnico</h4>
-                <ul className="mt-1 space-y-1 text-sm text-neutral-300">
-                  <li>✔ Preguntas frecuentes</li>
-                  <li>✔ Tutoriales interactivos</li>
-                  <li>✔ Reportar incidencias</li>
-                </ul>
-                <div className="pt-2">
-                  <a
-                    href="https://wa.me/593999047935"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="block w-full text-center px-4 py-2 bg-green-600 text-white hover:bg-green-700 rounded-md"
-                    aria-label="Chatear por WhatsApp"
+          {/* Lista principal */}
+          <ul className="px-2 py-3 space-y-2 overflow-y-auto h-[calc(100%-3.5rem)]">
+            {menuItems.map((item) => {
+              const open = mobileActiveSection === item.name;
+              return (
+                <li key={item.name} className="rounded-lg bg-white/5">
+                  <button
+                    type="button"
+                    onClick={() => toggleDropdown(item.name)}
+                    className="w-full flex items-center justify-between text-left px-4 py-3"
+                    aria-expanded={open}
                   >
-                    WhatsApp
-                  </a>
-                  <a
-                    href="mailto:soporte@safetech-ec.com"
-                    className="mt-2 block w-full text-center px-4 py-2 bg-red-600 text-white hover:bg-red-700 rounded-md"
-                    aria-label="Enviar correo a soporte@safetech-ec.com"
-                  >
-                    <span className="inline-flex items-center gap-2 justify-center">
-                      <FaEnvelope aria-hidden="true" /> Gmail
+                    <span className={`font-medium ${open ? "text-white" : "text-neutral-200"}`}>
+                      {item.name}
                     </span>
-                  </a>
-                </div>
-              </MCollapse>
-            </li>
+                    <FaChevronDown
+                      className={`w-4 h-4 transition-transform ${open ? "rotate-180" : ""}`}
+                      aria-hidden="true"
+                    />
+                  </button>
+
+                  {/* Contenido de cada sección - RESUMIDO para móvil */}
+                  <div
+                    className={`grid transition-all ${open ? "grid-rows-[1fr]" : "grid-rows-[0fr]"}`}
+                  >
+                    <div className="overflow-hidden">
+                      <div className="px-4 pb-4 space-y-3">
+                        {/* PRINCIPAL */}
+                        {item.isMenuPrincipal && (
+                          <div>
+                            <button
+                              className="w-full text-left text-sm py-2 px-3 rounded-md bg-neutral-800 hover:bg-neutral-700"
+                              onClick={() =>
+                                setMobileSubKey((k) => (k === "quienes" ? null : "quienes"))
+                              }
+                              aria-expanded={mobileSubKey === "quienes"}
+                            >
+                              ¿Quiénes somos?
+                            </button>
+                            <div
+                              className={`grid transition-all ${mobileSubKey === "quienes" ? "grid-rows-[1fr] mt-2" : "grid-rows-[0fr]"}`}
+                            >
+                              <div className="overflow-hidden">
+                                <p className="text-sm text-neutral-300">
+                                  {menuPrincipalData.quienes.description.slice(0, 160)}…
+                                </p>
+                                <img
+                                  src={menuPrincipalData.quienes.image}
+                                  alt={menuPrincipalData.quienes.title}
+                                  className="mt-3 w-full max-h-40 object-cover border border-neutral-800"
+                                  loading="lazy"
+                                />
+                              </div>
+                            </div>
+                          </div>
+                        )}
+
+                        {/* NOSOTROS */}
+                        {item.isNosotros && (
+                          <div className="space-y-2">
+                            {[
+                              { key: "mision", data: nosotrosData.mision, label: "Misión" },
+                              { key: "vision", data: nosotrosData.vision, label: "Visión" },
+                            ].map(({ key, data, label }) => (
+                              <div key={key}>
+                                <button
+                                  className="w-full text-left text-sm py-2 px-3 rounded-md bg-neutral-800 hover:bg-neutral-700"
+                                  onClick={() =>
+                                    setMobileSubKey((k) => (k === key ? null : key))
+                                  }
+                                  aria-expanded={mobileSubKey === key}
+                                >
+                                  {label}
+                                </button>
+                                <div
+                                  className={`grid transition-all ${mobileSubKey === key ? "grid-rows-[1fr] mt-2" : "grid-rows-[0fr]"}`}
+                                >
+                                  <div className="overflow-hidden">
+                                    <p className="text-sm text-neutral-300">
+                                      {data.description}
+                                    </p>
+                                  </div>
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        )}
+
+                        {/* ACCEDER */}
+                        {item.isAcceder && (
+                          <div className="space-y-3">
+                            {Object.keys(accederData).map((key) => {
+                              const d = accederData[key];
+                              return (
+                                <div key={key} className="rounded-md border border-neutral-800 p-3">
+                                  <div className="flex items-center gap-3">
+                                    <img
+                                      src={d.image}
+                                      alt={d.title}
+                                      className="w-12 h-12 object-contain border border-neutral-800 bg-neutral-900"
+                                      loading="lazy"
+                                    />
+                                    <div className="min-w-0">
+                                      <p className="text-sm font-medium text-white">{d.title}</p>
+                                      <p className="text-xs text-neutral-300 line-clamp-2">
+                                        {d.description}
+                                      </p>
+                                    </div>
+                                  </div>
+                                  <a
+                                    href={d.buttonLink}
+                                    onClick={closeMobileMenu}
+                                    className="mt-3 inline-flex items-center gap-2 px-3 py-2 text-sm bg-hawkes-blue-600 text-white rounded-md hover:bg-hawkes-blue-700"
+                                  >
+                                    {d.buttonText} <FaChevronRight aria-hidden="true" />
+                                  </a>
+                                </div>
+                              );
+                            })}
+                          </div>
+                        )}
+
+                        {/* PRODUCTOS */}
+                        {item.isProductos && (
+                          <div className="space-y-2">
+                            <p className="text-sm text-neutral-300">
+                              {productosData.estado.description}
+                            </p>
+                            <ul className="text-sm space-y-1">
+                              {productosData.estado.details.map((d, i) => (
+                                <li key={i} className="flex items-start text-neutral-200">
+                                  <FaShieldAlt className="mt-0.5 mr-2" /> {d}
+                                </li>
+                              ))}
+                            </ul>
+                            <img
+                              src={productosData.estado.image}
+                              alt="Sección en configuración"
+                              className="mt-2 w-full max-h-40 object-contain border border-neutral-800"
+                              loading="lazy"
+                            />
+                            <div className="mt-2 inline-flex items-center justify-center w-full px-3 py-2 bg-neutral-800 text-neutral-300 border border-neutral-700 rounded-md cursor-not-allowed text-sm">
+                              Muy pronto
+                            </div>
+                          </div>
+                        )}
+
+                        {/* SOPORTE */}
+                        {item.isSoporte && (
+                          <div className="space-y-2">
+                            <p className="text-sm text-neutral-300">¿Necesitas ayuda?</p>
+                            <a
+                              href="https://wa.me/593999047935"
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              onClick={closeMobileMenu}
+                              className="block w-full text-center px-4 py-2 bg-green-600 text-white hover:bg-green-700 rounded-md text-sm"
+                              aria-label="Chatear por WhatsApp"
+                            >
+                              WhatsApp
+                            </a>
+                            <a
+                              href="mailto:soporte@safetech-ec.com"
+                              onClick={closeMobileMenu}
+                              className="block w-full text-center px-4 py-2 bg-red-600 text-white hover:bg-red-700 rounded-md text-sm"
+                              aria-label="Enviar correo a soporte@safetech-ec.com"
+                            >
+                              <span className="inline-flex items-center gap-2 justify-center">
+                                <FaEnvelope aria-hidden="true" /> Gmail
+                              </span>
+                            </a>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                </li>
+              );
+            })}
           </ul>
-        </div>
+        </aside>
       </div>
     </nav>
   );
