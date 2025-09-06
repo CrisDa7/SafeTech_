@@ -1,14 +1,64 @@
 // src/components/Hero.jsx
-import React from "react";
-import fondoBus from "../assets/bus.mp4"; // 👈 importa el video
+import React, { useEffect, useRef } from "react";
+import fondoBus from "../assets/bus.mp4"; // 👈 video
 
-/**
- * Hero de portada
- * - Usa la paleta hawkes-blue
- * - Video de fondo (fondoBus.mp4)
- */
 export default function Hero() {
-  // Clases base (evita repetición)
+  const videoRef = useRef(null);
+
+  useEffect(() => {
+    const v = videoRef.current;
+    if (!v) return;
+
+    // Asegurar atributos/props que permiten autoplay en móvil
+    v.muted = true;
+    v.defaultMuted = true;
+    v.playsInline = true;
+
+    // Forzar como ATRIBUTOS (iOS es quisquilloso)
+    v.setAttribute("muted", "");
+    v.setAttribute("autoplay", "");
+    v.setAttribute("playsinline", "");
+    v.setAttribute("webkit-playsinline", "true");
+
+    const tryPlay = () => {
+      v.play().catch(() => {
+        /* bloqueado por políticas; se intentará en gesto */
+      });
+    };
+
+    const onCanPlay = () => tryPlay();
+    const onLoaded = () => tryPlay();
+    const onVisibility = () => {
+      if (!document.hidden) tryPlay();
+    };
+
+    const unlockOnGesture = () => {
+      tryPlay();
+      window.removeEventListener("touchstart", unlockOnGesture);
+      window.removeEventListener("click", unlockOnGesture);
+    };
+
+    v.addEventListener("canplay", onCanPlay);
+    v.addEventListener("loadeddata", onLoaded);
+    document.addEventListener("visibilitychange", onVisibility);
+
+    // Si aún así lo bloquea, el primer toque/click dispara play()
+    window.addEventListener("touchstart", unlockOnGesture, { once: true, passive: true });
+    window.addEventListener("click", unlockOnGesture, { once: true });
+
+    // Primer intento inmediato
+    tryPlay();
+
+    return () => {
+      v.removeEventListener("canplay", onCanPlay);
+      v.removeEventListener("loadeddata", onLoaded);
+      document.removeEventListener("visibilitychange", onVisibility);
+      window.removeEventListener("touchstart", unlockOnGesture);
+      window.removeEventListener("click", unlockOnGesture);
+    };
+  }, []);
+
+  // Clases de botones (sin cambios)
   const BTN_BASE =
     "inline-flex items-center justify-center px-5 py-3 text-base font-medium focus:outline-none transition";
   const BTN_PRIMARY =
@@ -26,21 +76,34 @@ export default function Hero() {
     >
       {/* 🎥 Video de fondo */}
       <video
-        className="absolute inset-0 w-full h-full object-cover"
+        ref={videoRef}
+        className="hero-video absolute inset-0 w-full h-full object-cover pointer-events-none"
         src={fondoBus}
         autoPlay
         loop
         muted
         playsInline
+        preload="auto"
+        controls={false}
+        controlsList="nodownload noplaybackrate nofullscreen"
+        disablePictureInPicture
       />
 
+      {/* Ocultar botón grande de reproducir en iOS */}
+      <style jsx>{`
+        .hero-video::-webkit-media-controls-start-playback-button {
+          display: none !important;
+        }
+        .hero-video::-webkit-media-controls {
+          display: none !important;
+        }
+      `}</style>
+
       {/* Overlay súper oscuro */}
+      <div aria-hidden="true" className="pointer-events-none absolute inset-0 bg-black/85" />
+      {/* Gradiente sutil */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-0 bg-black/85"
-      />
-      {/* Gradiente sutil pero más oscuro */}
-      <div
         className="pointer-events-none absolute inset-0 bg-gradient-to-b from-black/60 via-transparent to-black/60"
       />
 
@@ -60,7 +123,6 @@ export default function Hero() {
 
         {/* CTAs */}
         <div className="flex flex-col gap-4 sm:flex-row sm:justify-center">
-          {/* Scroll a Nosotros */}
           <a
             href="#nosotros"
             className={BTN_PRIMARY}
@@ -84,7 +146,6 @@ export default function Hero() {
             </svg>
           </a>
 
-          {/* Scroll a Servicios */}
           <a
             href="#servicios"
             className={BTN_OUTLINE}

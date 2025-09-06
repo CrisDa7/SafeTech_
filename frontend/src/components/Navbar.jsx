@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import { createPortal } from "react-dom";
 import { FaChevronDown, FaChevronRight, FaShieldAlt, FaEnvelope } from "react-icons/fa";
 
 // Imágenes (sin cambiar rutas)
@@ -270,9 +271,7 @@ export default function Navbar() {
                           <button
                             onMouseEnter={() => setMenuPrincipalActive("quienes")}
                             onFocus={() => setMenuPrincipalActive("quienes")}
-                            className={`${TAB_BASE} ${
-                              menuPrincipalActive === "quienes" ? TAB_ACTIVE : TAB_HOVER
-                            }`}
+                            className={`${TAB_BASE} ${menuPrincipalActive === "quienes" ? TAB_ACTIVE : TAB_HOVER}`}
                           >
                             <span className={`${menuPrincipalActive === "quienes" ? "text-white" : "text-neutral-200"} font-medium`}>
                               ¿Quiénes somos?
@@ -454,214 +453,220 @@ export default function Navbar() {
             </ul>
           </div>
         </div>
+      </div>
 
-        {/* ============= MÓVIL: DRAWER A PANTALLA COMPLETA ============= */}
-        {/* Backdrop */}
-        <div
-          className={`md:hidden fixed inset-0 z-[60] transition ${
-            menuOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
-          } bg-black/50`}
-          onClick={closeMobileMenu}
-          aria-hidden="true"
-        />
-
-        {/* Drawer */}
-        <aside
-          id="mobile-drawer"
-          className={`md:hidden fixed right-0 top-0 h-full w-[88%] max-w-sm z-[61] transform transition-transform duration-300
-            ${menuOpen ? "translate-x-0" : "translate-x-full"} bg-slate-950 border-l border-white/10`}
-          role="dialog"
-          aria-modal="true"
-          aria-label="Menú de SafeTech"
-        >
-          {/* Header del drawer */}
-          <div className="flex items-center justify-between px-4 h-14 border-b border-white/10">
-            <div className="flex items-center gap-2">
-              <img src={logoBlanco} className="h-6 w-auto" alt="SafeTech" />
-              <span className="text-white font-semibold">SafeTech</span>
-            </div>
-            <button
+      {/* =================== MÓVIL: DRAWER EN PORTAL =================== */}
+      {menuOpen &&
+        typeof document !== "undefined" &&
+        createPortal(
+          <>
+            {/* Backdrop global */}
+            <div
+              className={`fixed inset-0 z-[1000] transition ${
+                menuOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
+              } bg-black/50 md:hidden`}
               onClick={closeMobileMenu}
-              className="p-2 rounded-md text-neutral-200 hover:bg-white/10"
-              aria-label="Cerrar menú"
+              aria-hidden="true"
+            />
+            {/* Drawer global */}
+            <aside
+              id="mobile-drawer"
+              className={`md:hidden fixed right-0 top-0 h-full w-[88%] max-w-sm z-[1001] transform transition-transform duration-300
+                ${menuOpen ? "translate-x-0" : "translate-x-full"} bg-slate-950 border-l border-white/10`}
+              role="dialog"
+              aria-modal="true"
+              aria-label="Menú de SafeTech"
             >
-              <svg className="w-5 h-5" viewBox="0 0 20 20" fill="currentColor">
-                <path
-                  fillRule="evenodd"
-                  d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                  clipRule="evenodd"
-                />
-              </svg>
-            </button>
-          </div>
-
-          {/* Lista principal (móvil) */}
-          <ul className="px-2 py-3 space-y-2 overflow-y-auto h-[calc(100%-3.5rem)]">
-            {menuItems.map((item) => {
-              const open = mobileActiveSection === item.name;
-              return (
-                <li key={item.name} className="rounded-lg bg-white/10">
-                  <button
-                    type="button"
-                    onClick={() => setMobileActiveSection(open ? null : item.name)}
-                    className="w-full flex items-center justify-between text-left px-4 py-3"
-                    aria-expanded={open}
-                  >
-                    <span className={`font-medium ${open ? "text-white" : "text-neutral-100"}`}>
-                      {item.name}
-                    </span>
-                    <FaChevronDown
-                      className={`w-4 h-4 transition-transform ${open ? "rotate-180" : ""} text-white`}
-                      aria-hidden="true"
+              {/* Header del drawer */}
+              <div className="flex items-center justify-between px-4 h-14 border-b border-white/10">
+                <div className="flex items-center gap-2">
+                  <img src={logoBlanco} className="h-6 w-auto" alt="SafeTech" />
+                  <span className="text-white font-semibold">SafeTech</span>
+                </div>
+                <button
+                  onClick={closeMobileMenu}
+                  className="p-2 rounded-md text-neutral-200 hover:bg-white/10"
+                  aria-label="Cerrar menú"
+                >
+                  <svg className="w-5 h-5" viewBox="0 0 20 20" fill="currentColor">
+                    <path
+                      fillRule="evenodd"
+                      d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                      clipRule="evenodd"
                     />
-                  </button>
+                  </svg>
+                </button>
+              </div>
 
-                  <div className={`grid transition-all ${open ? "grid-rows-[1fr]" : "grid-rows-[0fr]"}`}>
-                    <div className="overflow-hidden">
-                      <div className="px-4 pb-4 space-y-3">
-                        {/* PRINCIPAL */}
-                        {item.isMenuPrincipal && (
-                          <div>
-                            <button
-                              className="w-full text-left text-sm py-2 px-3 rounded-md bg-white/10 hover:bg-white/15 border border-white/10 text-white"
-                              onClick={() => setMobileSubKey((k) => (k === "quienes" ? null : "quienes"))}
-                              aria-expanded={mobileSubKey === "quienes"}
-                            >
-                              ¿Quiénes somos?
-                            </button>
-                            <div className={`grid transition-all ${mobileSubKey === "quienes" ? "grid-rows-[1fr] mt-2" : "grid-rows-[0fr]"}`}>
-                              <div className="overflow-hidden">
-                                <p className="text-sm text-neutral-200">
-                                  {menuPrincipalData.quienes.description.slice(0, 160)}…
-                                </p>
-                                <img
-                                  src={menuPrincipalData.quienes.image}
-                                  alt={menuPrincipalData.quienes.title}
-                                  className="mt-3 w-full max-h-40 object-cover border border-white/10"
-                                  loading="lazy"
-                                />
-                              </div>
-                            </div>
-                          </div>
-                        )}
+              {/* Lista principal (móvil) */}
+              <ul className="px-2 py-3 space-y-2 overflow-y-auto h-[calc(100%-3.5rem)]">
+                {menuItems.map((item) => {
+                  const open = mobileActiveSection === item.name;
+                  return (
+                    <li key={item.name} className="rounded-lg bg-white/10">
+                      <button
+                        type="button"
+                        onClick={() => setMobileActiveSection(open ? null : item.name)}
+                        className="w-full flex items-center justify-between text-left px-4 py-3"
+                        aria-expanded={open}
+                      >
+                        <span className={`font-medium ${open ? "text-white" : "text-neutral-100"}`}>
+                          {item.name}
+                        </span>
+                        <FaChevronDown
+                          className={`w-4 h-4 transition-transform ${open ? "rotate-180" : ""} text-white`}
+                          aria-hidden="true"
+                        />
+                      </button>
 
-                        {/* NOSOTROS */}
-                        {item.isNosotros && (
-                          <div className="space-y-2">
-                            {[
-                              { key: "mision", data: nosotrosData.mision, label: "Misión" },
-                              { key: "vision", data: nosotrosData.vision, label: "Visión" },
-                            ].map(({ key, data, label }) => (
-                              <div key={key}>
+                      <div className={`grid transition-all ${open ? "grid-rows-[1fr]" : "grid-rows-[0fr]"}`}>
+                        <div className="overflow-hidden">
+                          <div className="px-4 pb-4 space-y-3">
+                            {/* PRINCIPAL */}
+                            {item.isMenuPrincipal && (
+                              <div>
                                 <button
                                   className="w-full text-left text-sm py-2 px-3 rounded-md bg-white/10 hover:bg-white/15 border border-white/10 text-white"
-                                  onClick={() => setMobileSubKey((k) => (k === key ? null : key))}
-                                  aria-expanded={mobileSubKey === key}
+                                  onClick={() => setMobileSubKey((k) => (k === "quienes" ? null : "quienes"))}
+                                  aria-expanded={mobileSubKey === "quienes"}
                                 >
-                                  {label}
+                                  ¿Quiénes somos?
                                 </button>
-                                <div className={`grid transition-all ${mobileSubKey === key ? "grid-rows-[1fr] mt-2" : "grid-rows-[0fr]"}`}>
+                                <div className={`grid transition-all ${mobileSubKey === "quienes" ? "grid-rows-[1fr] mt-2" : "grid-rows-[0fr]"}`}>
                                   <div className="overflow-hidden">
-                                    <p className="text-sm text-neutral-200">{data.description}</p>
+                                    <p className="text-sm text-neutral-200">
+                                      {menuPrincipalData.quienes.description.slice(0, 160)}…
+                                    </p>
+                                    <img
+                                      src={menuPrincipalData.quienes.image}
+                                      alt={menuPrincipalData.quienes.title}
+                                      className="mt-3 w-full max-h-40 object-cover border border-white/10"
+                                      loading="lazy"
+                                    />
                                   </div>
                                 </div>
                               </div>
-                            ))}
-                          </div>
-                        )}
+                            )}
 
-                        {/* ACCEDER */}
-                        {item.isAcceder && (
-                          <div className="space-y-3">
-                            {Object.keys(accederData).map((key) => {
-                              const d = accederData[key];
-                              return (
-                                <div key={key} className="rounded-md border border-white/10 p-3">
-                                  <div className="flex items-center gap-3">
-                                    <img
-                                      src={d.image}
-                                      alt={d.title}
-                                      className="w-12 h-12 object-contain border border-white/10 bg-neutral-900"
-                                      loading="lazy"
-                                    />
-                                    <div className="min-w-0">
-                                      <p className="text-sm font-medium text-white">{d.title}</p>
-                                      <p className="text-xs text-neutral-200 line-clamp-2">
-                                        {d.description}
-                                      </p>
+                            {/* NOSOTROS */}
+                            {item.isNosotros && (
+                              <div className="space-y-2">
+                                {[
+                                  { key: "mision", data: nosotrosData.mision, label: "Misión" },
+                                  { key: "vision", data: nosotrosData.vision, label: "Visión" },
+                                ].map(({ key, data, label }) => (
+                                  <div key={key}>
+                                    <button
+                                      className="w-full text-left text-sm py-2 px-3 rounded-md bg-white/10 hover:bg-white/15 border border-white/10 text-white"
+                                      onClick={() => setMobileSubKey((k) => (k === key ? null : key))}
+                                      aria-expanded={mobileSubKey === key}
+                                    >
+                                      {label}
+                                    </button>
+                                    <div className={`grid transition-all ${mobileSubKey === key ? "grid-rows-[1fr] mt-2" : "grid-rows-[0fr]"}`}>
+                                      <div className="overflow-hidden">
+                                        <p className="text-sm text-neutral-200">{data.description}</p>
+                                      </div>
                                     </div>
                                   </div>
-                                  <a
-                                    href={d.buttonLink}
-                                    onClick={closeMobileMenu}
-                                    className="mt-3 inline-flex items-center gap-2 px-3 py-2 text-sm bg-hawkes-blue-600 text-white rounded-md hover:bg-hawkes-blue-700"
-                                  >
-                                    {d.buttonText} <FaChevronRight aria-hidden="true" />
-                                  </a>
+                                ))}
+                              </div>
+                            )}
+
+                            {/* ACCEDER */}
+                            {item.isAcceder && (
+                              <div className="space-y-3">
+                                {Object.keys(accederData).map((key) => {
+                                  const d = accederData[key];
+                                  return (
+                                    <div key={key} className="rounded-md border border-white/10 p-3">
+                                      <div className="flex items-center gap-3">
+                                        <img
+                                          src={d.image}
+                                          alt={d.title}
+                                          className="w-12 h-12 object-contain border border-white/10 bg-neutral-900"
+                                          loading="lazy"
+                                        />
+                                        <div className="min-w-0">
+                                          <p className="text-sm font-medium text-white">{d.title}</p>
+                                          <p className="text-xs text-neutral-200 line-clamp-2">
+                                            {d.description}
+                                          </p>
+                                        </div>
+                                      </div>
+                                      <a
+                                        href={d.buttonLink}
+                                        onClick={closeMobileMenu}
+                                        className="mt-3 inline-flex items-center gap-2 px-3 py-2 text-sm bg-hawkes-blue-600 text-white rounded-md hover:bg-hawkes-blue-700"
+                                      >
+                                        {d.buttonText} <FaChevronRight aria-hidden="true" />
+                                      </a>
+                                    </div>
+                                  );
+                                })}
+                              </div>
+                            )}
+
+                            {/* PRODUCTOS */}
+                            {item.isProductos && (
+                              <div className="space-y-2">
+                                <p className="text-sm text-neutral-200">{productosData.estado.description}</p>
+                                <ul className="text-sm space-y-1">
+                                  {productosData.estado.details.map((d, i) => (
+                                    <li key={i} className="flex items-start text-neutral-100">
+                                      <FaShieldAlt className="mt-0.5 mr-2 text-hawkes-blue-300" /> {d}
+                                    </li>
+                                  ))}
+                                </ul>
+                                <img
+                                  src={productosData.estado.image}
+                                  alt="Sección en configuración"
+                                  className="mt-2 w-full max-h-40 object-contain border border-white/10"
+                                  loading="lazy"
+                                />
+                                <div className="mt-2 inline-flex items-center justify-center w-full px-3 py-2 bg-white/10 text-neutral-100 border border-white/10 rounded-md cursor-not-allowed text-sm">
+                                  Muy pronto
                                 </div>
-                              );
-                            })}
-                          </div>
-                        )}
+                              </div>
+                            )}
 
-                        {/* PRODUCTOS */}
-                        {item.isProductos && (
-                          <div className="space-y-2">
-                            <p className="text-sm text-neutral-200">{productosData.estado.description}</p>
-                            <ul className="text-sm space-y-1">
-                              {productosData.estado.details.map((d, i) => (
-                                <li key={i} className="flex items-start text-neutral-100">
-                                  <FaShieldAlt className="mt-0.5 mr-2 text-hawkes-blue-300" /> {d}
-                                </li>
-                              ))}
-                            </ul>
-                            <img
-                              src={productosData.estado.image}
-                              alt="Sección en configuración"
-                              className="mt-2 w-full max-h-40 object-contain border border-white/10"
-                              loading="lazy"
-                            />
-                            <div className="mt-2 inline-flex items-center justify-center w-full px-3 py-2 bg-white/10 text-neutral-100 border border-white/10 rounded-md cursor-not-allowed text-sm">
-                              Muy pronto
-                            </div>
+                            {/* SOPORTE */}
+                            {item.isSoporte && (
+                              <div className="space-y-2">
+                                <p className="text-sm text-neutral-200">¿Necesitas ayuda?</p>
+                                <a
+                                  href="https://wa.me/593999047935"
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  onClick={closeMobileMenu}
+                                  className="block w-full text-center px-4 py-2 bg-green-600 text-white hover:bg-green-700 rounded-md text-sm"
+                                  aria-label="Chatear por WhatsApp"
+                                >
+                                  WhatsApp
+                                </a>
+                                <a
+                                  href="mailto:soporte@safetech-ec.com"
+                                  onClick={closeMobileMenu}
+                                  className="block w-full text-center px-4 py-2 bg-red-600 text-white hover:bg-red-700 rounded-md text-sm"
+                                  aria-label="Enviar correo a soporte@safetech-ec.com"
+                                >
+                                  <span className="inline-flex items-center gap-2 justify-center">
+                                    <FaEnvelope aria-hidden="true" /> Gmail
+                                  </span>
+                                </a>
+                              </div>
+                            )}
                           </div>
-                        )}
-
-                        {/* SOPORTE */}
-                        {item.isSoporte && (
-                          <div className="space-y-2">
-                            <p className="text-sm text-neutral-200">¿Necesitas ayuda?</p>
-                            <a
-                              href="https://wa.me/593999047935"
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              onClick={closeMobileMenu}
-                              className="block w-full text-center px-4 py-2 bg-green-600 text-white hover:bg-green-700 rounded-md text-sm"
-                              aria-label="Chatear por WhatsApp"
-                            >
-                              WhatsApp
-                            </a>
-                            <a
-                              href="mailto:soporte@safetech-ec.com"
-                              onClick={closeMobileMenu}
-                              className="block w-full text-center px-4 py-2 bg-red-600 text-white hover:bg-red-700 rounded-md text-sm"
-                              aria-label="Enviar correo a soporte@safetech-ec.com"
-                            >
-                              <span className="inline-flex items-center gap-2 justify-center">
-                                <FaEnvelope aria-hidden="true" /> Gmail
-                              </span>
-                            </a>
-                          </div>
-                        )}
+                        </div>
                       </div>
-                    </div>
-                  </div>
-                </li>
-              );
-            })}
-          </ul>
-        </aside>
-      </div>
+                    </li>
+                  );
+                })}
+              </ul>
+            </aside>
+          </>,
+          document.body
+        )}
     </nav>
   );
 }

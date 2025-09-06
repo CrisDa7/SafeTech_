@@ -50,20 +50,17 @@ export default function WhatsFloatingButton() {
       {/* Overlay + Modal */}
       {isModalOpen && (
         <div
-          className={
-            // móvil: centrado con flex; md+: como antes
-            "fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4 md:block"
-          }
+          className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4 md:block"
           aria-label="Fondo de diálogo de WhatsApp"
         >
           <div
             ref={modalRef}
             className={
-              // Móvil: centrado, ancho fluido y scroll interno si hace falta
-              "bg-white rounded-2xl shadow-2xl w-[92vw] max-w-sm max-h-[80vh] overflow-y-auto " +
+              // Móvil: centrado, bordes redondeados y CLIPPING para que el header no “cuadre” las esquinas
+              "bg-white rounded-2xl shadow-2xl w-[92vw] max-w-sm overflow-hidden " +
               "animate-[popIn_.3s_ease-out_forwards] " +
-              // Desktop (md+): vuelve a ser fixed al costado con tamaño original
-              "md:rounded-xl md:fixed md:right-[100px] md:bottom-[85px] md:w-80 md:max-h-none md:overflow-visible"
+              // Desktop (md+): como antes (anclado a la derecha)
+              "md:rounded-xl md:fixed md:right-[100px] md:bottom-[85px] md:w-80"
             }
           >
             {/* Flechita solo en desktop */}
@@ -89,57 +86,60 @@ export default function WhatsFloatingButton() {
               </button>
             </div>
 
-            {/* Contenido */}
-            <div className="p-4">
-              <div className="flex items-center mb-4">
-                <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center mr-3">
-                  <FaHeadset className="w-5 h-5 text-[#25D366]" />
+            {/* Wrapper con scroll en móvil para mantener overflow-hidden en el card */}
+            <div className="max-h-[70vh] overflow-y-auto md:max-h-none md:overflow-visible">
+              {/* Contenido */}
+              <div className="p-4">
+                <div className="flex items-center mb-4">
+                  <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center mr-3">
+                    <FaHeadset className="w-5 h-5 text-[#25D366]" />
+                  </div>
+                  <div>
+                    <h3 className="text-sm font-semibold text-gray-800">Soporte SafeTech</h3>
+                    <p className="text-xs text-gray-600">Respuesta rápida garantizada</p>
+                  </div>
                 </div>
-                <div>
-                  <h3 className="text-sm font-semibold text-gray-800">Soporte SafeTech</h3>
-                  <p className="text-xs text-gray-600">Respuesta rápida garantizada</p>
+
+                <div className="bg-gray-50 rounded-lg p-3 mb-4">
+                  <div className="flex items-center mb-2">
+                    <FaClock className="w-4 h-4 text-gray-500 mr-2" />
+                    <span className="text-sm font-medium text-gray-700">Horario de atención</span>
+                  </div>
+                  <p className="text-xs text-gray-600">Lunes a Viernes: 8:00 - 18:00</p>
+                  <p className="text-xs text-gray-600">Sábados: 9:00 - 13:00</p>
                 </div>
+
+                <p className="text-sm text-gray-700 mb-4 text-center">
+                  ¿Tienes preguntas sobre nuestros servicios? Estamos aquí para ayudarte por WhatsApp o correo.
+                </p>
+
+                <a
+                  href={`https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="flex items-center justify-center bg-[#25D366] hover:bg-[#1ebe57] text-white py-3 px-4 rounded-lg font-semibold transition-colors duration-200 text-sm"
+                  onClick={() => setIsModalOpen(false)}
+                  aria-label="Iniciar conversación por WhatsApp"
+                >
+                  <FaWhatsapp className="w-5 h-5 mr-2" />
+                  Iniciar conversación
+                </a>
               </div>
 
-              <div className="bg-gray-50 rounded-lg p-3 mb-4">
-                <div className="flex items-center mb-2">
-                  <FaClock className="w-4 h-4 text-gray-500 mr-2" />
-                  <span className="text-sm font-medium text-gray-700">Horario de atención</span>
-                </div>
-                <p className="text-xs text-gray-600">Lunes a Viernes: 8:00 - 18:00</p>
-                <p className="text-xs text-gray-600">Sábados: 9:00 - 13:00</p>
+              {/* Footer */}
+              <div className="bg-gray-100 p-3 text-center">
+                <p className="text-xs text-gray-500">
+                  Tel:{" "}
+                  <a href={`tel:${phoneDisplay}`} className="text-[#25D366] font-medium">
+                    {phoneDisplay}
+                  </a>
+                  <br />
+                  Email:{" "}
+                  <a href={`mailto:${emailSoporte}`} className="text-[#25D366] font-medium">
+                    {emailSoporte}
+                  </a>
+                </p>
               </div>
-
-              <p className="text-sm text-gray-700 mb-4 text-center">
-                ¿Tienes preguntas sobre nuestros servicios? Estamos aquí para ayudarte por WhatsApp o correo.
-              </p>
-
-              <a
-                href={`https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`}
-                target="_blank"
-                rel="noreferrer"
-                className="flex items-center justify-center bg-[#25D366] hover:bg-[#1ebe57] text-white py-3 px-4 rounded-lg font-semibold transition-colors duration-200 text-sm"
-                onClick={() => setIsModalOpen(false)}
-                aria-label="Iniciar conversación por WhatsApp"
-              >
-                <FaWhatsapp className="w-5 h-5 mr-2" />
-                Iniciar conversación
-              </a>
-            </div>
-
-            {/* Footer */}
-            <div className="bg-gray-100 p-3 text-center">
-              <p className="text-xs text-gray-500">
-                Tel:{" "}
-                <a href={`tel:${phoneDisplay}`} className="text-[#25D366] font-medium">
-                  {phoneDisplay}
-                </a>
-                <br />
-                Email:{" "}
-                <a href={`mailto:${emailSoporte}`} className="text-[#25D366] font-medium">
-                  {emailSoporte}
-                </a>
-              </p>
             </div>
           </div>
 
