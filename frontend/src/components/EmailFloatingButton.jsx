@@ -8,7 +8,9 @@ import {
 } from "react-icons/md";
 
 /**
- * Modal de Email alineado al lado derecho (como WhatsApp).
+ * Modal de Email:
+ * - Móvil: centrado en pantalla
+ * - Desktop (md+): flotante a la derecha (como WhatsApp)
  */
 export default function ProfessionalEmailFloatingButton() {
   const [openPopover, setOpenPopover] = useState(false);
@@ -42,7 +44,7 @@ export default function ProfessionalEmailFloatingButton() {
           onClick={() => setOpenPopover(true)}
           className="flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-r from-hawkes-blue-600 to-hawkes-blue-500 shadow-lg transition-transform duration-300 hover:scale-110 hover:from-hawkes-blue-700 hover:to-hawkes-blue-600"
           style={{
-            boxShadow: "0 4px 20px rgba(85, 88, 214, 0.5)", // hawkes-blue-600
+            boxShadow: "0 4px 20px rgba(85, 88, 214, 0.5)",
             animation: "pulse-email 2s infinite",
           }}
           aria-label="Contactar por correo"
@@ -50,11 +52,10 @@ export default function ProfessionalEmailFloatingButton() {
           <MdEmail className="h-7 w-7 text-white" aria-hidden="true" />
         </button>
 
-        {/* animación suave del FAB */}
         <style jsx>{`
           @keyframes pulse-email {
             0% {
-              box-shadow: 0 0 0 0 rgba(85, 88, 214, 0.7); /* hawkes-blue-600 */
+              box-shadow: 0 0 0 0 rgba(85, 88, 214, 0.7);
             }
             70% {
               box-shadow: 0 0 0 10px rgba(85, 88, 214, 0);
@@ -69,21 +70,24 @@ export default function ProfessionalEmailFloatingButton() {
       {/* Overlay + Modal */}
       {openPopover && (
         <div
-          className="fixed inset-0 z-50 bg-black/50"
+          className={
+            // móvil: centrado; md+: como antes
+            "fixed inset-0 z-50 bg-black/50 " +
+            "flex items-center justify-center md:block"
+          }
           aria-label="Fondo de diálogo de contacto por correo"
         >
           <div
             ref={popoverRef}
-            className="
-              fixed
-              right-[100px] bottom-[170px]
-              md:right-[100px] md:bottom-[170px]
-              sm:right-8 sm:bottom-28
-              bg-white shadow-2xl w-80 overflow-hidden rounded-xl
-              animate-[popIn_.3s_ease-out_forwards]
-            "
+            className={
+              // móvil: centrado y responsivo
+              "bg-white shadow-2xl w-[92vw] max-w-sm overflow-hidden rounded-2xl " +
+              "animate-[popIn_.3s_ease-out_forwards] " +
+              // md+: flotante a la derecha como antes
+              "md:rounded-xl md:fixed md:right-[100px] md:bottom-[170px] md:w-80"
+            }
           >
-            {/* Flechita (desktop) */}
+            {/* Flechita solo en desktop */}
             <div className="pointer-events-none absolute -right-3 top-1/2 hidden h-6 w-6 -translate-y-1/2 rotate-45 bg-white md:block" />
 
             {/* Header */}
@@ -127,7 +131,7 @@ export default function ProfessionalEmailFloatingButton() {
                   </span>
                   <button
                     onClick={copyToClipboard}
-                    className="ml-2 text-hawkes-blue-600 transition-colors hover:text-hawkes-blue-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-hawkes-blue-300/70 rounded"
+                    className="ml-2 rounded text-hawkes-blue-600 transition-colors hover:text-hawkes-blue-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-hawkes-blue-300/70"
                     aria-label="Copiar correo"
                     title="Copiar correo"
                   >
@@ -186,8 +190,8 @@ export default function ProfessionalEmailFloatingButton() {
           {/* animación del modal */}
           <style jsx>{`
             @keyframes popIn {
-              0% { opacity: 0; transform: scale(0.9) translateX(20px); }
-              100% { opacity: 1; transform: scale(1) translateX(0); }
+              0% { opacity: 0; transform: scale(0.92) translateY(8px); }
+              100% { opacity: 1; transform: scale(1) translateY(0); }
             }
           `}</style>
         </div>

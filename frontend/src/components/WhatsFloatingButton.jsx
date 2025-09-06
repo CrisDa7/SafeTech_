@@ -31,8 +31,9 @@ export default function WhatsFloatingButton() {
           className="flex items-center justify-center w-16 h-16 rounded-full bg-[#25D366] hover:bg-[#1ebe57] shadow-lg transition-all duration-300 transform hover:scale-110 group"
           style={{
             boxShadow: "0 4px 20px rgba(37, 211, 102, 0.5)",
-            animation: "pulse 2s infinite"
+            animation: "pulse 2s infinite",
           }}
+          aria-label="Abrir chat de WhatsApp"
         >
           <FaWhatsapp className="w-8 h-8 text-white" />
         </button>
@@ -46,20 +47,27 @@ export default function WhatsFloatingButton() {
         `}</style>
       </div>
 
-      {/* Modal */}
+      {/* Overlay + Modal */}
       {isModalOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+        <div
+          className={
+            // móvil: centrado con flex; md+: como antes
+            "fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4 md:block"
+          }
+          aria-label="Fondo de diálogo de WhatsApp"
+        >
           <div
             ref={modalRef}
-            className="bg-white rounded-xl shadow-2xl w-80 overflow-hidden relative animate-pop-in"
-            style={{
-              animation: "popIn 0.3s ease-out forwards",
-              position: "fixed",
-              right: "100px",
-              bottom: "85px"
-            }}
+            className={
+              // Móvil: centrado, ancho fluido y scroll interno si hace falta
+              "bg-white rounded-2xl shadow-2xl w-[92vw] max-w-sm max-h-[80vh] overflow-y-auto " +
+              "animate-[popIn_.3s_ease-out_forwards] " +
+              // Desktop (md+): vuelve a ser fixed al costado con tamaño original
+              "md:rounded-xl md:fixed md:right-[100px] md:bottom-[85px] md:w-80 md:max-h-none md:overflow-visible"
+            }
           >
-            <div className="absolute -right-3 top-1/2 transform -translate-y-1/2 w-6 h-6 rotate-45 bg-white"></div>
+            {/* Flechita solo en desktop */}
+            <div className="pointer-events-none absolute -right-3 top-1/2 hidden h-6 w-6 -translate-y-1/2 rotate-45 bg-white md:block" />
 
             {/* Header */}
             <div className="bg-[#25D366] p-4 flex justify-between items-center">
@@ -75,6 +83,7 @@ export default function WhatsFloatingButton() {
               <button
                 onClick={() => setIsModalOpen(false)}
                 className="text-white hover:text-green-200 transition-colors duration-200"
+                aria-label="Cerrar panel de WhatsApp"
               >
                 <FaTimes className="w-4 h-4" />
               </button>
@@ -111,6 +120,7 @@ export default function WhatsFloatingButton() {
                 rel="noreferrer"
                 className="flex items-center justify-center bg-[#25D366] hover:bg-[#1ebe57] text-white py-3 px-4 rounded-lg font-semibold transition-colors duration-200 text-sm"
                 onClick={() => setIsModalOpen(false)}
+                aria-label="Iniciar conversación por WhatsApp"
               >
                 <FaWhatsapp className="w-5 h-5 mr-2" />
                 Iniciar conversación
@@ -120,26 +130,24 @@ export default function WhatsFloatingButton() {
             {/* Footer */}
             <div className="bg-gray-100 p-3 text-center">
               <p className="text-xs text-gray-500">
-                Tel: <a href={`tel:${phoneDisplay}`} className="text-[#25D366] font-medium">{phoneDisplay}</a><br />
-                Email: <a href={`mailto:${emailSoporte}`} className="text-[#25D366] font-medium">{emailSoporte}</a>
+                Tel:{" "}
+                <a href={`tel:${phoneDisplay}`} className="text-[#25D366] font-medium">
+                  {phoneDisplay}
+                </a>
+                <br />
+                Email:{" "}
+                <a href={`mailto:${emailSoporte}`} className="text-[#25D366] font-medium">
+                  {emailSoporte}
+                </a>
               </p>
             </div>
           </div>
 
+          {/* animación del modal */}
           <style jsx>{`
             @keyframes popIn {
-              0% {
-                opacity: 0;
-                transform: scale(0.8) translateX(20px);
-              }
-              100% {
-                opacity: 1;
-                transform: scale(1) translateX(0);
-              }
-            }
-            
-            .animate-pop-in {
-              animation: popIn 0.3s ease-out forwards;
+              0% { opacity: 0; transform: scale(0.92) translateY(8px); }
+              100% { opacity: 1; transform: scale(1) translateY(0); }
             }
           `}</style>
         </div>
