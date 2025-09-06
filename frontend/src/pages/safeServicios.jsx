@@ -3,7 +3,8 @@ import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 
 // Video de fondo
-import fondoBus from "../assets/bus.mp4";
+// Video de fondo
+import fondoBus from "../assets/fon.webm";
 
 // Imágenes de cada módulo
 import adminCardImg from "../assets/admin.png";
