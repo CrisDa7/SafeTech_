@@ -1,39 +1,48 @@
+// src/components/Hero.jsx
 import React from "react";
+import fondoBus from "../assets/bus.mp4"; // 👈 importa el video
 
 /**
  * Hero de portada
- * - Usa la paleta pavlova
+ * - Usa la paleta hawkes-blue
+ * - Video de fondo (fondoBus.mp4)
  */
 export default function Hero() {
   // Clases base (evita repetición)
   const BTN_BASE =
     "inline-flex items-center justify-center px-5 py-3 text-base font-medium focus:outline-none transition";
   const BTN_PRIMARY =
-    `${BTN_BASE} text-white rounded-lg bg-pavlova-600 hover:bg-pavlova-700 ` +
-    `focus-visible:ring-4 focus-visible:ring-pavlova-300`;
+    `${BTN_BASE} text-white rounded-lg bg-hawkes-blue-600 hover:bg-hawkes-blue-700 ` +
+    `focus-visible:ring-4 focus-visible:ring-hawkes-blue-300`;
   const BTN_OUTLINE =
-    `${BTN_BASE} text-white rounded-lg border border-white hover:bg-white hover:text-pavlova-900 ` +
-    `focus-visible:ring-4 focus-visible:ring-pavlova-400`;
+    `${BTN_BASE} text-white rounded-lg border border-white hover:bg-white hover:text-hawkes-blue-900 ` +
+    `focus-visible:ring-4 focus-visible:ring-hawkes-blue-400`;
 
   return (
     <section
       id="inicio"
       aria-labelledby="hero-title"
-      className={
-        // Fondo + overlay + layout
-        "relative isolate flex items-center justify-center " +
-        "bg-center bg-cover bg-no-repeat " +
-        "bg-[url('https://i.pinimg.com/1200x/0f/af/fb/0faffbb36424b8cafbc9a8cff0a32148.jpg')] " +
-        "bg-gray-700 bg-blend-multiply " +
-        "min-h-[90svh] md:min-h-screen"
-      }
+      className="relative isolate flex items-center justify-center min-h-[90svh] md:min-h-screen overflow-hidden"
     >
-      {/* Overlay para contraste (gradiente sutil hacia el centro) */}
+      {/* 🎥 Video de fondo */}
+      <video
+        className="absolute inset-0 w-full h-full object-cover"
+        src={fondoBus}
+        autoPlay
+        loop
+        muted
+        playsInline
+      />
+
+      {/* Overlay súper oscuro */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-0 bg-black/40"
+        className="pointer-events-none absolute inset-0 bg-black/85"
       />
-      <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-black/10 via-transparent to-black/30" />
+      {/* Gradiente sutil pero más oscuro */}
+      <div
+        className="pointer-events-none absolute inset-0 bg-gradient-to-b from-black/60 via-transparent to-black/60"
+      />
 
       {/* Contenido */}
       <div className="relative z-10 mx-auto max-w-screen-xl px-4 py-20 text-center md:py-28">
@@ -52,7 +61,11 @@ export default function Hero() {
         {/* CTAs */}
         <div className="flex flex-col gap-4 sm:flex-row sm:justify-center">
           {/* Scroll a Nosotros */}
-          <a href="#nosotros" className={BTN_PRIMARY} aria-label="Ir a la sección Acerca de nosotros">
+          <a
+            href="#nosotros"
+            className={BTN_PRIMARY}
+            aria-label="Ir a la sección Acerca de nosotros"
+          >
             Nosotros
             <svg
               className="ms-2 h-3.5 w-3.5 rtl:rotate-180"

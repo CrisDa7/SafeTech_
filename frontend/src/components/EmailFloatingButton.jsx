@@ -9,16 +9,12 @@ import {
 
 /**
  * Modal de Email alineado al lado derecho (como WhatsApp).
- * - En desktop: se muestra cerca de la esquina inferior derecha (sin chocar con el FAB de WhatsApp).
- * - En móvil: cae un poco más arriba y a la derecha para que no se tape.
- * - Correo real: soporte@safetech-ec.com
  */
 export default function ProfessionalEmailFloatingButton() {
   const [openPopover, setOpenPopover] = useState(false);
   const [copied, setCopied] = useState(false);
   const popoverRef = useRef(null);
 
-  // Datos de contacto
   const emailDestino = "soporte@safetech-ec.com";
 
   // Cerrar por click fuera
@@ -44,9 +40,9 @@ export default function ProfessionalEmailFloatingButton() {
       <div className="fixed bottom-28 right-6 z-50">
         <button
           onClick={() => setOpenPopover(true)}
-          className="flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-r from-pavlova-600 to-pavlova-500 shadow-lg transition-transform duration-300 hover:scale-110 hover:from-pavlova-700 hover:to-pavlova-600"
+          className="flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-r from-hawkes-blue-600 to-hawkes-blue-500 shadow-lg transition-transform duration-300 hover:scale-110 hover:from-hawkes-blue-700 hover:to-hawkes-blue-600"
           style={{
-            boxShadow: "0 4px 20px rgba(184, 122, 62, 0.5)", // pavlova-600
+            boxShadow: "0 4px 20px rgba(85, 88, 214, 0.5)", // hawkes-blue-600
             animation: "pulse-email 2s infinite",
           }}
           aria-label="Contactar por correo"
@@ -58,25 +54,24 @@ export default function ProfessionalEmailFloatingButton() {
         <style jsx>{`
           @keyframes pulse-email {
             0% {
-              box-shadow: 0 0 0 0 rgba(184, 122, 62, 0.7); /* pavlova-600 */
+              box-shadow: 0 0 0 0 rgba(85, 88, 214, 0.7); /* hawkes-blue-600 */
             }
             70% {
-              box-shadow: 0 0 0 10px rgba(184, 122, 62, 0);
+              box-shadow: 0 0 0 10px rgba(85, 88, 214, 0);
             }
             100% {
-              box-shadow: 0 0 0 0 rgba(184, 122, 62, 0);
+              box-shadow: 0 0 0 0 rgba(85, 88, 214, 0);
             }
           }
         `}</style>
       </div>
 
-      {/* Overlay + Modal (alineado a la derecha como Whats) */}
+      {/* Overlay + Modal */}
       {openPopover && (
         <div
           className="fixed inset-0 z-50 bg-black/50"
           aria-label="Fondo de diálogo de contacto por correo"
         >
-          {/* El modal está fijo y posicionado: en md+ como el de Whats; en móvil, más cerca y más arriba */}
           <div
             ref={popoverRef}
             className="
@@ -88,23 +83,23 @@ export default function ProfessionalEmailFloatingButton() {
               animate-[popIn_.3s_ease-out_forwards]
             "
           >
-            {/* Flechita que apunta al FAB (solo en md+ para que encaje perfecto) */}
+            {/* Flechita (desktop) */}
             <div className="pointer-events-none absolute -right-3 top-1/2 hidden h-6 w-6 -translate-y-1/2 rotate-45 bg-white md:block" />
 
             {/* Header */}
-            <div className="flex items-center justify-between bg-gradient-to-r from-pavlova-600 to-pavlova-500 p-4">
+            <div className="flex items-center justify-between bg-gradient-to-r from-hawkes-blue-600 to-hawkes-blue-500 p-4">
               <div className="flex items-center">
                 <div className="mr-2 rounded-full bg-white p-1">
-                  <MdEmail className="h-6 w-6 text-pavlova-600" aria-hidden="true" />
+                  <MdEmail className="h-6 w-6 text-hawkes-blue-600" aria-hidden="true" />
                 </div>
                 <div>
                   <h2 className="text-lg font-bold text-white">Chatea por correo</h2>
-                  <p className="text-sm text-pavlova-100">Estamos aquí para ayudarte</p>
+                  <p className="text-sm text-hawkes-blue-100">Estamos aquí para ayudarte</p>
                 </div>
               </div>
               <button
                 onClick={() => setOpenPopover(false)}
-                className="text-white transition-colors duration-200 hover:text-pavlova-200"
+                className="text-white transition-colors duration-200 hover:text-hawkes-blue-200"
                 aria-label="Cerrar panel de correo"
               >
                 <MdClose className="h-4 w-4" aria-hidden="true" />
@@ -114,8 +109,8 @@ export default function ProfessionalEmailFloatingButton() {
             {/* Cuerpo */}
             <div className="p-4">
               <div className="mb-4 flex items-center">
-                <div className="mr-3 flex h-10 w-10 items-center justify-center rounded-full bg-pavlova-100">
-                  <MdSupportAgent className="h-5 w-5 text-pavlova-600" aria-hidden="true" />
+                <div className="mr-3 flex h-10 w-10 items-center justify-center rounded-full bg-hawkes-blue-50">
+                  <MdSupportAgent className="h-5 w-5 text-hawkes-blue-600" aria-hidden="true" />
                 </div>
                 <div>
                   <h3 className="text-sm font-semibold text-gray-800">Soporte SafeTech</h3>
@@ -132,7 +127,7 @@ export default function ProfessionalEmailFloatingButton() {
                   </span>
                   <button
                     onClick={copyToClipboard}
-                    className="ml-2 text-pavlova-600 transition-colors hover:text-pavlova-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-pavlova-300/70 rounded"
+                    className="ml-2 text-hawkes-blue-600 transition-colors hover:text-hawkes-blue-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-hawkes-blue-300/70 rounded"
                     aria-label="Copiar correo"
                     title="Copiar correo"
                   >
@@ -165,15 +160,13 @@ export default function ProfessionalEmailFloatingButton() {
               <a
                 href={`https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(
                   emailDestino
-                )}&su=${encodeURIComponent(
-                  "Consulta"
-                )}&body=${encodeURIComponent(
+                )}&su=${encodeURIComponent("Consulta")}&body=${encodeURIComponent(
                   "Hola, me gustaría obtener más información acerca de sus servicios."
                 )}`}
                 target="_blank"
                 rel="noreferrer"
                 onClick={() => setOpenPopover(false)}
-                className="flex items-center justify-center rounded-lg bg-gradient-to-r from-pavlova-600 to-pavlova-500 px-4 py-3 text-sm font-semibold text-white transition-colors duration-200 hover:from-pavlova-700 hover:to-pavlova-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-pavlova-300/70"
+                className="flex items-center justify-center rounded-lg bg-gradient-to-r from-hawkes-blue-600 to-hawkes-blue-500 px-4 py-3 text-sm font-semibold text-white transition-colors duration-200 hover:from-hawkes-blue-700 hover:to-hawkes-blue-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-hawkes-blue-300/70"
                 aria-label="Abrir Gmail para escribirnos"
               >
                 <MdEmail className="mr-2 h-5 w-5" aria-hidden="true" />
@@ -185,7 +178,7 @@ export default function ProfessionalEmailFloatingButton() {
             <div className="bg-gray-100 p-3 text-center">
               <p className="text-xs text-gray-500">
                 Email:{" "}
-                <span className="font-medium text-pavlova-600">{emailDestino}</span>
+                <span className="font-medium text-hawkes-blue-600">{emailDestino}</span>
               </p>
             </div>
           </div>
@@ -193,14 +186,8 @@ export default function ProfessionalEmailFloatingButton() {
           {/* animación del modal */}
           <style jsx>{`
             @keyframes popIn {
-              0% {
-                opacity: 0;
-                transform: scale(0.9) translateX(20px);
-              }
-              100% {
-                opacity: 1;
-                transform: scale(1) translateX(0);
-              }
+              0% { opacity: 0; transform: scale(0.9) translateX(20px); }
+              100% { opacity: 1; transform: scale(1) translateX(0); }
             }
           `}</style>
         </div>

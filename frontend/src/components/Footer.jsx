@@ -7,11 +7,13 @@ import logo from "../assets/negro.png";
 
 export default function Footer() {
   const WRAP = "mx-auto w-full max-w-7xl px-4";
-  const HEADING = "mb-4 text-base md:text-lg font-semibold uppercase border-b border-pavlova-700 pb-2";
+  const HEADING =
+    "mb-4 text-base md:text-lg font-semibold uppercase border-b border-hawkes-blue-700 pb-2";
   const LINK_FOOT =
-    "text-pavlova-100 hover:text-white transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-pavlova-300/70 rounded";
+    "text-hawkes-blue-100 hover:text-white transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-hawkes-blue-300/70 rounded";
   const ICON_BTN =
-    "inline-flex h-9 w-9 items-center justify-center bg-pavlova-800 text-white hover:text-pavlova-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-pavlova-300/70 rounded-full";
+    "inline-flex h-9 w-9 items-center justify-center bg-hawkes-blue-800 text-white hover:text-hawkes-blue-200 " +
+    "focus:outline-none focus-visible:ring-2 focus-visible:ring-hawkes-blue-300/70 rounded-full";
   const year = new Date().getFullYear();
 
   // JSON-LD (SEO)
@@ -43,7 +45,7 @@ export default function Footer() {
   };
 
   return (
-    <footer className="bg-pavlova-900 text-white" aria-labelledby="footer-heading" role="contentinfo">
+    <footer className="bg-hawkes-blue-950 text-white" aria-labelledby="footer-heading" role="contentinfo">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(orgJsonLd) }} />
 
       <div className={`${WRAP} py-12 lg:py-16`}>
@@ -58,7 +60,7 @@ export default function Footer() {
                 <span className="text-2xl font-bold">SafeTech</span>
               </a>
             </div>
-            <p className="max-w-xs text-pavlova-100">
+            <p className="max-w-xs text-hawkes-blue-100">
               Transformando la seguridad escolar a través de la innovación tecnológica en Ecuador.
             </p>
 
@@ -90,34 +92,34 @@ export default function Footer() {
             </ul>
           </nav>
 
-          {/* Servicios */}
-          <nav aria-labelledby="footer-services">
+          {/* Servicios (texto plano, SIN enlaces) */}
+          <section aria-labelledby="footer-services">
             <h3 id="footer-services" className={HEADING}>Nuestros Servicios</h3>
             <ul className="space-y-3">
-              <li><a href="/safe-administrador" className={LINK_FOOT}>Safe Administrador</a></li>
-              <li><a href="/safe-school" className={LINK_FOOT}>Safe School</a></li>
-              <li><a href="/safe-padres" className={LINK_FOOT}>Safe Padres</a></li>
+              <li><span className="block text-hawkes-blue-100">Safe Administrador</span></li>
+              <li><span className="block text-hawkes-blue-100">Safe School</span></li>
+              <li><span className="block text-hawkes-blue-100">Safe Padres</span></li>
             </ul>
-          </nav>
+          </section>
 
           {/* Contacto */}
           <address aria-labelledby="footer-contact" className="not-italic">
             <h3 id="footer-contact" className={HEADING}>Contacto</h3>
             <ul className="space-y-4">
               <li className="flex items-start">
-                <FaMapMarkerAlt className="mr-3 mt-0.5 h-5 w-5 flex-shrink-0 text-pavlova-300" aria-hidden="true" />
-                <span className="text-pavlova-100">Quito, Ecuador</span>
+                <FaMapMarkerAlt className="mr-3 mt-0.5 h-5 w-5 flex-shrink-0 text-hawkes-blue-300" aria-hidden="true" />
+                <span className="text-hawkes-blue-100">Quito, Ecuador</span>
               </li>
               <li className="flex items-start">
-                <FaEnvelope className="mr-3 mt-0.5 h-5 w-5 flex-shrink-0 text-pavlova-300" aria-hidden="true" />
+                <FaEnvelope className="mr-3 mt-0.5 h-5 w-5 flex-shrink-0 text-hawkes-blue-300" aria-hidden="true" />
                 <a href="mailto:soporte@safetech-ec.com" className={LINK_FOOT}>soporte@safetech-ec.com</a>
               </li>
               <li className="flex items-start">
-                <FaPhoneAlt className="mr-3 mt-0.5 h-5 w-5 flex-shrink-0 text-pavlova-300" aria-hidden="true" />
+                <FaPhoneAlt className="mr-3 mt-0.5 h-5 w-5 flex-shrink-0 text-hawkes-blue-300" aria-hidden="true" />
                 <a href="tel:+593999047935" className={LINK_FOOT}>+593 999 047 935</a>
               </li>
               <li className="flex items-start">
-                <FaWhatsapp className="mr-3 mt-0.5 h-5 w-5 flex-shrink-0 text-pavlova-300" aria-hidden="true" />
+                <FaWhatsapp className="mr-3 mt-0.5 h-5 w-5 flex-shrink-0 text-hawkes-blue-300" aria-hidden="true" />
                 <a href="https://wa.me/593999047935" target="_blank" rel="noreferrer" className={LINK_FOOT} aria-label="Contactar por WhatsApp">
                   WhatsApp
                 </a>
@@ -126,13 +128,27 @@ export default function Footer() {
           </address>
         </div>
 
-        <hr className="my-8 border-pavlova-700" />
+        <hr className="my-8 border-hawkes-blue-700" />
 
         <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
-          <span className="text-sm text-pavlova-200">© {year} CK Systems. Todos los derechos reservados.</span>
+          <span className="text-sm text-hawkes-blue-200">© {year} CK Systems. Todos los derechos reservados.</span>
           <ul className="flex items-center gap-6">
-            <li><a href="https://safetech-ec.com/politica-de-privacidad" className="text-sm text-pavlova-200 hover:text-white transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-pavlova-300/70 rounded">Política de Privacidad</a></li>
-            <li><a href="https://safetech-ec.com/terminos" className="text-sm text-pavlova-200 hover:text-white transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-pavlova-300/70 rounded">Términos y Condiciones</a></li>
+            <li>
+              <a
+                href="https://safetech-ec.com/politica-de-privacidad"
+                className="text-sm text-hawkes-blue-200 hover:text-white transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-hawkes-blue-300/70 rounded"
+              >
+                Política de Privacidad
+              </a>
+            </li>
+            <li>
+              <a
+                href="https://safetech-ec.com/terminos"
+                className="text-sm text-hawkes-blue-200 hover:text-white transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-hawkes-blue-300/70 rounded"
+              >
+                Términos y Condiciones
+              </a>
+            </li>
           </ul>
         </div>
       </div>

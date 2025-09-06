@@ -8,6 +8,7 @@ import adminImg from "../assets/admin.png";
 import padresImg from "../assets/padres.png";
 import schoolImg from "../assets/school.png";
 import autobusImg from "../assets/autobus.jpg";
+import configuracionImg from "../assets/configuracion.png"; // NUEVA: para "Productos"
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -24,6 +25,7 @@ export default function Navbar() {
     Principal: false,
     Nosotros: false,
     Acceder: false,
+    Productos: false, // NUEVO
     "Soporte en línea": false,
   });
   const [mobilePrincipalOpen, setMobilePrincipalOpen] = useState({ quienes: false });
@@ -116,10 +118,26 @@ export default function Navbar() {
   };
   const currentNosotrosData = nosotrosData[nosotrosActiveOption];
 
+  const productosData = {
+    estado: {
+      title: "Productos",
+      description:
+        "Esta parte está en configuración. Muy pronto podrás explorar nuestro catálogo de soluciones.",
+      details: [
+        "Catálogo en preparación",
+        "Integraciones y precios",
+        "Demos y documentación",
+      ],
+      image: configuracionImg,
+      buttonText: "Muy pronto",
+    },
+  };
+
   const menuItems = [
     { name: "Principal", isMenuPrincipal: true },
     { name: "Nosotros", isNosotros: true },
     { name: "Acceder", isAcceder: true },
+    { name: "Productos", isProductos: true }, // NUEVO
     { name: "Soporte en línea", isSoporte: true },
   ];
 
@@ -172,7 +190,7 @@ export default function Navbar() {
       className="w-full flex items-center justify-between text-left px-3 py-3 rounded-md bg-white/10 hover:bg-white/15"
       aria-expanded={open}
     >
-      <span className={`font-semibold ${open ? "text-pavlova-200" : "text-pavlova-100"}`}>
+      <span className={`font-semibold ${open ? "text-hawkes-blue-200" : "text-hawkes-blue-100"}`}>
         {title}
       </span>
       <FaChevronDown
@@ -188,11 +206,11 @@ export default function Navbar() {
       type="button"
       onClick={onToggle}
       className={`w-full flex items-center justify-between text-left px-3 py-2 rounded-md border
-        ${open ? "bg-pavlova-100/70 border-pavlova-200" : "bg-pavlova-50 border-pavlova-100"} `}
+        ${open ? "bg-hawkes-blue-100/70 border-hawkes-blue-200" : "bg-hawkes-blue-50 border-hawkes-blue-100"} `}
     >
-      <span className="font-medium text-pavlova-700">{title}</span>
+      <span className="font-medium text-hawkes-blue-700">{title}</span>
       <FaChevronDown
-        className={`w-3 h-3 text-pavlova-600 transition-transform ${open ? "rotate-180" : ""}`}
+        className={`w-3 h-3 text-hawkes-blue-600 transition-transform ${open ? "rotate-180" : ""}`}
         aria-hidden="true"
       />
     </button>
@@ -215,7 +233,7 @@ export default function Navbar() {
       ref={navRef}
       className={`fixed w-full z-50 transition-all duration-300 ${
         scrolled
-          ? "bg-pavlova-900/80 backdrop-blur supports-[backdrop-filter]:bg-pavlova-900/60 shadow-lg py-2"
+          ? "bg-hawkes-blue-900/80 backdrop-blur supports-[backdrop-filter]:bg-hawkes-blue-900/60 shadow-lg py-2"
           : "bg-transparent py-3"
       }`}
       aria-label="Barra de navegación principal"
@@ -224,9 +242,14 @@ export default function Navbar() {
         <div className="flex h-14 md:h-16 items-center justify-between">
           {/* Logo */}
           <a
-            href="https://safetech-ec.com"
-            className="flex min-w-0 items-center gap-2 shrink-0"
+            href="#"
+            onClick={(e) => {
+              e.preventDefault();
+              window.scrollTo({ top: 0, behavior: "smooth" });
+            }}
+            className="flex min-w-0 items-center gap-2 shrink-0 cursor-pointer"
             aria-label="SafeTech - Inicio"
+            role="button"
           >
             <img
               src={scrolled ? logoBlanco : logoAzul}
@@ -245,7 +268,7 @@ export default function Navbar() {
           <button
             onClick={() => setMenuOpen((v) => !v)}
             type="button"
-            className="inline-flex items-center justify-center rounded-md p-2 md:hidden text-white hover:bg-white/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-pavlova-300/70"
+            className="inline-flex items-center justify-center rounded-md p-2 md:hidden text-white hover:bg-white/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-hawkes-blue-300/70"
             aria-controls="primary-menu"
             aria-expanded={menuOpen}
             aria-label={menuOpen ? "Cerrar menú" : "Abrir menú"}
@@ -268,7 +291,7 @@ export default function Navbar() {
                 >
                   <button
                     type="button"
-                    className="flex items-center gap-1 px-3 py-2 text-white hover:text-pavlova-200 focus-visible:ring-2 focus-visible:ring-pavlova-300/70 rounded-md"
+                    className="flex items-center gap-1 px-3 py-2 text-white hover:text-hawkes-blue-200 focus-visible:ring-2 focus-visible:ring-hawkes-blue-300/70 rounded-md"
                     aria-haspopup="true"
                     aria-expanded={activeDropdown === item.name}
                     onClick={() => toggleDropdown(item.name)}
@@ -287,11 +310,11 @@ export default function Navbar() {
                             onFocus={() => setMenuPrincipalActive("quienes")}
                             className={`w-full text-left p-5 transition ${
                               menuPrincipalActive === "quienes"
-                                ? "bg-pavlova-50 border-l-4 border-pavlova-600"
+                                ? "bg-hawkes-blue-50 border-l-4 border-hawkes-blue-600"
                                 : "hover:bg-gray-50"
                             }`}
                           >
-                            <span className={`${menuPrincipalActive === "quienes" ? "text-pavlova-800" : "text-gray-700"} font-medium`}>
+                            <span className={`${menuPrincipalActive === "quienes" ? "text-hawkes-blue-800" : "text-gray-700"} font-medium`}>
                               ¿Quiénes somos?
                             </span>
                           </button>
@@ -306,7 +329,7 @@ export default function Navbar() {
                           </p>
                         </div>
 
-                        <div className="md:w-1/4 bg-pavlova-50 p-6 flex items-center justify-center">
+                        <div className="md:w-1/4 bg-hawkes-blue-50 p-6 flex items-center justify-center">
                           <img src={currentMenuPrincipalData.image} alt={currentMenuPrincipalData.title} className="max-w-full max-h-48 object-contain" loading="lazy" />
                         </div>
                       </div>
@@ -328,11 +351,11 @@ export default function Navbar() {
                               onFocus={() => setNosotrosActiveOption(opt.key)}
                               className={`w-full text-left p-5 transition ${
                                 nosotrosActiveOption === opt.key
-                                  ? "bg-pavlova-50 border-l-4 border-pavlova-600"
+                                  ? "bg-hawkes-blue-50 border-l-4 border-hawkes-blue-600"
                                   : "hover:bg-gray-50"
                               }`}
                             >
-                              <span className={`${nosotrosActiveOption === opt.key ? "text-pavlova-800" : "text-gray-700"} font-medium`}>
+                              <span className={`${nosotrosActiveOption === opt.key ? "text-hawkes-blue-800" : "text-gray-700"} font-medium`}>
                                 {opt.label}
                               </span>
                             </button>
@@ -347,14 +370,14 @@ export default function Navbar() {
                           <ul className="space-y-3">
                             {currentNosotrosData.details.map((detail, idx) => (
                               <li key={idx} className="flex items-start">
-                                <FaShieldAlt className="text-pavlova-500 mt-1 mr-3 shrink-0" aria-hidden="true" />
+                                <FaShieldAlt className="text-hawkes-blue-500 mt-1 mr-3 shrink-0" aria-hidden="true" />
                                 <span className="text-gray-700">{detail}</span>
                               </li>
                             ))}
                           </ul>
                         </div>
 
-                        <div className="md:w-1/4 bg-pavlova-50 p-6 flex items-center justify-center">
+                        <div className="md:w-1/4 bg-hawkes-blue-50 p-6 flex items-center justify-center">
                           <img src={currentNosotrosData.image} alt={currentNosotrosData.title} className="max-w-full max-h-48 object-contain" loading="lazy" />
                         </div>
                       </div>
@@ -373,11 +396,11 @@ export default function Navbar() {
                               onFocus={() => setAccederActiveOption(key)}
                               className={`w-full text-left p-5 transition ${
                                 accederActiveOption === key
-                                  ? "bg-pavlova-50 border-l-4 border-pavlova-600"
+                                  ? "bg-hawkes-blue-50 border-l-4 border-hawkes-blue-600"
                                   : "hover:bg-gray-50"
                               }`}
                             >
-                              <span className={`${accederActiveOption === key ? "text-pavlova-800" : "text-gray-700"} font-medium`}>
+                              <span className={`${accederActiveOption === key ? "text-hawkes-blue-800" : "text-gray-700"} font-medium`}>
                                 {accederData[key].title}
                               </span>
                             </button>
@@ -390,23 +413,56 @@ export default function Navbar() {
                           <ul className="space-y-3">
                             {currentAccederData.details.map((detail, idx) => (
                               <li key={idx} className="flex items-start">
-                                <FaShieldAlt className="text-pavlova-500 mt-1 mr-3 shrink-0" aria-hidden="true" />
+                                <FaShieldAlt className="text-hawkes-blue-500 mt-1 mr-3 shrink-0" aria-hidden="true" />
                                 <span className="text-gray-700">{detail}</span>
                               </li>
                             ))}
                           </ul>
                         </div>
 
-                        <div className="md:w-1/4 bg-pavlova-50 p-6 flex flex-col items-center justify-center">
+                        <div className="md:w-1/4 bg-hawkes-blue-50 p-6 flex flex-col items-center justify-center">
                           <div className="mb-6 w-36 h-36 md:w-40 md:h-40 bg-white shadow-md flex items-center justify-center p-4">
                             <img src={currentAccederData.image} alt={currentAccederData.title} className="max-w-full max-h-full object-contain" loading="lazy" />
                           </div>
                           <a
                             href={currentAccederData.buttonLink}
-                            className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-pavlova-600 text-white font-medium hover:bg-pavlova-700 focus-visible:ring-2 focus-visible:ring-pavlova-300 w-full text-center rounded-md"
+                            className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-hawkes-blue-600 text-white font-medium hover:bg-hawkes-blue-700 focus-visible:ring-2 focus-visible:ring-hawkes-blue-300 w-full text-center rounded-md"
                           >
                             {currentAccederData.buttonText} <FaChevronRight className="inline" aria-hidden="true" />
                           </a>
+                        </div>
+                      </div>
+                    </PanelWrapper>
+                  )}
+
+                  {/* Productos (NUEVO) */}
+                  {item.isProductos && activeDropdown === "Productos" && (
+                    <PanelWrapper label="Menú Productos">
+                      <div className="flex flex-col md:flex-row">
+                        <div className="md:w-2/3 p-6 md:border-r border-gray-200">
+                          <h2 className="text-xl lg:text-2xl font-bold text-gray-800 mb-3">
+                            {productosData.estado.title}
+                          </h2>
+                          <p className="text-gray-600 mb-6">{productosData.estado.description}</p>
+                          <ul className="space-y-3">
+                            {productosData.estado.details.map((d, i) => (
+                              <li key={i} className="flex items-start">
+                                <FaShieldAlt className="text-hawkes-blue-500 mt-1 mr-3 shrink-0" aria-hidden="true" />
+                                <span className="text-gray-700">{d}</span>
+                              </li>
+                            ))}
+                          </ul>
+                          <div className="mt-6 inline-flex items-center justify-center gap-2 px-6 py-3 bg-gray-300 text-gray-700 font-medium cursor-not-allowed rounded-md">
+                            {productosData.estado.buttonText}
+                          </div>
+                        </div>
+                        <div className="md:w-1/3 bg-hawkes-blue-50 p-6 flex items-center justify-center">
+                          <img
+                            src={productosData.estado.image}
+                            alt="Sección en configuración"
+                            className="max-w-full max-h-48 object-contain"
+                            loading="lazy"
+                          />
                         </div>
                       </div>
                     </PanelWrapper>
@@ -428,7 +484,7 @@ export default function Navbar() {
                             <li>✔ Reportar incidencias</li>
                           </ul>
                         </div>
-                        <div className="md:w-1/4 bg-pavlova-50 p-6 flex flex-col items-center justify-center">
+                        <div className="md:w-1/4 bg-hawkes-blue-50 p-6 flex flex-col items-center justify-center">
                           <a href="https://wa.me/593999047935" target="_blank" rel="noopener noreferrer" className="px-6 py-3 bg-green-600 text-white font-medium hover:bg-green-700 w-full text-center mb-3 rounded-md" aria-label="Chatear por WhatsApp">
                             WhatsApp
                           </a>
@@ -512,7 +568,7 @@ export default function Navbar() {
                     <ul className="mt-2 space-y-2">
                       {nosotrosData.mision.details.map((d, i) => (
                         <li key={i} className="flex items-start text-sm">
-                          <FaShieldAlt className="text-pavlova-500 mt-0.5 mr-2" />
+                          <FaShieldAlt className="text-hawkes-blue-500 mt-0.5 mr-2" />
                           {d}
                         </li>
                       ))}
@@ -539,7 +595,7 @@ export default function Navbar() {
                     <ul className="mt-2 space-y-2">
                       {nosotrosData.vision.details.map((d, i) => (
                         <li key={i} className="flex items-start text-sm">
-                          <FaShieldAlt className="text-pavlova-500 mt-0.5 mr-2" />
+                          <FaShieldAlt className="text-hawkes-blue-500 mt-0.5 mr-2" />
                           {d}
                         </li>
                       ))}
@@ -583,7 +639,7 @@ export default function Navbar() {
                         <ul className="mt-2 space-y-2">
                           {accederData[key].details.map((d, i) => (
                             <li key={i} className="flex items-start text-sm">
-                              <FaShieldAlt className="text-pavlova-500 mt-0.5 mr-2" />
+                              <FaShieldAlt className="text-hawkes-blue-500 mt-0.5 mr-2" />
                               {d}
                             </li>
                           ))}
@@ -596,13 +652,50 @@ export default function Navbar() {
                         />
                         <a
                           href={accederData[key].buttonLink}
-                          className="mt-3 inline-flex items-center gap-2 px-4 py-2 bg-pavlova-600 text-white rounded-md hover:bg-pavlova-700 focus-visible:ring-2 focus-visible:ring-pavlova-300"
+                          className="mt-3 inline-flex items-center gap-2 px-4 py-2 bg-hawkes-blue-600 text-white rounded-md hover:bg-hawkes-blue-700 focus-visible:ring-2 focus-visible:ring-hawkes-blue-300"
                         >
                           {accederData[key].buttonText} <FaChevronRight aria-hidden="true" />
                         </a>
                       </MCollapse>
                     </div>
                   ))}
+                </div>
+              </MCollapse>
+            </li>
+
+            {/* PRODUCTOS (NUEVO) */}
+            <li>
+              <MRow
+                title="Productos"
+                open={mobileSectionsOpen["Productos"]}
+                onToggle={() =>
+                  setMobileSectionsOpen((s) => ({ ...s, Productos: !s.Productos }))
+                }
+              />
+              <MCollapse open={mobileSectionsOpen["Productos"]}>
+                <h4 className="font-semibold">Productos</h4>
+                <p className="text-sm text-gray-700">
+                  Esta parte está en configuración. Muy pronto podrás explorar nuestro catálogo de soluciones.
+                </p>
+                <ul className="mt-2 space-y-2 text-sm text-gray-700">
+                  <li className="flex items-start">
+                    <FaShieldAlt className="text-hawkes-blue-500 mt-0.5 mr-2" /> Catálogo en preparación
+                  </li>
+                  <li className="flex items-start">
+                    <FaShieldAlt className="text-hawkes-blue-500 mt-0.5 mr-2" /> Integraciones y precios
+                  </li>
+                  <li className="flex items-start">
+                    <FaShieldAlt className="text-hawkes-blue-500 mt-0.5 mr-2" /> Demos y documentación
+                  </li>
+                </ul>
+                <img
+                  src={configuracionImg}
+                  alt="Sección en configuración"
+                  className="mt-3 w-full max-h-44 object-contain border border-gray-200"
+                  loading="lazy"
+                />
+                <div className="mt-3 inline-flex items-center justify-center w-full px-4 py-2 bg-gray-300 text-gray-700 rounded-md cursor-not-allowed">
+                  Muy pronto
                 </div>
               </MCollapse>
             </li>

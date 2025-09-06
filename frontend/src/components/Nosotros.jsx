@@ -1,4 +1,5 @@
 import React from "react";
+import nosotrosImg from "../assets/nosotros.png"; // importa la imagen
 
 export default function Nosotros() {
   return (
@@ -7,17 +8,20 @@ export default function Nosotros() {
         
         {/* Encabezado con título principal */}
         <div className="text-center mb-16">
-          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">Quiénes Somos</h1>
-          {/* Línea decorativa en pavlova */}
-          <div className="w-20 h-1 bg-pavlova-600 mx-auto"></div>
+          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+            Quiénes Somos
+          </h1>
+          {/* Línea decorativa en hawkes-blue */}
+          <div className="w-20 h-1 bg-hawkes-blue-600 mx-auto"></div>
         </div>
 
         {/* Sección con imagen y descripción */}
         <div className="flex flex-col lg:flex-row items-center gap-10 mb-20">
+          {/* Texto */}
           <div className="lg:w-1/2">
             <h2 className="text-3xl font-bold text-gray-900 mb-6">Nuestra Identidad</h2>
             <p className="text-lg text-gray-700 leading-relaxed mb-6">
-              En <span className="font-semibold text-pavlova-700">SafeTech</span> creemos que la seguridad escolar debe ser moderna, accesible y confiable. 
+              En <span className="font-semibold text-hawkes-blue-700">SafeTech</span> creemos que la seguridad escolar debe ser moderna, accesible y confiable. 
               Somos una empresa ecuatoriana comprometida con la innovación tecnológica aplicada al bienestar 
               de estudiantes, padres de familia y administradores educativos.
             </p>
@@ -28,17 +32,17 @@ export default function Nosotros() {
               y gestiona la seguridad en los colegios.
             </p>
           </div>
-          <div className="lg:w-1/2 flex justify-center mt-8 lg:mt-0">
-            <div className="relative w-full max-w-md">
-              <img 
-                src="/src/assets/qq.jpg" 
-                alt="Equipo de SafeTech" 
-                className="rounded-2xl shadow-lg w-full h-auto object-cover max-h-80"
-              />
-              {/* Borde decorativo en pavlova */}
-              <div className="absolute -inset-2 border-2 border-pavlova-200 rounded-2xl opacity-50"></div>
-            </div>
-          </div>
+
+          {/* Imagen */}
+          <div className="lg:w-1/2 flex justify-center">
+  <img
+    src={nosotrosImg}
+    alt="Nosotros - SafeTech"
+    className="w-full max-w-sm h-auto rounded-lg shadow-md"
+    loading="lazy"
+  />
+</div>
+
         </div>
 
         {/* Aquí se mantienen las secciones de Misión, Visión y Valores */}

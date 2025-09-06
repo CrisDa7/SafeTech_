@@ -8,18 +8,18 @@ export default {
   theme: {
     extend: {
       colors: {
-        pavlova: {
-          50:  "#fbf8f1",
-          100: "#f6f0de",
-          200: "#ebddbd",
-          300: "#dfc696",
-          400: "#d0a567",
-          500: "#c68e49",  // tono principal (dorado cálido)
-          600: "#b87a3e",
-          700: "#996135",
-          800: "#7b4e31",
-          900: "#64422a",
-          950: "#352115",
+        "hawkes-blue": {
+          50:  "#f0f4fd",
+          100: "#e3ebfc",
+          200: "#cfdbf9",
+          300: "#adc0f4",
+          400: "#8d9dec",
+          500: "#717de3",
+          600: "#5558d6",
+          700: "#4647bc",
+          800: "#3b3d98",
+          900: "#363a79",
+          950: "#202146",
         },
       },
       boxShadow: {
