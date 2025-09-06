@@ -1,6 +1,6 @@
 import React from "react";
 import adminImg from "../assets/safe.png";
-import configuracionImg from "../assets/configuracion.png"; 
+import configuracionImg from "../assets/configuracion.png";
 
 const serviciosData = [
   {
@@ -33,16 +33,17 @@ export default function Servicios() {
   const BTN_BASE =
     "inline-flex items-center justify-center px-5 py-3 text-base font-medium focus:outline-none transition";
   const BTN_PRIMARY =
-    `${BTN_BASE} rounded-md text-white bg-hawkes-blue-600 hover:bg-hawkes-blue-700 focus-visible:ring-4 focus-visible:ring-hawkes-blue-300`;
+    `${BTN_BASE} rounded-md text-white bg-hawkes-blue-600 hover:bg-hawkes-blue-700 focus-visible:ring-4 focus-visible:ring-hawkes-blue-400/50`;
   const BTN_DISABLED =
-    `${BTN_BASE} rounded-md bg-gray-300 text-gray-500 cursor-not-allowed`;
+    `${BTN_BASE} rounded-md bg-neutral-800 text-neutral-500 cursor-not-allowed`;
 
   const CARD =
-    "group relative flex h-full flex-col rounded-2xl border border-gray-200 bg-white shadow-sm " +
-    "transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg hover:ring-1 hover:ring-hawkes-blue-100";
+    "group relative flex h-full flex-col rounded-2xl bg-slate-900 text-slate-100 " +
+    "ring-1 ring-white/10 shadow-[0_8px_30px_rgba(0,0,0,0.25)] transition-all duration-300 " +
+    "hover:-translate-y-0.5 hover:shadow-[0_10px_40px_rgba(0,0,0,0.35)] hover:ring-hawkes-blue-500/25";
   const CARD_MEDIA =
-    "flex items-center justify-center bg-gradient-to-b from-hawkes-blue-100 via-hawkes-blue-50 to-white " +
-    "border-b border-gray-100 px-6 pt-8 pb-6";
+    "flex items-center justify-center bg-gradient-to-b from-slate-800 via-slate-900 to-slate-900 " +
+    "px-6 pt-8 pb-6";
   const CARD_BODY = "flex flex-col gap-4 p-6";
 
   const CHECK_ICON = (
@@ -64,17 +65,17 @@ export default function Servicios() {
     <section
       id="servicios"
       aria-labelledby="servicios-title"
-      className="bg-white px-4 py-16 md:py-24"
+      className="bg-slate-950 px-4 py-16 md:py-24"
     >
       <div className="mx-auto max-w-6xl">
         <header className="mb-12 text-center md:mb-16">
           <h2
             id="servicios-title"
-            className="text-4xl font-bold text-gray-900 md:text-5xl"
+            className="text-4xl font-bold text-white md:text-5xl"
           >
-            Nuestros <span className="text-hawkes-blue-600">Servicios</span>
+            Nuestros <span className="text-hawkes-blue-500">Servicios</span>
           </h2>
-          <p className="mx-auto mt-4 max-w-3xl text-lg text-gray-600 md:text-xl">
+          <p className="mx-auto mt-4 max-w-3xl text-lg text-slate-300 md:text-xl">
             Soluciones especializadas para cada integrante de la comunidad
           </p>
           <div className="mx-auto mt-6 h-[3px] w-24 rounded-full bg-hawkes-blue-600" />
@@ -92,14 +93,14 @@ export default function Servicios() {
                   src={item.img}
                   alt={item.title}
                   loading="lazy"
-                  className="h-28 w-auto object-contain md:h-32"
+                  className="h-28 w-auto object-contain md:h-32 drop-shadow-[0_6px_20px_rgba(113,125,227,.25)]"
                 />
               </div>
 
               <div className={CARD_BODY}>
                 <h3
                   id={`card-${item.title}-title`}
-                  className="text-xl font-semibold text-gray-900"
+                  className="text-xl font-semibold text-white"
                 >
                   {item.title}
                 </h3>
@@ -108,10 +109,10 @@ export default function Servicios() {
                   <ul className="mt-2 space-y-2.5">
                     {item.features.map((feature) => (
                       <li key={feature} className="flex items-start gap-3">
-                        <span className="mt-1 inline-flex h-5 w-5 items-center justify-center rounded-md border border-hawkes-blue-200 bg-hawkes-blue-50 text-hawkes-blue-600">
+                        <span className="mt-1 inline-flex h-5 w-5 items-center justify-center rounded-md border border-hawkes-blue-500/30 bg-hawkes-blue-600/15 text-hawkes-blue-300">
                           {CHECK_ICON}
                         </span>
-                        <span className="text-gray-800">{feature}</span>
+                        <span className="text-slate-300">{feature}</span>
                       </li>
                     ))}
                   </ul>
@@ -151,7 +152,8 @@ export default function Servicios() {
                 </div>
               </div>
 
-              <div className="pointer-events-none absolute inset-x-0 bottom-0 h-1 origin-left scale-x-0 bg-hawkes-blue-600 transition-transform duration-300 group-hover:scale-x-100" />
+              {/* Línea de acento al hover */}
+              <div className="pointer-events-none absolute inset-x-0 bottom-0 h-1 origin-left scale-x-0 bg-hawkes-blue-600/80 transition-transform duration-300 group-hover:scale-x-100" />
             </article>
           ))}
         </div>

@@ -51,20 +51,25 @@ export default function SafeServicios() {
     },
   ];
 
+  // Botones (oscuro)
   const BTN_BASE =
     "inline-flex items-center justify-center px-5 py-3 text-base font-medium focus:outline-none transition";
   const BTN_SECONDARY =
-    `${BTN_BASE} rounded-md border border-white text-white/90 hover:bg-white hover:text-hawkes-blue-900 focus-visible:ring-4 focus-visible:ring-hawkes-blue-200`;
+    `${BTN_BASE} rounded-md border border-white/40 text-white/95 hover:bg-white hover:text-hawkes-blue-900 focus-visible:ring-4 focus-visible:ring-hawkes-blue-300/40`;
 
+  // Cards (oscuro)
   const CARD =
-    "group relative flex h-full flex-col rounded-2xl border border-gray-200 bg-white shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg hover:ring-1 hover:ring-hawkes-blue-100";
+    "group relative flex h-full flex-col rounded-2xl bg-slate-900 text-slate-100 " +
+    "ring-1 ring-white/10 shadow-[0_8px_30px_rgba(0,0,0,0.25)] transition-all duration-300 " +
+    "hover:-translate-y-0.5 hover:shadow-[0_10px_40px_rgba(0,0,0,0.35)] hover:ring-hawkes-blue-500/25";
   const CARD_MEDIA =
-    "flex items-center justify-center bg-gradient-to-b from-hawkes-blue-50 to-white border-b border-gray-100 px-6 pt-6 pb-6";
+    "flex items-center justify-center bg-gradient-to-b from-slate-800 via-slate-900 to-slate-900 " +
+    "px-6 pt-6 pb-6";
   const CARD_BODY = "flex grow flex-col gap-4 p-6";
 
   return (
-    <div className="bg-gray-50">
-      {/* HERO centrado */}
+    <div className="bg-slate-950">
+      {/* HERO centrado (oscuro) */}
       <section className="relative min-h-[88svh] md:min-h-screen flex items-center justify-center text-center overflow-hidden bg-hawkes-blue-900">
         <video
           className="absolute inset-0 w-full h-full object-cover motion-reduce:hidden"
@@ -75,28 +80,29 @@ export default function SafeServicios() {
           playsInline
           aria-hidden="true"
         />
+        {/* overlay más oscuro para buen contraste */}
         <div className="absolute inset-0 bg-black/85" aria-hidden="true" />
 
         <div className="relative z-10 max-w-3xl px-4">
           <h1 className="text-4xl font-bold leading-tight md:text-5xl text-white">
             Safe <span className="text-hawkes-blue-300">Escolar</span>
           </h1>
-          <p className="mt-4 text-lg md:text-xl text-gray-100/90">
-            Plataforma integral para instituciones educativas, familias y
-            administración. Todo lo que necesitas para gestionar tu comunidad en un solo lugar.
+          <p className="mt-4 text-lg md:text-xl text-slate-200/90">
+            Plataforma integral para instituciones educativas, familias y administración. Todo lo que
+            necesitas para gestionar tu comunidad en un solo lugar.
           </p>
 
           <div className="mt-8 flex flex-col sm:flex-row gap-3 justify-center">
             <Link
               to="/"
-              className="w-full sm:w-auto text-center rounded-md border border-white/70 px-5 py-3 text-white/95 hover:bg-white hover:text-hawkes-blue-900 transition"
+              className="w-full sm:w-auto text-center rounded-md border border-white/40 px-5 py-3 text-white/95 hover:bg-white hover:text-hawkes-blue-900 transition"
               aria-label="Volver al inicio"
             >
               ← Volver al inicio
             </Link>
             <a
               href="#modulos"
-              className="w-full sm:w-auto text-center rounded-md bg-hawkes-blue-600 px-5 py-3 text-white hover:bg-hawkes-blue-700 focus-visible:ring-4 focus-visible:ring-hawkes-blue-300 transition"
+              className="w-full sm:w-auto text-center rounded-md bg-hawkes-blue-600 px-5 py-3 text-white hover:bg-hawkes-blue-700 focus-visible:ring-4 focus-visible:ring-hawkes-blue-400/40 transition"
               aria-label="Ver módulos de Safe Escolar"
             >
               Ver módulos
@@ -105,16 +111,16 @@ export default function SafeServicios() {
         </div>
       </section>
 
-      {/* MÓDULOS */}
+      {/* MÓDULOS (oscuro) */}
       <section
         id="modulos"
         className="scroll-mt-24 mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-14 md:py-20"
       >
         <header className="mb-10 text-center">
-          <h2 className="text-3xl font-bold text-gray-900 md:text-4xl">
+          <h2 className="text-3xl font-bold text-white md:text-4xl">
             Módulos incluidos
           </h2>
-          <p className="mx-auto mt-3 max-w-2xl text-gray-600">
+          <p className="mx-auto mt-3 max-w-2xl text-slate-300">
             Cada módulo está diseñado para un rol específico, pero todos se integran entre sí.
           </p>
           <div className="mx-auto mt-6 h-[3px] w-24 rounded-full bg-hawkes-blue-600" />
@@ -122,23 +128,28 @@ export default function SafeServicios() {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6 md:gap-8">
           {blocks.map((b) => (
-            <article key={b.title} className={CARD}>
-              {/* Imagen más grande */}
+            <article key={b.title} className={CARD} aria-labelledby={`${b.title}-titulo`}>
+              {/* Imagen con glow */}
               <div className={CARD_MEDIA}>
                 <img
                   src={b.img}
                   alt={b.title}
-                  className="h-28 sm:h-32 md:h-40 w-auto object-contain"
+                  className="h-28 sm:h-32 md:h-40 w-auto object-contain drop-shadow-[0_6px_20px_rgba(113,125,227,.25)]"
                   loading="lazy"
                 />
               </div>
+
               <div className={CARD_BODY}>
-                {/* quitamos h3 */}
-                <p className="text-gray-700">{b.desc}</p>
+                <h3 id={`${b.title}-titulo`} className="text-xl font-semibold text-white">
+                  {b.title}
+                </h3>
+
+                <p className="text-slate-300">{b.desc}</p>
+
                 <ul className="mt-2 space-y-2">
                   {b.bullets.map((x) => (
                     <li key={x} className="flex items-start gap-3">
-                      <span className="mt-1 inline-flex h-5 w-5 items-center justify-center rounded-md border border-hawkes-blue-200 bg-hawkes-blue-50 text-hawkes-blue-600">
+                      <span className="mt-1 inline-flex h-5 w-5 items-center justify-center rounded-md border border-hawkes-blue-500/30 bg-hawkes-blue-600/15 text-hawkes-blue-300">
                         <svg
                           className="h-3.5 w-3.5"
                           viewBox="0 0 24 24"
@@ -152,11 +163,14 @@ export default function SafeServicios() {
                           <path d="M5 13l4 4L19 7" />
                         </svg>
                       </span>
-                      <span className="text-gray-800">{x}</span>
+                      <span className="text-slate-200">{x}</span>
                     </li>
                   ))}
                 </ul>
               </div>
+
+              {/* Línea de acento al hover */}
+              <div className="pointer-events-none absolute inset-x-0 bottom-0 h-1 origin-left scale-x-0 bg-hawkes-blue-600/80 transition-transform duration-300 group-hover:scale-x-100" />
             </article>
           ))}
         </div>

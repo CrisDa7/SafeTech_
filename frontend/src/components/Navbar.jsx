@@ -25,7 +25,7 @@ export default function Navbar() {
     Principal: false,
     Nosotros: false,
     Acceder: false,
-    Productos: false, // NUEVO
+    Productos: false,
     "Soporte en línea": false,
   });
   const [mobilePrincipalOpen, setMobilePrincipalOpen] = useState({ quienes: false });
@@ -137,7 +137,7 @@ export default function Navbar() {
     { name: "Principal", isMenuPrincipal: true },
     { name: "Nosotros", isNosotros: true },
     { name: "Acceder", isAcceder: true },
-    { name: "Productos", isProductos: true }, // NUEVO
+    { name: "Productos", isProductos: true },
     { name: "Soporte en línea", isSoporte: true },
   ];
 
@@ -170,11 +170,11 @@ export default function Navbar() {
     }
   };
 
-  // Panel wrapper (desktop)
+  // Panel wrapper (desktop) —> oscuro
   const PanelWrapper = ({ children, label }) => (
     <div className="fixed inset-x-0 top-[56px] md:top-[64px] z-[60]" role="menu" aria-label={label}>
       <div className="mx-auto max-w-screen-xl px-4 flex justify-end">
-        <div className="w-[min(92vw,920px)] bg-white shadow-2xl border border-gray-200 overflow-hidden">
+        <div className="w-[min(92vw,920px)] bg-neutral-900 text-neutral-100 shadow-2xl border border-neutral-700 overflow-hidden">
           {children}
         </div>
       </div>
@@ -182,7 +182,7 @@ export default function Navbar() {
   );
 
   // =============== MOBILE SMALL PARTS ===============
-  // Botón de fila principal (solo título sobre fondo oscuro)
+  // Botón de fila principal (sobre fondo del navbar)
   const MRow = ({ open, onToggle, title }) => (
     <button
       type="button"
@@ -200,17 +200,17 @@ export default function Navbar() {
     </button>
   );
 
-  // Sub-fila suave (acordeón interno)
+  // Sub-fila suave (acordeón interno) —> oscuro
   const SubRow = ({ open, onToggle, title }) => (
     <button
       type="button"
       onClick={onToggle}
       className={`w-full flex items-center justify-between text-left px-3 py-2 rounded-md border
-        ${open ? "bg-hawkes-blue-100/70 border-hawkes-blue-200" : "bg-hawkes-blue-50 border-hawkes-blue-100"} `}
+        ${open ? "bg-neutral-800 border-neutral-700" : "bg-neutral-900 border-neutral-800"} `}
     >
-      <span className="font-medium text-hawkes-blue-700">{title}</span>
+      <span className="font-medium text-neutral-100">{title}</span>
       <FaChevronDown
-        className={`w-3 h-3 text-hawkes-blue-600 transition-transform ${open ? "rotate-180" : ""}`}
+        className={`w-3 h-3 text-hawkes-blue-300 transition-transform ${open ? "rotate-180" : ""}`}
         aria-hidden="true"
       />
     </button>
@@ -220,7 +220,7 @@ export default function Navbar() {
     <div className={`grid transition-all ${open ? "grid-rows-[1fr]" : "grid-rows-[0fr]"}`}>
       <div className="overflow-hidden">
         {/* scroll táctil dentro del bloque */}
-        <div className="mt-2 bg-white text-gray-800 rounded-md shadow border border-gray-200 p-4 max-h-[60vh] overflow-y-auto">
+        <div className="mt-2 bg-neutral-900 text-neutral-100 rounded-md shadow border border-neutral-800 p-4 max-h-[60vh] overflow-y-auto">
           {children}
         </div>
       </div>
@@ -304,32 +304,35 @@ export default function Navbar() {
                   {item.isMenuPrincipal && activeDropdown === "Principal" && (
                     <PanelWrapper label="Menú Principal">
                       <div className="flex flex-col md:flex-row">
-                        <div className="md:w-1/4 border-b md:border-b-0 md:border-r border-gray-200">
+                        {/* Tabs */}
+                        <div className="md:w-1/4 border-b md:border-b-0 md:border-r border-neutral-800">
                           <button
                             onMouseEnter={() => setMenuPrincipalActive("quienes")}
                             onFocus={() => setMenuPrincipalActive("quienes")}
                             className={`w-full text-left p-5 transition ${
                               menuPrincipalActive === "quienes"
-                                ? "bg-hawkes-blue-50 border-l-4 border-hawkes-blue-600"
-                                : "hover:bg-gray-50"
+                                ? "bg-neutral-800 border-l-4 border-hawkes-blue-600"
+                                : "hover:bg-neutral-800/60"
                             }`}
                           >
-                            <span className={`${menuPrincipalActive === "quienes" ? "text-hawkes-blue-800" : "text-gray-700"} font-medium`}>
+                            <span className={`${menuPrincipalActive === "quienes" ? "text-white" : "text-neutral-300"} font-medium`}>
                               ¿Quiénes somos?
                             </span>
                           </button>
                         </div>
 
-                        <div className="md:w-2/4 p-6 md:border-r border-gray-200">
-                          <h2 className="text-xl lg:text-2xl font-bold text-gray-800 mb-3">
+                        {/* Content */}
+                        <div className="md:w-2/4 p-6 md:border-r border-neutral-800">
+                          <h2 className="text-xl lg:text-2xl font-bold text-white mb-3">
                             {currentMenuPrincipalData.title}
                           </h2>
-                          <p className="text-gray-600 whitespace-pre-line">
+                          <p className="text-neutral-300 whitespace-pre-line">
                             {currentMenuPrincipalData.description}
                           </p>
                         </div>
 
-                        <div className="md:w-1/4 bg-hawkes-blue-50 p-6 flex items-center justify-center">
+                        {/* Media */}
+                        <div className="md:w-1/4 bg-neutral-800 p-6 flex items-center justify-center">
                           <img src={currentMenuPrincipalData.image} alt={currentMenuPrincipalData.title} className="max-w-full max-h-48 object-contain" loading="lazy" />
                         </div>
                       </div>
@@ -340,7 +343,7 @@ export default function Navbar() {
                   {item.isNosotros && activeDropdown === "Nosotros" && (
                     <PanelWrapper label="Menú Nosotros">
                       <div className="flex flex-col md:flex-row">
-                        <div className="md:w-1/4 border-b md:border-b-0 md:border-r border-gray-200">
+                        <div className="md:w-1/4 border-b md:border-b-0 md:border-r border-neutral-800">
                           {[
                             { key: "mision", label: "Misión" },
                             { key: "vision", label: "Visión" },
@@ -351,33 +354,33 @@ export default function Navbar() {
                               onFocus={() => setNosotrosActiveOption(opt.key)}
                               className={`w-full text-left p-5 transition ${
                                 nosotrosActiveOption === opt.key
-                                  ? "bg-hawkes-blue-50 border-l-4 border-hawkes-blue-600"
-                                  : "hover:bg-gray-50"
+                                  ? "bg-neutral-800 border-l-4 border-hawkes-blue-600"
+                                  : "hover:bg-neutral-800/60"
                               }`}
                             >
-                              <span className={`${nosotrosActiveOption === opt.key ? "text-hawkes-blue-800" : "text-gray-700"} font-medium`}>
+                              <span className={`${nosotrosActiveOption === opt.key ? "text-white" : "text-neutral-300"} font-medium`}>
                                 {opt.label}
                               </span>
                             </button>
                           ))}
                         </div>
 
-                        <div className="md:w-2/4 p-6 md:border-r border-gray-200">
-                          <h2 className="text-xl lg:text-2xl font-bold text-gray-800 mb-3">
+                        <div className="md:w-2/4 p-6 md:border-r border-neutral-800">
+                          <h2 className="text-xl lg:text-2xl font-bold text-white mb-3">
                             {currentNosotrosData.title}
                           </h2>
-                          <p className="text-gray-600 mb-6">{currentNosotrosData.description}</p>
+                          <p className="text-neutral-300 mb-6">{currentNosotrosData.description}</p>
                           <ul className="space-y-3">
                             {currentNosotrosData.details.map((detail, idx) => (
                               <li key={idx} className="flex items-start">
-                                <FaShieldAlt className="text-hawkes-blue-500 mt-1 mr-3 shrink-0" aria-hidden="true" />
-                                <span className="text-gray-700">{detail}</span>
+                                <FaShieldAlt className="text-hawkes-blue-400 mt-1 mr-3 shrink-0" aria-hidden="true" />
+                                <span className="text-neutral-200">{detail}</span>
                               </li>
                             ))}
                           </ul>
                         </div>
 
-                        <div className="md:w-1/4 bg-hawkes-blue-50 p-6 flex items-center justify-center">
+                        <div className="md:w-1/4 bg-neutral-800 p-6 flex items-center justify-center">
                           <img src={currentNosotrosData.image} alt={currentNosotrosData.title} className="max-w-full max-h-48 object-contain" loading="lazy" />
                         </div>
                       </div>
@@ -388,7 +391,7 @@ export default function Navbar() {
                   {item.isAcceder && activeDropdown === "Acceder" && (
                     <PanelWrapper label="Menú Acceder">
                       <div className="flex flex-col md:flex-row">
-                        <div className="md:w-1/4 border-b md:border-b-0 md:border-r border-gray-200">
+                        <div className="md:w-1/4 border-b md:border-b-0 md:border-r border-neutral-800">
                           {Object.keys(accederData).map((key) => (
                             <button
                               key={key}
@@ -396,32 +399,32 @@ export default function Navbar() {
                               onFocus={() => setAccederActiveOption(key)}
                               className={`w-full text-left p-5 transition ${
                                 accederActiveOption === key
-                                  ? "bg-hawkes-blue-50 border-l-4 border-hawkes-blue-600"
-                                  : "hover:bg-gray-50"
+                                  ? "bg-neutral-800 border-l-4 border-hawkes-blue-600"
+                                  : "hover:bg-neutral-800/60"
                               }`}
                             >
-                              <span className={`${accederActiveOption === key ? "text-hawkes-blue-800" : "text-gray-700"} font-medium`}>
+                              <span className={`${accederActiveOption === key ? "text-white" : "text-neutral-300"} font-medium`}>
                                 {accederData[key].title}
                               </span>
                             </button>
                           ))}
                         </div>
 
-                        <div className="md:w-2/4 p-6 md:border-r border-gray-200">
-                          <h2 className="text-xl lg:text-2xl font-bold text-gray-800 mb-3">{currentAccederData.title}</h2>
-                          <p className="text-gray-600 mb-6">{currentAccederData.description}</p>
+                        <div className="md:w-2/4 p-6 md:border-r border-neutral-800">
+                          <h2 className="text-xl lg:text-2xl font-bold text-white mb-3">{currentAccederData.title}</h2>
+                          <p className="text-neutral-300 mb-6">{currentAccederData.description}</p>
                           <ul className="space-y-3">
                             {currentAccederData.details.map((detail, idx) => (
                               <li key={idx} className="flex items-start">
-                                <FaShieldAlt className="text-hawkes-blue-500 mt-1 mr-3 shrink-0" aria-hidden="true" />
-                                <span className="text-gray-700">{detail}</span>
+                                <FaShieldAlt className="text-hawkes-blue-400 mt-1 mr-3 shrink-0" aria-hidden="true" />
+                                <span className="text-neutral-200">{detail}</span>
                               </li>
                             ))}
                           </ul>
                         </div>
 
-                        <div className="md:w-1/4 bg-hawkes-blue-50 p-6 flex flex-col items-center justify-center">
-                          <div className="mb-6 w-36 h-36 md:w-40 md:h-40 bg-white shadow-md flex items-center justify-center p-4">
+                        <div className="md:w-1/4 bg-neutral-800 p-6 flex flex-col items-center justify-center">
+                          <div className="mb-6 w-36 h-36 md:w-40 md:h-40 bg-neutral-900 border border-neutral-800 shadow-md flex items-center justify-center p-4">
                             <img src={currentAccederData.image} alt={currentAccederData.title} className="max-w-full max-h-full object-contain" loading="lazy" />
                           </div>
                           <a
@@ -435,28 +438,28 @@ export default function Navbar() {
                     </PanelWrapper>
                   )}
 
-                  {/* Productos (NUEVO) */}
+                  {/* Productos */}
                   {item.isProductos && activeDropdown === "Productos" && (
                     <PanelWrapper label="Menú Productos">
                       <div className="flex flex-col md:flex-row">
-                        <div className="md:w-2/3 p-6 md:border-r border-gray-200">
-                          <h2 className="text-xl lg:text-2xl font-bold text-gray-800 mb-3">
+                        <div className="md:w-2/3 p-6 md:border-r border-neutral-800">
+                          <h2 className="text-xl lg:text-2xl font-bold text-white mb-3">
                             {productosData.estado.title}
                           </h2>
-                          <p className="text-gray-600 mb-6">{productosData.estado.description}</p>
+                          <p className="text-neutral-300 mb-6">{productosData.estado.description}</p>
                           <ul className="space-y-3">
                             {productosData.estado.details.map((d, i) => (
                               <li key={i} className="flex items-start">
-                                <FaShieldAlt className="text-hawkes-blue-500 mt-1 mr-3 shrink-0" aria-hidden="true" />
-                                <span className="text-gray-700">{d}</span>
+                                <FaShieldAlt className="text-hawkes-blue-400 mt-1 mr-3 shrink-0" aria-hidden="true" />
+                                <span className="text-neutral-200">{d}</span>
                               </li>
                             ))}
                           </ul>
-                          <div className="mt-6 inline-flex items-center justify-center gap-2 px-6 py-3 bg-gray-300 text-gray-700 font-medium cursor-not-allowed rounded-md">
+                          <div className="mt-6 inline-flex items-center justify-center gap-2 px-6 py-3 bg-neutral-800 text-neutral-300 border border-neutral-700 font-medium cursor-not-allowed rounded-md">
                             {productosData.estado.buttonText}
                           </div>
                         </div>
-                        <div className="md:w-1/3 bg-hawkes-blue-50 p-6 flex items-center justify-center">
+                        <div className="md:w-1/3 bg-neutral-800 p-6 flex items-center justify-center">
                           <img
                             src={productosData.estado.image}
                             alt="Sección en configuración"
@@ -472,19 +475,19 @@ export default function Navbar() {
                   {item.isSoporte && activeDropdown === "Soporte en línea" && (
                     <PanelWrapper label="Menú Soporte en línea">
                       <div className="flex flex-col md:flex-row">
-                        <div className="md:w-1/4 border-b md:border-b-0 md:border-r border-gray-200 p-6">
-                          <h3 className="text-lg font-semibold text-gray-800">Centro de Ayuda</h3>
-                          <p className="text-sm text-gray-600 mt-2">Encuentra guías, tutoriales y documentación.</p>
+                        <div className="md:w-1/4 border-b md:border-b-0 md:border-r border-neutral-800 p-6">
+                          <h3 className="text-lg font-semibold text-white">Centro de Ayuda</h3>
+                          <p className="text-sm text-neutral-300 mt-2">Encuentra guías, tutoriales y documentación.</p>
                         </div>
-                        <div className="md:w-2/4 p-6 md:border-r border-gray-200">
-                          <h3 className="text-lg font-semibold text-gray-800">Soporte Técnico</h3>
-                          <ul className="mt-4 space-y-2 text-sm text-gray-600">
+                        <div className="md:w-2/4 p-6 md:border-r border-neutral-800">
+                          <h3 className="text-lg font-semibold text-white">Soporte Técnico</h3>
+                          <ul className="mt-4 space-y-2 text-sm text-neutral-300">
                             <li>✔ Preguntas frecuentes</li>
                             <li>✔ Tutoriales interactivos</li>
                             <li>✔ Reportar incidencias</li>
                           </ul>
                         </div>
-                        <div className="md:w-1/4 bg-hawkes-blue-50 p-6 flex flex-col items-center justify-center">
+                        <div className="md:w-1/4 bg-neutral-800 p-6 flex flex-col items-center justify-center">
                           <a href="https://wa.me/593999047935" target="_blank" rel="noopener noreferrer" className="px-6 py-3 bg-green-600 text-white font-medium hover:bg-green-700 w-full text-center mb-3 rounded-md" aria-label="Chatear por WhatsApp">
                             WhatsApp
                           </a>
@@ -504,7 +507,7 @@ export default function Navbar() {
         {/* MÓVIL: acordeones multi-open y sub-acordeones suaves */}
         <div
           className={`md:hidden origin-top transition-all ${
-            menuOpen ? "max-h-[2200px] opacity-100" : "max-h-0 opacity-0"
+            menuOpen ? "max-h-[2400px] opacity-100" : "max-h-0 opacity-0"
           } overflow-hidden`}
           id="primary-menu"
         >
@@ -528,14 +531,14 @@ export default function Navbar() {
                     }
                   />
                   <MCollapse open={mobilePrincipalOpen.quienes}>
-                    <h4 className="font-semibold mb-2">{menuPrincipalData.quienes.title}</h4>
-                    <p className="text-sm text-gray-700 whitespace-pre-line">
+                    <h4 className="font-semibold mb-2">¿Quiénes somos?</h4>
+                    <p className="text-sm text-neutral-300 whitespace-pre-line">
                       {menuPrincipalData.quienes.description}
                     </p>
                     <img
                       src={menuPrincipalData.quienes.image}
                       alt={menuPrincipalData.quienes.title}
-                      className="mt-3 w-full max-h-44 object-cover border border-gray-200"
+                      className="mt-3 w-full max-h-44 object-cover border border-neutral-800"
                       loading="lazy"
                     />
                   </MCollapse>
@@ -564,19 +567,19 @@ export default function Navbar() {
                   />
                   <MCollapse open={mobileNosotrosOpen.mision}>
                     <h4 className="font-semibold mb-2">{nosotrosData.mision.title}</h4>
-                    <p className="text-sm text-gray-700">{nosotrosData.mision.description}</p>
+                    <p className="text-sm text-neutral-300">{nosotrosData.mision.description}</p>
                     <ul className="mt-2 space-y-2">
                       {nosotrosData.mision.details.map((d, i) => (
                         <li key={i} className="flex items-start text-sm">
-                          <FaShieldAlt className="text-hawkes-blue-500 mt-0.5 mr-2" />
-                          {d}
+                          <FaShieldAlt className="text-hawkes-blue-400 mt-0.5 mr-2" />
+                          <span className="text-neutral-200">{d}</span>
                         </li>
                       ))}
                     </ul>
                     <img
                       src={nosotrosData.mision.image}
                       alt="Misión"
-                      className="mt-3 w-full max-h-44 object-cover border border-gray-200"
+                      className="mt-3 w-full max-h-44 object-cover border border-neutral-800"
                       loading="lazy"
                     />
                   </MCollapse>
@@ -591,19 +594,19 @@ export default function Navbar() {
                   />
                   <MCollapse open={mobileNosotrosOpen.vision}>
                     <h4 className="font-semibold mb-2">{nosotrosData.vision.title}</h4>
-                    <p className="text-sm text-gray-700">{nosotrosData.vision.description}</p>
+                    <p className="text-sm text-neutral-300">{nosotrosData.vision.description}</p>
                     <ul className="mt-2 space-y-2">
                       {nosotrosData.vision.details.map((d, i) => (
                         <li key={i} className="flex items-start text-sm">
-                          <FaShieldAlt className="text-hawkes-blue-500 mt-0.5 mr-2" />
-                          {d}
+                          <FaShieldAlt className="text-hawkes-blue-400 mt-0.5 mr-2" />
+                          <span className="text-neutral-200">{d}</span>
                         </li>
                       ))}
                     </ul>
                     <img
                       src={nosotrosData.vision.image}
                       alt="Visión"
-                      className="mt-3 w-full max-h-44 object-cover border border-gray-200"
+                      className="mt-3 w-full max-h-44 object-cover border border-neutral-800"
                       loading="lazy"
                     />
                   </MCollapse>
@@ -633,21 +636,21 @@ export default function Navbar() {
                       />
                       <MCollapse open={mobileAccederOpen[key]}>
                         <h4 className="font-semibold">{accederData[key].title}</h4>
-                        <p className="text-sm text-gray-700">
+                        <p className="text-sm text-neutral-300">
                           {accederData[key].description}
                         </p>
                         <ul className="mt-2 space-y-2">
                           {accederData[key].details.map((d, i) => (
                             <li key={i} className="flex items-start text-sm">
-                              <FaShieldAlt className="text-hawkes-blue-500 mt-0.5 mr-2" />
-                              {d}
+                              <FaShieldAlt className="text-hawkes-blue-400 mt-0.5 mr-2" />
+                              <span className="text-neutral-200">{d}</span>
                             </li>
                           ))}
                         </ul>
                         <img
                           src={accederData[key].image}
                           alt={accederData[key].title}
-                          className="mt-3 w-full max-h-44 object-contain border border-gray-200"
+                          className="mt-3 w-full max-h-44 object-contain border border-neutral-800"
                           loading="lazy"
                         />
                         <a
@@ -663,7 +666,7 @@ export default function Navbar() {
               </MCollapse>
             </li>
 
-            {/* PRODUCTOS (NUEVO) */}
+            {/* PRODUCTOS */}
             <li>
               <MRow
                 title="Productos"
@@ -674,27 +677,27 @@ export default function Navbar() {
               />
               <MCollapse open={mobileSectionsOpen["Productos"]}>
                 <h4 className="font-semibold">Productos</h4>
-                <p className="text-sm text-gray-700">
+                <p className="text-sm text-neutral-300">
                   Esta parte está en configuración. Muy pronto podrás explorar nuestro catálogo de soluciones.
                 </p>
-                <ul className="mt-2 space-y-2 text-sm text-gray-700">
-                  <li className="flex items-start">
-                    <FaShieldAlt className="text-hawkes-blue-500 mt-0.5 mr-2" /> Catálogo en preparación
+                <ul className="mt-2 space-y-2 text-sm">
+                  <li className="flex items-start text-neutral-200">
+                    <FaShieldAlt className="text-hawkes-blue-400 mt-0.5 mr-2" /> Catálogo en preparación
                   </li>
-                  <li className="flex items-start">
-                    <FaShieldAlt className="text-hawkes-blue-500 mt-0.5 mr-2" /> Integraciones y precios
+                  <li className="flex items-start text-neutral-200">
+                    <FaShieldAlt className="text-hawkes-blue-400 mt-0.5 mr-2" /> Integraciones y precios
                   </li>
-                  <li className="flex items-start">
-                    <FaShieldAlt className="text-hawkes-blue-500 mt-0.5 mr-2" /> Demos y documentación
+                  <li className="flex items-start text-neutral-200">
+                    <FaShieldAlt className="text-hawkes-blue-400 mt-0.5 mr-2" /> Demos y documentación
                   </li>
                 </ul>
                 <img
                   src={configuracionImg}
                   alt="Sección en configuración"
-                  className="mt-3 w-full max-h-44 object-contain border border-gray-200"
+                  className="mt-3 w-full max-h-44 object-contain border border-neutral-800"
                   loading="lazy"
                 />
-                <div className="mt-3 inline-flex items-center justify-center w-full px-4 py-2 bg-gray-300 text-gray-700 rounded-md cursor-not-allowed">
+                <div className="mt-3 inline-flex items-center justify-center w-full px-4 py-2 bg-neutral-800 text-neutral-300 border border-neutral-700 rounded-md cursor-not-allowed">
                   Muy pronto
                 </div>
               </MCollapse>
@@ -714,9 +717,9 @@ export default function Navbar() {
               />
               <MCollapse open={mobileSectionsOpen["Soporte en línea"]}>
                 <h4 className="font-semibold">Centro de Ayuda</h4>
-                <p className="text-sm text-gray-600">Guías, tutoriales y documentación.</p>
+                <p className="text-sm text-neutral-300">Guías, tutoriales y documentación.</p>
                 <h4 className="text-lg font-semibold mt-2">Soporte Técnico</h4>
-                <ul className="mt-1 space-y-1 text-sm text-gray-600">
+                <ul className="mt-1 space-y-1 text-sm text-neutral-300">
                   <li>✔ Preguntas frecuentes</li>
                   <li>✔ Tutoriales interactivos</li>
                   <li>✔ Reportar incidencias</li>
