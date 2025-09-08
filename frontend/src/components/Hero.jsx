@@ -117,13 +117,13 @@ export default function Hero() {
         </h1>
 
         <p className="mx-auto mb-8 max-w-3xl text-pretty text-gray-200 text-lg md:text-xl">
-          Empresa ecuatoriana comprometida con transformar la seguridad escolar
-          a través de la innovación tecnológica.
+          "Empresa tecnológica enfocada en brindar soluciones de seguridad
+          avanzada con innovación y confianza "
         </p>
 
         {/* CTAs */}
         <div className="flex flex-col gap-4 sm:flex-row sm:justify-center">
-          <a
+          {/* <a
             href="#nosotros"
             className={BTN_PRIMARY}
             aria-label="Ir a la sección Acerca de nosotros"
@@ -145,7 +145,7 @@ export default function Hero() {
               />
             </svg>
           </a>
-
+          */}
           <a
             href="#servicios"
             className={BTN_OUTLINE}

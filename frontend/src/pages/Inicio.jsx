@@ -1,7 +1,7 @@
 import React from "react";
 import Navbar from "../components/Navbar";
 import Hero from "../components/Hero";
-import Nosotros from "../components/Nosotros";
+//import Nosotros from "../components/Nosotros";
 import Servicios from "../components/Servicios";
 import WhatsFloatingButton from "../components/WhatsFloatingButton";
 import EmailFloatingButton from "../components/EmailFloatingButton";
@@ -12,7 +12,7 @@ export default function Inicio() {
       <Navbar />
       <main className="flex-grow"> {/* pagina principal */}
         <Hero />
-        <Nosotros />
+       {/* <Nosotros /> */}
         <Servicios />
       </main>
       <WhatsFloatingButton />
