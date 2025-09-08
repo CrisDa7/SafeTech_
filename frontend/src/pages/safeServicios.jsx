@@ -2,9 +2,8 @@
 import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 
-// Video de fondo
-// Video de fondo
-import fondoBus from "../assets/fon.webm";
+// Imagen/animación de fondo
+import fondoBus from "../assets/bus2.gif";
 
 // Imágenes de cada módulo
 import adminCardImg from "../assets/admin.png";
@@ -72,13 +71,11 @@ export default function SafeServicios() {
     <div className="bg-slate-950">
       {/* HERO centrado (oscuro) */}
       <section className="relative min-h-[88svh] md:min-h-screen flex items-center justify-center text-center overflow-hidden bg-hawkes-blue-900">
-        <video
+        {/* Fondo con GIF */}
+        <img
           className="absolute inset-0 w-full h-full object-cover motion-reduce:hidden"
           src={fondoBus}
-          autoPlay
-          loop
-          muted
-          playsInline
+          alt="Fondo Safe Escolar"
           aria-hidden="true"
         />
         {/* overlay más oscuro para buen contraste */}
