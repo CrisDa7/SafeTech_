@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
 import adminImg from "../assets/safe.png";
 import configuracionImg from "../assets/configuracion.png";
@@ -6,7 +6,6 @@ import configuracionImg from "../assets/configuracion.png";
 const serviciosData = [
   {
     title: "Safe Escolar",
-    // Carrusel: cada item con título e imagen (URLs de internet temporales)
     carouselItems: [
       {
         title: "Safe School",
@@ -21,7 +20,7 @@ const serviciosData = [
         img: "https://images.unsplash.com/photo-1520607162513-77705c0f0d4a?q=80&w=1200&auto=format&fit=crop",
       },
     ],
-    img: adminImg, // se sigue usando para el encabezado/icono
+    img: adminImg,
     link: "/safe-escolar",
     cta: "Ver más",
     soon: false,
@@ -44,7 +43,7 @@ const serviciosData = [
   },
 ];
 
-// ---- Estilos base que ya tenías ----
+// ---- Estilos base ----
 const BTN_BASE =
   "inline-flex items-center justify-center px-5 py-3 text-base font-medium focus:outline-none transition";
 const BTN_PRIMARY =
@@ -61,7 +60,7 @@ const CARD_MEDIA =
   "px-6 pt-8 pb-6";
 const CARD_BODY = "flex flex-col gap-4 p-6";
 
-// ---- Icono check que ya tenías ----
+// ---- Icono check ----
 const CHECK_ICON = (
   <svg
     className="h-3.5 w-3.5"
@@ -77,16 +76,25 @@ const CHECK_ICON = (
   </svg>
 );
 
-// ---- Carrusel simple para la primera tarjeta ----
+// ---- Carrusel con autoplay cada 3s, sin flechas ----
 function FeatureCarousel({ items }) {
   const [index, setIndex] = useState(0);
-  const trackRef = useRef(null);
-  const clamp = (n) => Math.max(0, Math.min(n, items.length - 1));
+  const [hovering, setHovering] = useState(false);
+
+  const intervalMs = 3000; // cada 3 segundos
+  const clamp = (n) => (n + items.length) % items.length;
   const goTo = (i) => setIndex(clamp(i));
-  const prev = () => goTo(index - 1);
   const next = () => goTo(index + 1);
 
-  // Arrastre táctil básico
+  // Autoplay controlado
+  useEffect(() => {
+    if (hovering) return;
+    const id = setInterval(() => next(), intervalMs);
+    return () => clearInterval(id);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [index, hovering]);
+
+  // Arrastre táctil
   const startX = useRef(0);
   const onTouchStart = (e) => {
     startX.current = e.touches[0].clientX;
@@ -94,12 +102,16 @@ function FeatureCarousel({ items }) {
   const onTouchEnd = (e) => {
     const delta = e.changedTouches[0].clientX - startX.current;
     if (Math.abs(delta) > 40) {
-      delta > 0 ? prev() : next();
+      delta > 0 ? goTo(index - 1) : next();
     }
   };
 
   return (
-    <div className="relative">
+    <div
+      className="relative"
+      onMouseEnter={() => setHovering(true)}
+      onMouseLeave={() => setHovering(false)}
+    >
       {/* Vista */}
       <div
         className="overflow-hidden rounded-xl ring-1 ring-white/10"
@@ -107,7 +119,6 @@ function FeatureCarousel({ items }) {
         onTouchEnd={onTouchEnd}
       >
         <div
-          ref={trackRef}
           className="flex transition-transform duration-500 ease-out"
           style={{ transform: `translateX(-${index * 100}%)` }}
         >
@@ -131,44 +142,22 @@ function FeatureCarousel({ items }) {
         </div>
       </div>
 
-      {/* Controles */}
-      <div className="mt-3 flex items-center justify-between">
-        <div className="flex gap-2">
+      {/* Dots */}
+      <div className="mt-3 flex justify-center gap-2">
+        {items.map((_, i) => (
           <button
-            type="button"
-            onClick={prev}
-            className="rounded-md border border-white/10 bg-white/5 px-3 py-2 text-sm hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-hawkes-blue-400"
-            aria-label="Anterior"
-          >
-            ←
-          </button>
-          <button
-            type="button"
-            onClick={next}
-            className="rounded-md border border-white/10 bg-white/5 px-3 py-2 text-sm hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-hawkes-blue-400"
-            aria-label="Siguiente"
-          >
-            →
-          </button>
-        </div>
-
-        {/* Dots */}
-        <div className="flex items-center gap-2">
-          {items.map((_, i) => (
-            <button
-              key={i}
-              onClick={() => goTo(i)}
-              className={
-                "h-2.5 w-2.5 rounded-full transition " +
-                (i === index
-                  ? "bg-hawkes-blue-500"
-                  : "bg-white/20 hover:bg-white/30")
-              }
-              aria-label={`Ir al slide ${i + 1}`}
-              aria-current={i === index ? "true" : "false"}
-            />
-          ))}
-        </div>
+            key={i}
+            onClick={() => goTo(i)}
+            className={
+              "h-2.5 w-2.5 rounded-full transition " +
+              (i === index
+                ? "bg-hawkes-blue-500"
+                : "bg-white/20 hover:bg-white/30")
+            }
+            aria-label={`Ir al slide ${i + 1}`}
+            aria-current={i === index ? "true" : "false"}
+          />
+        ))}
       </div>
     </div>
   );
@@ -219,11 +208,10 @@ export default function Servicios() {
                   {item.title}
                 </h3>
 
-                {/* Si existe carruselItems (solo primera tarjeta), renderiza carrusel */}
+                {/* Carrusel en la primera tarjeta */}
                 {Array.isArray(item.carouselItems) && item.carouselItems.length > 0 ? (
                   <FeatureCarousel items={item.carouselItems} />
                 ) : (
-                  // Fallback: lista de features si existen
                   Array.isArray(item.features) &&
                   item.features.length > 0 && (
                     <ul className="mt-2 space-y-2.5">
