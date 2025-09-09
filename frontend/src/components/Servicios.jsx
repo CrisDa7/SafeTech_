@@ -76,7 +76,7 @@ const CHECK_ICON = (
   </svg>
 );
 
-// ---- Carrusel con autoplay cada 3s, sin flechas ----
+// ---- Carrusel con autoplay cada 3s, sin flechas (para la PRIMERA tarjeta) ----
 function FeatureCarousel({ items }) {
   const [index, setIndex] = useState(0);
   const [hovering, setHovering] = useState(false);
@@ -163,6 +163,149 @@ function FeatureCarousel({ items }) {
   );
 }
 
+/* ==================== CARRUSEL DE TARJETAS SOLO EN MÓVIL ==================== */
+function MobileServiciosCarousel({ items }) {
+  const trackRef = useRef(null);
+  const [page, setPage] = useState(0);
+
+  // Calcular "página" según desplazamiento
+  const onScroll = () => {
+    const el = trackRef.current;
+    if (!el) return;
+    const i = Math.round(el.scrollLeft / el.clientWidth);
+    setPage(i);
+  };
+
+  const goTo = (i) => {
+    const el = trackRef.current;
+    if (!el) return;
+    const clamped = Math.max(0, Math.min(i, items.length - 1));
+    el.scrollTo({ left: clamped * el.clientWidth, behavior: "smooth" });
+    setPage(clamped);
+  };
+
+  return (
+    <div className="md:hidden">
+      {/* track con snap y scroll horizontal */}
+      <div className="-mx-4 px-4">
+        <div
+          ref={trackRef}
+          onScroll={onScroll}
+          className="flex overflow-x-auto snap-x snap-mandatory scroll-smooth gap-4 no-scrollbar"
+          style={{ scrollSnapType: "x mandatory" }}
+        >
+          {items.map((item) => (
+            <article
+              key={item.title}
+              className={`${CARD} overflow-hidden snap-start shrink-0 w-full`}
+              aria-labelledby={`card-${item.title}-title-mobile`}
+            >
+              <div className={CARD_MEDIA + " aspect-[16/9]"}>
+                <img
+                  src={item.img}
+                  alt={item.title}
+                  loading="lazy"
+                  className="h-28 w-auto object-contain md:h-32 drop-shadow-[0_6px_20px_rgba(113,125,227,.25)]"
+                />
+              </div>
+
+              <div className={CARD_BODY + " grow"}>
+                <h3
+                  id={`card-${item.title}-title-mobile`}
+                  className="text-xl font-semibold text-white"
+                >
+                  {item.title}
+                </h3>
+
+                {Array.isArray(item.carouselItems) && item.carouselItems.length > 0 ? (
+                  <FeatureCarousel items={item.carouselItems} />
+                ) : (
+                  Array.isArray(item.features) &&
+                  item.features.length > 0 && (
+                    <ul className="mt-2 space-y-2.5">
+                      {item.features.map((feature) => (
+                        <li key={feature} className="flex items-start gap-3">
+                          <span className="mt-1 inline-flex h-5 w-5 items-center justify-center rounded-md border border-hawkes-blue-500/30 bg-hawkes-blue-600/15 text-hawkes-blue-300">
+                            {CHECK_ICON}
+                          </span>
+                          <span className="text-slate-300">{feature}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  )
+                )}
+
+                <div className="mt-6">
+                  {item.soon ? (
+                    <button
+                      type="button"
+                      className={BTN_DISABLED}
+                      aria-disabled="true"
+                      title="Disponible pronto"
+                    >
+                      {item.cta}
+                    </button>
+                  ) : (
+                    <Link
+                      to={item.link}
+                      className={BTN_PRIMARY}
+                      aria-label={`Acceder a ${item.title}`}
+                    >
+                      {item.cta}
+                      <svg
+                        className="ml-2 h-4 w-4 rtl:rotate-180"
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 14 10"
+                        fill="none"
+                        aria-hidden="true"
+                      >
+                        <path
+                          stroke="currentColor"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth="2"
+                          d="M1 5h12m0 0L9 1m4 4L9 9"
+                        />
+                      </svg>
+                    </Link>
+                  )}
+                </div>
+              </div>
+
+              <div className="pointer-events-none absolute inset-x-0 bottom-0 h-1 origin-left scale-x-0 bg-hawkes-blue-600/80 transition-transform duration-300 group-hover:scale-x-100" />
+            </article>
+          ))}
+        </div>
+      </div>
+
+      {/* Dots de páginas (tarjetas) */}
+      <div className="mt-4 flex justify-center gap-2">
+        {items.map((_, i) => (
+          <button
+            key={i}
+            onClick={() => goTo(i)}
+            className={
+              "h-2.5 w-2.5 rounded-full transition " +
+              (i === page ? "bg-hawkes-blue-500" : "bg-white/20 hover:bg-white/30")
+            }
+            aria-label={`Ir a tarjeta ${i + 1}`}
+            aria-current={i === page ? "true" : "false"}
+          />
+        ))}
+      </div>
+
+      {/* Ocultar scrollbar en navegadores comunes */}
+      <style>{`
+        .no-scrollbar {
+          -ms-overflow-style: none;  /* IE y Edge */
+          scrollbar-width: none;     /* Firefox */
+        }
+        .no-scrollbar::-webkit-scrollbar { display: none; } /* Chrome/Safari */
+      `}</style>
+    </div>
+  );
+}
+
 export default function Servicios() {
   return (
     <section
@@ -184,7 +327,11 @@ export default function Servicios() {
           <div className="mx-auto mt-6 h-[3px] w-24 rounded-full bg-hawkes-blue-600" />
         </header>
 
-        <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
+        {/* === MÓVIL: carrusel horizontal === */}
+        <MobileServiciosCarousel items={serviciosData} />
+
+        {/* === DESKTOP/TABLET: grilla de 3 columnas (se oculta en móvil) === */}
+        <div className="hidden md:grid grid-cols-1 gap-8 md:grid-cols-3">
           {serviciosData.map((item) => (
             <article
               key={item.title}

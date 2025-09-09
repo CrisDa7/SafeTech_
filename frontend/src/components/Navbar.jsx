@@ -173,10 +173,10 @@ export default function Navbar() {
 
   // ========== THEME helpers para escritorio ==========
   const PANEL_OUTER =
-    "w-[min(92vw,920px)] bg-slate-950 text-white shadow-2xl border border-white/10 overflow-hidden";
+    "w-[min(92vw,920px)] bg-neutral-950 text-white shadow-2xl border border-white/10 overflow-hidden";
   const PANEL_COL_BORDER = "md:border-r border-white/10";
   const TAB_BASE = "w-full text-left p-5 transition";
-  const TAB_ACTIVE = "bg-white/10 border-l-4 border-hawkes-blue-600";
+  const TAB_ACTIVE = "bg-white/10 border-l-4 border-golden-500";
   const TAB_HOVER = "hover:bg-white/5";
   const MEDIA_BG = "bg-white/10";
 
@@ -195,7 +195,7 @@ export default function Navbar() {
       ref={navRef}
       className={`fixed w-full z-50 transition-all duration-300 ${
         scrolled
-          ? "bg-hawkes-blue-900/80 backdrop-blur supports-[backdrop-filter]:bg-hawkes-blue-900/60 shadow-lg py-2"
+          ? "bg-neutral-950/80 backdrop-blur supports-[backdrop-filter]:bg-neutral-950/60 shadow-lg py-2"
           : "bg-transparent py-3"
       }`}
       aria-label="Barra de navegación principal"
@@ -230,7 +230,7 @@ export default function Navbar() {
           <button
             onClick={() => setMenuOpen((v) => !v)}
             type="button"
-            className="inline-flex items-center justify-center rounded-md p-2 md:hidden text-white hover:bg-white/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-hawkes-blue-300/70"
+            className="inline-flex items-center justify-center rounded-md p-2 md:hidden text-white hover:bg-white/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-golden-300/70"
             aria-controls="mobile-drawer"
             aria-expanded={menuOpen}
             aria-label={menuOpen ? "Cerrar menú" : "Abrir menú"}
@@ -253,7 +253,7 @@ export default function Navbar() {
                 >
                   <button
                     type="button"
-                    className="flex items-center gap-1 px-3 py-2 text-white hover:text-hawkes-blue-200 focus-visible:ring-2 focus-visible:ring-hawkes-blue-300/70 rounded-md"
+                    className="flex items-center gap-1 px-3 py-2 text-white hover:text-golden-200 focus-visible:ring-2 focus-visible:ring-golden-300/70 rounded-md"
                     aria-haspopup="true"
                     aria-expanded={activeDropdown === item.name}
                     onClick={() => toggleDropdown(item.name)}
@@ -327,7 +327,7 @@ export default function Navbar() {
                           <ul className="space-y-3">
                             {currentNosotrosData.details.map((detail, idx) => (
                               <li key={idx} className="flex items-start">
-                                <FaShieldAlt className="text-hawkes-blue-400 mt-1 mr-3 shrink-0" aria-hidden="true" />
+                                <FaShieldAlt className="text-golden-400 mt-1 mr-3 shrink-0" aria-hidden="true" />
                                 <span className="text-neutral-100">{detail}</span>
                               </li>
                             ))}
@@ -366,7 +366,7 @@ export default function Navbar() {
                           <ul className="space-y-3">
                             {currentAccederData.details.map((detail, idx) => (
                               <li key={idx} className="flex items-start">
-                                <FaShieldAlt className="text-hawkes-blue-400 mt-1 mr-3 shrink-0" aria-hidden="true" />
+                                <FaShieldAlt className="text-golden-400 mt-1 mr-3 shrink-0" aria-hidden="true" />
                                 <span className="text-neutral-100">{detail}</span>
                               </li>
                             ))}
@@ -374,12 +374,12 @@ export default function Navbar() {
                         </div>
 
                         <div className={`md:w-1/4 ${MEDIA_BG} p-6 flex flex-col items-center justify-center`}>
-                          <div className="mb-6 w-36 h-36 md:w-40 md:h-40 bg-slate-950 border border-white/10 shadow-md flex items-center justify-center p-4">
+                          <div className="mb-6 w-36 h-36 md:w-40 md:h-40 bg-neutral-950 border border-white/10 shadow-md flex items-center justify-center p-4">
                             <img src={currentAccederData.image} alt={currentAccederData.title} className="max-w-full max-h-full object-contain" loading="lazy" />
                           </div>
                           <a
                             href={currentAccederData.buttonLink}
-                            className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-hawkes-blue-600 text-white font-medium hover:bg-hawkes-blue-700 focus-visible:ring-2 focus-visible:ring-hawkes-blue-300 w-full text-center rounded-md"
+                            className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-golden-600 text-white font-medium hover:bg-golden-700 focus-visible:ring-2 focus-visible:ring-golden-300 w-full text-center rounded-md"
                           >
                             {currentAccederData.buttonText} <FaChevronRight className="inline" aria-hidden="true" />
                           </a>
@@ -400,7 +400,7 @@ export default function Navbar() {
                           <ul className="space-y-3">
                             {productosData.estado.details.map((d, i) => (
                               <li key={i} className="flex items-start">
-                                <FaShieldAlt className="text-hawkes-blue-400 mt-1 mr-3 shrink-0" aria-hidden="true" />
+                                <FaShieldAlt className="text-golden-400 mt-1 mr-3 shrink-0" aria-hidden="true" />
                                 <span className="text-neutral-100">{d}</span>
                               </li>
                             ))}
@@ -472,7 +472,7 @@ export default function Navbar() {
             <aside
               id="mobile-drawer"
               className={`md:hidden fixed right-0 top-0 h-full w-[88%] max-w-sm z-[1001] transform transition-transform duration-300
-                ${menuOpen ? "translate-x-0" : "translate-x-full"} bg-slate-950 border-l border-white/10`}
+                ${menuOpen ? "translate-x-0" : "translate-x-full"} bg-neutral-950 border-l border-white/10`}
               role="dialog"
               aria-modal="true"
               aria-label="Menú de SafeTech"
@@ -597,7 +597,7 @@ export default function Navbar() {
                                       <a
                                         href={d.buttonLink}
                                         onClick={closeMobileMenu}
-                                        className="mt-3 inline-flex items-center gap-2 px-3 py-2 text-sm bg-hawkes-blue-600 text-white rounded-md hover:bg-hawkes-blue-700"
+                                        className="mt-3 inline-flex items-center gap-2 px-3 py-2 text-sm bg-golden-600 text-white rounded-md hover:bg-golden-700"
                                       >
                                         {d.buttonText} <FaChevronRight aria-hidden="true" />
                                       </a>
@@ -614,7 +614,7 @@ export default function Navbar() {
                                 <ul className="text-sm space-y-1">
                                   {productosData.estado.details.map((d, i) => (
                                     <li key={i} className="flex items-start text-neutral-100">
-                                      <FaShieldAlt className="mt-0.5 mr-2 text-hawkes-blue-300" /> {d}
+                                      <FaShieldAlt className="mt-0.5 mr-2 text-golden-300" /> {d}
                                     </li>
                                   ))}
                                 </ul>

@@ -8,22 +8,22 @@ export default {
   theme: {
     extend: {
       colors: {
-        // Azul corporativo
-        "hawkes-blue": {
-          50:  "#f0f4fd",
-          100: "#e3ebfc",
-          200: "#cfdbf9",
-          300: "#adc0f4",
-          400: "#8d9dec",
-          500: "#717de3",
-          600: "#5558d6", // principal (botones, links)
-          700: "#4647bc",
-          800: "#3b3d98",
-          900: "#363a79",
-          950: "#202146", // fondo base
+        // Dorado corporativo (SafeTech)
+        golden: {
+          50:  "#fffbea",
+          100: "#fef3c7",
+          200: "#fde68a",
+          300: "#fcd34d",
+          400: "#fbbf24",
+          500: "#f59e0b", // principal
+          600: "#d97706",
+          700: "#b45309",
+          800: "#92400e",
+          900: "#78350f",
+          950: "#451a03", // dorado oscuro para fondos
         },
 
-        // Grises oscuros para fondos y textos secundarios
+        // Grises oscuros para fondos y textos secundarios (ya estaban bien)
         neutral: {
           100: "#e5e5e5",
           200: "#cfcfcf",
@@ -36,7 +36,7 @@ export default {
           900: "#141414",
         },
 
-        // Acentos
+        // Acentos (puedes mantenerlos o ajustarlos al dorado/negro)
         success: {
           500: "#10b981",
           600: "#059669",
