@@ -1,201 +1,422 @@
 import React, { useState, useRef, useEffect } from "react";
-import {
-  MdEmail,
-  MdClose,
-  MdContentCopy,
-  MdAccessTime,
-  MdSupportAgent,
-} from "react-icons/md";
+import { Link } from "react-router-dom";
+import adminImg from "../assets/safe.png";
+import configuracionImg from "../assets/configuracion.png";
 
-/**
- * Modal de Email:
- * - Móvil: centrado en pantalla
- * - Desktop (md+): flotante a la derecha (como WhatsApp)
- */
-export default function ProfessionalEmailFloatingButton() {
-  const [openPopover, setOpenPopover] = useState(false);
-  const [copied, setCopied] = useState(false);
-  const popoverRef = useRef(null);
+const serviciosData = [
+  {
+    title: "Safe Escolar",
+    carouselItems: [
+      {
+        title: "Safe School",
+        img: "https://images.unsplash.com/photo-1588072432836-e10032774350?q=80&w=1200&auto=format&fit=crop",
+      },
+      {
+        title: "Safe Padres",
+        img: "https://images.unsplash.com/photo-1486591038957-19e7c73bdc41?q=80&w=1200&auto=format&fit=crop",
+      },
+      {
+        title: "Safe Administración",
+        img: "https://images.unsplash.com/photo-1520607162513-77705c0f0d4a?q=80&w=1200&auto=format&fit=crop",
+      },
+    ],
+    img: adminImg,
+    link: "/safe-escolar",
+    cta: "Ver más",
+    soon: false,
+  },
+  {
+    title: "Configurando",
+    features: [],
+    img: configuracionImg,
+    link: "#",
+    cta: "Muy pronto",
+    soon: true,
+  },
+  {
+    title: "Configurando",
+    features: [],
+    img: configuracionImg,
+    link: "#",
+    cta: "Muy pronto",
+    soon: true,
+  },
+];
 
-  const emailDestino = "soporte@safetech-ec.com";
+// ---- Estilos base ----
+const BTN_BASE =
+  "inline-flex items-center justify-center px-5 py-3 text-base font-medium focus:outline-none transition";
+const BTN_PRIMARY =
+  `${BTN_BASE} rounded-md text-white bg-hawkes-blue-600 hover:bg-hawkes-blue-700 focus-visible:ring-4 focus-visible:ring-hawkes-blue-400/50`;
+const BTN_DISABLED =
+  `${BTN_BASE} rounded-md bg-neutral-800 text-neutral-500 cursor-not-allowed`;
 
-  // Cerrar por click fuera
+const CARD =
+  "group relative flex h-full flex-col rounded-2xl bg-slate-900 text-slate-100 " +
+  "ring-1 ring-white/10 shadow-[0_8px_30px_rgba(0,0,0,0.25)] transition-all duration-300 " +
+  "hover:-translate-y-0.5 hover:shadow-[0_10px_40px_rgba(0,0,0,0.35)] hover:ring-hawkes-blue-500/25";
+const CARD_MEDIA =
+  "flex items-center justify-center bg-gradient-to-b from-slate-800 via-slate-900 to-slate-900 " +
+  "px-6 pt-8 pb-6";
+const CARD_BODY = "flex flex-col gap-4 p-6";
+
+// ---- Icono check ----
+const CHECK_ICON = (
+  <svg
+    className="h-3.5 w-3.5"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="3"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    aria-hidden="true"
+  >
+    <path d="M5 13l4 4L19 7" />
+  </svg>
+);
+
+// ---- Carrusel con autoplay cada 3s, sin flechas (para la PRIMERA tarjeta) ----
+function FeatureCarousel({ items }) {
+  const [index, setIndex] = useState(0);
+  const [hovering, setHovering] = useState(false);
+
+  const intervalMs = 3000; // cada 3 segundos
+  const clamp = (n) => (n + items.length) % items.length;
+  const goTo = (i) => setIndex(clamp(i));
+  const next = () => goTo(index + 1);
+
+  // Autoplay controlado
   useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (popoverRef.current && !popoverRef.current.contains(event.target)) {
-        setOpenPopover(false);
-      }
-    };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
+    if (hovering) return;
+    const id = setInterval(() => next(), intervalMs);
+    return () => clearInterval(id);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [index, hovering]);
 
-  const copyToClipboard = () => {
-    navigator.clipboard.writeText(emailDestino);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
+  // Arrastre táctil
+  const startX = useRef(0);
+  const onTouchStart = (e) => {
+    startX.current = e.touches[0].clientX;
+  };
+  const onTouchEnd = (e) => {
+    const delta = e.changedTouches[0].clientX - startX.current;
+    if (Math.abs(delta) > 40) {
+      delta > 0 ? goTo(index - 1) : next();
+    }
   };
 
   return (
-    <>
-      {/* FAB de Email */}
-      <div className="fixed bottom-28 right-6 z-50">
-        <button
-          onClick={() => setOpenPopover(true)}
-          className="flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-r from-hawkes-blue-600 to-hawkes-blue-500 shadow-lg transition-transform duration-300 hover:scale-110 hover:from-hawkes-blue-700 hover:to-hawkes-blue-600"
-          style={{
-            boxShadow: "0 4px 20px rgba(85, 88, 214, 0.5)",
-            animation: "pulse-email 2s infinite",
-          }}
-          aria-label="Contactar por correo"
+    <div
+      className="relative"
+      onMouseEnter={() => setHovering(true)}
+      onMouseLeave={() => setHovering(false)}
+    >
+      {/* Vista */}
+      <div
+        className="overflow-hidden rounded-xl ring-1 ring-white/10"
+        onTouchStart={onTouchStart}
+        onTouchEnd={onTouchEnd}
+      >
+        <div
+          className="flex transition-transform duration-500 ease-out"
+          style={{ transform: `translateX(-${index * 100}%)` }}
         >
-          <MdEmail className="h-7 w-7 text-white" aria-hidden="true" />
-        </button>
-
-        <style jsx>{`
-          @keyframes pulse-email {
-            0% {
-              box-shadow: 0 0 0 0 rgba(85, 88, 214, 0.7);
-            }
-            70% {
-              box-shadow: 0 0 0 10px rgba(85, 88, 214, 0);
-            }
-            100% {
-              box-shadow: 0 0 0 0 rgba(85, 88, 214, 0);
-            }
-          }
-        `}</style>
+          {items.map((it) => (
+            <figure
+              key={it.title}
+              className="relative aspect-[16/9] w-full shrink-0 select-none"
+            >
+              <img
+                src={it.img}
+                alt={it.title}
+                className="h-full w-full object-cover"
+                loading="lazy"
+                draggable="false"
+              />
+              <figcaption className="absolute inset-x-0 bottom-0 bg-slate-950/60 backdrop-blur-sm p-3 text-center text-sm">
+                {it.title}
+              </figcaption>
+            </figure>
+          ))}
+        </div>
       </div>
 
-      {/* Overlay + Modal */}
-      {openPopover && (
-        <div
-          className={
-            // móvil: centrado; md+: como antes
-            "fixed inset-0 z-50 bg-black/50 " +
-            "flex items-center justify-center md:block"
-          }
-          aria-label="Fondo de diálogo de contacto por correo"
-        >
-          <div
-            ref={popoverRef}
+      {/* Dots */}
+      <div className="mt-3 flex justify-center gap-2">
+        {items.map((_, i) => (
+          <button
+            key={i}
+            onClick={() => goTo(i)}
             className={
-              // móvil: centrado y responsivo
-              "bg-white shadow-2xl w-[92vw] max-w-sm overflow-hidden rounded-2xl " +
-              "animate-[popIn_.3s_ease-out_forwards] " +
-              // md+: flotante a la derecha como antes
-              "md:rounded-xl md:fixed md:right-[100px] md:bottom-[170px] md:w-80"
+              "h-2.5 w-2.5 rounded-full transition " +
+              (i === index
+                ? "bg-hawkes-blue-500"
+                : "bg-white/20 hover:bg-white/30")
             }
-          >
-            {/* Flechita solo en desktop */}
-            <div className="pointer-events-none absolute -right-3 top-1/2 hidden h-6 w-6 -translate-y-1/2 rotate-45 bg-white md:block" />
+            aria-label={`Ir al slide ${i + 1}`}
+            aria-current={i === index ? "true" : "false"}
+          />
+        ))}
+      </div>
+    </div>
+  );
+}
 
-            {/* Header */}
-            <div className="flex items-center justify-between bg-gradient-to-r from-hawkes-blue-600 to-hawkes-blue-500 p-4">
-              <div className="flex items-center">
-                <div className="mr-2 rounded-full bg-white p-1">
-                  <MdEmail className="h-6 w-6 text-hawkes-blue-600" aria-hidden="true" />
-                </div>
-                <div>
-                  <h2 className="text-lg font-bold text-white">Chatea por correo</h2>
-                  <p className="text-sm text-hawkes-blue-100">Estamos aquí para ayudarte</p>
-                </div>
+/* ==================== CARRUSEL DE TARJETAS SOLO EN MÓVIL ==================== */
+function MobileServiciosCarousel({ items }) {
+  const trackRef = useRef(null);
+  const [page, setPage] = useState(0);
+
+  // Calcular "página" según desplazamiento
+  const onScroll = () => {
+    const el = trackRef.current;
+    if (!el) return;
+    const i = Math.round(el.scrollLeft / el.clientWidth);
+    setPage(i);
+  };
+
+  const goTo = (i) => {
+    const el = trackRef.current;
+    if (!el) return;
+    const clamped = Math.max(0, Math.min(i, items.length - 1));
+    el.scrollTo({ left: clamped * el.clientWidth, behavior: "smooth" });
+    setPage(clamped);
+  };
+
+  return (
+    <div className="md:hidden">
+      {/* track con snap y scroll horizontal */}
+      <div className="-mx-4 px-4">
+        <div
+          ref={trackRef}
+          onScroll={onScroll}
+          className="flex overflow-x-auto snap-x snap-mandatory scroll-smooth gap-4 no-scrollbar"
+          style={{ scrollSnapType: "x mandatory" }}
+        >
+          {items.map((item) => (
+            <article
+              key={item.title}
+              className={`${CARD} overflow-hidden snap-start shrink-0 w-full`}
+              aria-labelledby={`card-${item.title}-title-mobile`}
+            >
+              <div className={CARD_MEDIA + " aspect-[16/9]"}>
+                <img
+                  src={item.img}
+                  alt={item.title}
+                  loading="lazy"
+                  className="h-28 w-auto object-contain md:h-32 drop-shadow-[0_6px_20px_rgba(113,125,227,.25)]"
+                />
               </div>
-              <button
-                onClick={() => setOpenPopover(false)}
-                className="text-white transition-colors duration-200 hover:text-hawkes-blue-200"
-                aria-label="Cerrar panel de correo"
-              >
-                <MdClose className="h-4 w-4" aria-hidden="true" />
-              </button>
-            </div>
 
-            {/* Cuerpo */}
-            <div className="p-4">
-              <div className="mb-4 flex items-center">
-                <div className="mr-3 flex h-10 w-10 items-center justify-center rounded-full bg-hawkes-blue-50">
-                  <MdSupportAgent className="h-5 w-5 text-hawkes-blue-600" aria-hidden="true" />
-                </div>
-                <div>
-                  <h3 className="text-sm font-semibold text-gray-800">Soporte SafeTech</h3>
-                  <p className="text-xs text-gray-600">Respuesta rápida garantizada</p>
-                </div>
-              </div>
+              <div className={CARD_BODY + " grow"}>
+                <h3
+                  id={`card-${item.title}-title-mobile`}
+                  className="text-xl font-semibold text-white"
+                >
+                  {item.title}
+                </h3>
 
-              {/* Email copiable */}
-              <div className="mb-4">
-                <p className="mb-2 text-sm text-gray-600">Escríbenos a:</p>
-                <div className="flex items-center justify-between rounded-md bg-gray-50 px-3 py-2">
-                  <span className="truncate text-sm font-medium text-gray-800">
-                    {emailDestino}
-                  </span>
-                  <button
-                    onClick={copyToClipboard}
-                    className="ml-2 rounded text-hawkes-blue-600 transition-colors hover:text-hawkes-blue-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-hawkes-blue-300/70"
-                    aria-label="Copiar correo"
-                    title="Copiar correo"
-                  >
-                    <MdContentCopy className="h-4 w-4" aria-hidden="true" />
-                  </button>
-                </div>
-                {copied && (
-                  <p className="mt-1 text-xs text-green-600">¡Correo copiado!</p>
+                {Array.isArray(item.carouselItems) && item.carouselItems.length > 0 ? (
+                  <FeatureCarousel items={item.carouselItems} />
+                ) : (
+                  Array.isArray(item.features) &&
+                  item.features.length > 0 && (
+                    <ul className="mt-2 space-y-2.5">
+                      {item.features.map((feature) => (
+                        <li key={feature} className="flex items-start gap-3">
+                          <span className="mt-1 inline-flex h-5 w-5 items-center justify-center rounded-md border border-hawkes-blue-500/30 bg-hawkes-blue-600/15 text-hawkes-blue-300">
+                            {CHECK_ICON}
+                          </span>
+                          <span className="text-slate-300">{feature}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  )
                 )}
-              </div>
 
-              {/* Horario */}
-              <div className="mb-4 rounded-lg bg-gray-50 p-3">
-                <div className="mb-2 flex items-center">
-                  <MdAccessTime className="mr-2 h-4 w-4 text-gray-500" aria-hidden="true" />
-                  <span className="text-sm font-medium text-gray-700">
-                    Horario de atención
-                  </span>
+                <div className="mt-6">
+                  {item.soon ? (
+                    <button
+                      type="button"
+                      className={BTN_DISABLED}
+                      aria-disabled="true"
+                      title="Disponible pronto"
+                    >
+                      {item.cta}
+                    </button>
+                  ) : (
+                    <Link
+                      to={item.link}
+                      className={BTN_PRIMARY}
+                      aria-label={`Acceder a ${item.title}`}
+                    >
+                      {item.cta}
+                      <svg
+                        className="ml-2 h-4 w-4 rtl:rotate-180"
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 14 10"
+                        fill="none"
+                        aria-hidden="true"
+                      >
+                        <path
+                          stroke="currentColor"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth="2"
+                          d="M1 5h12m0 0L9 1m4 4L9 9"
+                        />
+                      </svg>
+                    </Link>
+                  )}
                 </div>
-                <p className="text-xs text-gray-600">Lunes a Viernes: 8:00 - 18:00</p>
-                <p className="text-xs text-gray-600">Sábados: 9:00 - 13:00</p>
               </div>
 
-              <p className="mb-4 text-center text-sm text-gray-700">
-                ¿Tienes preguntas sobre nuestros servicios? Escríbenos por correo
-                electrónico.
-              </p>
-
-              {/* CTA: abrir redacción en Gmail */}
-              <a
-                href={`https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(
-                  emailDestino
-                )}&su=${encodeURIComponent("Consulta")}&body=${encodeURIComponent(
-                  "Hola, me gustaría obtener más información acerca de sus servicios."
-                )}`}
-                target="_blank"
-                rel="noreferrer"
-                onClick={() => setOpenPopover(false)}
-                className="flex items-center justify-center rounded-lg bg-gradient-to-r from-hawkes-blue-600 to-hawkes-blue-500 px-4 py-3 text-sm font-semibold text-white transition-colors duration-200 hover:from-hawkes-blue-700 hover:to-hawkes-blue-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-hawkes-blue-300/70"
-                aria-label="Abrir Gmail para escribirnos"
-              >
-                <MdEmail className="mr-2 h-5 w-5" aria-hidden="true" />
-                Abrir Gmail
-              </a>
-            </div>
-
-            {/* Footer */}
-            <div className="bg-gray-100 p-3 text-center">
-              <p className="text-xs text-gray-500">
-                Email:{" "}
-                <span className="font-medium text-hawkes-blue-600">{emailDestino}</span>
-              </p>
-            </div>
-          </div>
-
-          {/* animación del modal */}
-          <style jsx>{`
-            @keyframes popIn {
-              0% { opacity: 0; transform: scale(0.92) translateY(8px); }
-              100% { opacity: 1; transform: scale(1) translateY(0); }
-            }
-          `}</style>
+              <div className="pointer-events-none absolute inset-x-0 bottom-0 h-1 origin-left scale-x-0 bg-hawkes-blue-600/80 transition-transform duration-300 group-hover:scale-x-100" />
+            </article>
+          ))}
         </div>
-      )}
-    </>
+      </div>
+
+      {/* Dots de páginas (tarjetas) */}
+      <div className="mt-4 flex justify-center gap-2">
+        {items.map((_, i) => (
+          <button
+            key={i}
+            onClick={() => goTo(i)}
+            className={
+              "h-2.5 w-2.5 rounded-full transition " +
+              (i === page ? "bg-hawkes-blue-500" : "bg-white/20 hover:bg-white/30")
+            }
+            aria-label={`Ir a tarjeta ${i + 1}`}
+            aria-current={i === page ? "true" : "false"}
+          />
+        ))}
+      </div>
+
+      {/* Ocultar scrollbar en navegadores comunes */}
+      <style>{`
+        .no-scrollbar {
+          -ms-overflow-style: none;  /* IE y Edge */
+          scrollbar-width: none;     /* Firefox */
+        }
+        .no-scrollbar::-webkit-scrollbar { display: none; } /* Chrome/Safari */
+      `}</style>
+    </div>
+  );
+}
+
+export default function Servicios() {
+  return (
+    <section
+      id="servicios"
+      aria-labelledby="servicios-title"
+      className="bg-slate-950 px-4 py-16 md:py-24"
+    >
+      <div className="mx-auto max-w-6xl">
+        <header className="mb-12 text-center md:mb-16">
+          <h2
+            id="servicios-title"
+            className="text-4xl font-bold text-white md:text-5xl"
+          >
+            Nuestros <span className="text-hawkes-blue-500">Servicios</span>
+          </h2>
+          <p className="mx-auto mt-4 max-w-3xl text-lg text-slate-300 md:text-xl">
+            Soluciones especializadas para cada integrante de la comunidad
+          </p>
+          <div className="mx-auto mt-6 h-[3px] w-24 rounded-full bg-hawkes-blue-600" />
+        </header>
+
+        {/* === MÓVIL: carrusel horizontal === */}
+        <MobileServiciosCarousel items={serviciosData} />
+
+        {/* === DESKTOP/TABLET: grilla de 3 columnas (se oculta en móvil) === */}
+        <div className="hidden md:grid grid-cols-1 gap-8 md:grid-cols-3">
+          {serviciosData.map((item) => (
+            <article
+              key={item.title}
+              className={CARD + " overflow-hidden"}
+              aria-labelledby={`card-${item.title}-title`}
+            >
+              <div className={CARD_MEDIA + " aspect-[16/9]"}>
+                <img
+                  src={item.img}
+                  alt={item.title}
+                  loading="lazy"
+                  className="h-28 w-auto object-contain md:h-32 drop-shadow-[0_6px_20px_rgba(113,125,227,.25)]"
+                />
+              </div>
+
+              <div className={CARD_BODY + " grow"}>
+                <h3
+                  id={`card-${item.title}-title`}
+                  className="text-xl font-semibold text-white"
+                >
+                  {item.title}
+                </h3>
+
+                {/* Carrusel en la primera tarjeta */}
+                {Array.isArray(item.carouselItems) && item.carouselItems.length > 0 ? (
+                  <FeatureCarousel items={item.carouselItems} />
+                ) : (
+                  Array.isArray(item.features) &&
+                  item.features.length > 0 && (
+                    <ul className="mt-2 space-y-2.5">
+                      {item.features.map((feature) => (
+                        <li key={feature} className="flex items-start gap-3">
+                          <span className="mt-1 inline-flex h-5 w-5 items-center justify-center rounded-md border border-hawkes-blue-500/30 bg-hawkes-blue-600/15 text-hawkes-blue-300">
+                            {CHECK_ICON}
+                          </span>
+                          <span className="text-slate-300">{feature}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  )
+                )}
+
+                <div className="mt-6">
+                  {item.soon ? (
+                    <button
+                      type="button"
+                      className={BTN_DISABLED}
+                      aria-disabled="true"
+                      title="Disponible pronto"
+                    >
+                      {item.cta}
+                    </button>
+                  ) : (
+                    <Link
+                      to={item.link}
+                      className={BTN_PRIMARY}
+                      aria-label={`Acceder a ${item.title}`}
+                    >
+                      {item.cta}
+                      <svg
+                        className="ml-2 h-4 w-4 rtl:rotate-180"
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 14 10"
+                        fill="none"
+                        aria-hidden="true"
+                      >
+                        <path
+                          stroke="currentColor"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth="2"
+                          d="M1 5h12m0 0L9 1m4 4L9 9"
+                        />
+                      </svg>
+                    </Link>
+                  )}
+                </div>
+              </div>
+
+              {/* Línea de acento al hover */}
+              <div className="pointer-events-none absolute inset-x-0 bottom-0 h-1 origin-left scale-x-0 bg-hawkes-blue-600/80 transition-transform duration-300 group-hover:scale-x-100" />
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
   );
 }
