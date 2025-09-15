@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
-import adminImg from "../assets/safe.png";
-import configuracionImg from "../assets/configuracion.png";
+import adminImg from "@/assets/safe.png";
+import configuracionImg from "@/assets/configuracion.png";
 
 const serviciosData = [
   {
@@ -47,14 +47,14 @@ const serviciosData = [
 const BTN_BASE =
   "inline-flex items-center justify-center px-5 py-3 text-base font-medium focus:outline-none transition";
 const BTN_PRIMARY =
-  `${BTN_BASE} rounded-md text-white bg-hawkes-blue-600 hover:bg-hawkes-blue-700 focus-visible:ring-4 focus-visible:ring-hawkes-blue-400/50`;
+  `${BTN_BASE} rounded-md text-white bg-safepalette-600 hover:bg-safepalette-700 focus-visible:ring-4 focus-visible:ring-safepalette-400/50`;
 const BTN_DISABLED =
   `${BTN_BASE} rounded-md bg-neutral-800 text-neutral-500 cursor-not-allowed`;
 
 const CARD =
   "group relative flex h-full flex-col rounded-2xl bg-slate-900 text-slate-100 " +
   "ring-1 ring-white/10 shadow-[0_8px_30px_rgba(0,0,0,0.25)] transition-all duration-300 " +
-  "hover:-translate-y-0.5 hover:shadow-[0_10px_40px_rgba(0,0,0,0.35)] hover:ring-hawkes-blue-500/25";
+  "hover:-translate-y-0.5 hover:shadow-[0_10px_40px_rgba(0,0,0,0.35)] hover:ring-safepalette-500/25";
 const CARD_MEDIA =
   "flex items-center justify-center bg-gradient-to-b from-slate-800 via-slate-900 to-slate-900 " +
   "px-6 pt-8 pb-6";
@@ -76,34 +76,27 @@ const CHECK_ICON = (
   </svg>
 );
 
-// ---- Carrusel con autoplay cada 3s, sin flechas (para la PRIMERA tarjeta) ----
+// ---- Carrusel con autoplay cada 3s ----
 function FeatureCarousel({ items }) {
   const [index, setIndex] = useState(0);
   const [hovering, setHovering] = useState(false);
 
-  const intervalMs = 3000; // cada 3 segundos
+  const intervalMs = 3000;
   const clamp = (n) => (n + items.length) % items.length;
   const goTo = (i) => setIndex(clamp(i));
   const next = () => goTo(index + 1);
 
-  // Autoplay controlado
   useEffect(() => {
     if (hovering) return;
     const id = setInterval(() => next(), intervalMs);
     return () => clearInterval(id);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [index, hovering]);
 
-  // Arrastre táctil
   const startX = useRef(0);
-  const onTouchStart = (e) => {
-    startX.current = e.touches[0].clientX;
-  };
+  const onTouchStart = (e) => (startX.current = e.touches[0].clientX);
   const onTouchEnd = (e) => {
     const delta = e.changedTouches[0].clientX - startX.current;
-    if (Math.abs(delta) > 40) {
-      delta > 0 ? goTo(index - 1) : next();
-    }
+    if (Math.abs(delta) > 40) delta > 0 ? goTo(index - 1) : next();
   };
 
   return (
@@ -112,7 +105,6 @@ function FeatureCarousel({ items }) {
       onMouseEnter={() => setHovering(true)}
       onMouseLeave={() => setHovering(false)}
     >
-      {/* Vista */}
       <div
         className="overflow-hidden rounded-xl ring-1 ring-white/10"
         onTouchStart={onTouchStart}
@@ -151,7 +143,7 @@ function FeatureCarousel({ items }) {
             className={
               "h-2.5 w-2.5 rounded-full transition " +
               (i === index
-                ? "bg-hawkes-blue-500"
+                ? "bg-safepalette-500"
                 : "bg-white/20 hover:bg-white/30")
             }
             aria-label={`Ir al slide ${i + 1}`}
@@ -163,17 +155,15 @@ function FeatureCarousel({ items }) {
   );
 }
 
-/* ==================== CARRUSEL DE TARJETAS SOLO EN MÓVIL ==================== */
+// ---- Carrusel móvil ----
 function MobileServiciosCarousel({ items }) {
   const trackRef = useRef(null);
   const [page, setPage] = useState(0);
 
-  // Calcular "página" según desplazamiento
   const onScroll = () => {
     const el = trackRef.current;
     if (!el) return;
-    const i = Math.round(el.scrollLeft / el.clientWidth);
-    setPage(i);
+    setPage(Math.round(el.scrollLeft / el.clientWidth));
   };
 
   const goTo = (i) => {
@@ -186,7 +176,6 @@ function MobileServiciosCarousel({ items }) {
 
   return (
     <div className="md:hidden">
-      {/* track con snap y scroll horizontal */}
       <div className="-mx-4 px-4">
         <div
           ref={trackRef}
@@ -205,7 +194,7 @@ function MobileServiciosCarousel({ items }) {
                   src={item.img}
                   alt={item.title}
                   loading="lazy"
-                  className="h-28 w-auto object-contain md:h-32 drop-shadow-[0_6px_20px_rgba(113,125,227,.25)]"
+                  className="h-28 w-auto object-contain md:h-32 drop-shadow-[0_6px_20px_rgba(137,144,162,.25)]"
                 />
               </div>
 
@@ -225,7 +214,7 @@ function MobileServiciosCarousel({ items }) {
                     <ul className="mt-2 space-y-2.5">
                       {item.features.map((feature) => (
                         <li key={feature} className="flex items-start gap-3">
-                          <span className="mt-1 inline-flex h-5 w-5 items-center justify-center rounded-md border border-hawkes-blue-500/30 bg-hawkes-blue-600/15 text-hawkes-blue-300">
+                          <span className="mt-1 inline-flex h-5 w-5 items-center justify-center rounded-md border border-safepalette-500/30 bg-safepalette-600/15 text-safepalette-300">
                             {CHECK_ICON}
                           </span>
                           <span className="text-slate-300">{feature}</span>
@@ -237,27 +226,17 @@ function MobileServiciosCarousel({ items }) {
 
                 <div className="mt-6">
                   {item.soon ? (
-                    <button
-                      type="button"
-                      className={BTN_DISABLED}
-                      aria-disabled="true"
-                      title="Disponible pronto"
-                    >
+                    <button type="button" className={BTN_DISABLED} aria-disabled="true">
                       {item.cta}
                     </button>
                   ) : (
-                    <Link
-                      to={item.link}
-                      className={BTN_PRIMARY}
-                      aria-label={`Acceder a ${item.title}`}
-                    >
+                    <Link to={item.link} className={BTN_PRIMARY}>
                       {item.cta}
                       <svg
                         className="ml-2 h-4 w-4 rtl:rotate-180"
                         xmlns="http://www.w3.org/2000/svg"
                         viewBox="0 0 14 10"
                         fill="none"
-                        aria-hidden="true"
                       >
                         <path
                           stroke="currentColor"
@@ -272,13 +251,13 @@ function MobileServiciosCarousel({ items }) {
                 </div>
               </div>
 
-              <div className="pointer-events-none absolute inset-x-0 bottom-0 h-1 origin-left scale-x-0 bg-hawkes-blue-600/80 transition-transform duration-300 group-hover:scale-x-100" />
+              <div className="pointer-events-none absolute inset-x-0 bottom-0 h-1 origin-left scale-x-0 bg-safepalette-600/80 transition-transform duration-300 group-hover:scale-x-100" />
             </article>
           ))}
         </div>
       </div>
 
-      {/* Dots de páginas (tarjetas) */}
+      {/* Dots */}
       <div className="mt-4 flex justify-center gap-2">
         {items.map((_, i) => (
           <button
@@ -286,21 +265,18 @@ function MobileServiciosCarousel({ items }) {
             onClick={() => goTo(i)}
             className={
               "h-2.5 w-2.5 rounded-full transition " +
-              (i === page ? "bg-hawkes-blue-500" : "bg-white/20 hover:bg-white/30")
+              (i === page ? "bg-safepalette-500" : "bg-white/20 hover:bg-white/30")
             }
-            aria-label={`Ir a tarjeta ${i + 1}`}
-            aria-current={i === page ? "true" : "false"}
           />
         ))}
       </div>
 
-      {/* Ocultar scrollbar en navegadores comunes */}
       <style>{`
         .no-scrollbar {
-          -ms-overflow-style: none;  /* IE y Edge */
-          scrollbar-width: none;     /* Firefox */
+          -ms-overflow-style: none;
+          scrollbar-width: none;
         }
-        .no-scrollbar::-webkit-scrollbar { display: none; } /* Chrome/Safari */
+        .no-scrollbar::-webkit-scrollbar { display: none; }
       `}</style>
     </div>
   );
@@ -319,43 +295,38 @@ export default function Servicios() {
             id="servicios-title"
             className="text-4xl font-bold text-white md:text-5xl"
           >
-            Nuestros <span className="text-hawkes-blue-500">Servicios</span>
+            Nuestros <span className="text-safepalette-500">Servicios</span>
           </h2>
           <p className="mx-auto mt-4 max-w-3xl text-lg text-slate-300 md:text-xl">
             Soluciones especializadas para cada integrante de la comunidad
           </p>
-          <div className="mx-auto mt-6 h-[3px] w-24 rounded-full bg-hawkes-blue-600" />
+          <div className="mx-auto mt-6 h-[3px] w-24 rounded-full bg-safepalette-600" />
         </header>
 
-        {/* === MÓVIL: carrusel horizontal === */}
+        {/* Móvil */}
         <MobileServiciosCarousel items={serviciosData} />
 
-        {/* === DESKTOP/TABLET: grilla de 3 columnas (se oculta en móvil) === */}
+        {/* Desktop */}
         <div className="hidden md:grid grid-cols-1 gap-8 md:grid-cols-3">
           {serviciosData.map((item) => (
             <article
               key={item.title}
               className={CARD + " overflow-hidden"}
-              aria-labelledby={`card-${item.title}-title`}
             >
               <div className={CARD_MEDIA + " aspect-[16/9]"}>
                 <img
                   src={item.img}
                   alt={item.title}
                   loading="lazy"
-                  className="h-28 w-auto object-contain md:h-32 drop-shadow-[0_6px_20px_rgba(113,125,227,.25)]"
+                  className="h-28 w-auto object-contain md:h-32 drop-shadow-[0_6px_20px_rgba(137,144,162,.25)]"
                 />
               </div>
 
               <div className={CARD_BODY + " grow"}>
-                <h3
-                  id={`card-${item.title}-title`}
-                  className="text-xl font-semibold text-white"
-                >
+                <h3 className="text-xl font-semibold text-white">
                   {item.title}
                 </h3>
 
-                {/* Carrusel en la primera tarjeta */}
                 {Array.isArray(item.carouselItems) && item.carouselItems.length > 0 ? (
                   <FeatureCarousel items={item.carouselItems} />
                 ) : (
@@ -364,7 +335,7 @@ export default function Servicios() {
                     <ul className="mt-2 space-y-2.5">
                       {item.features.map((feature) => (
                         <li key={feature} className="flex items-start gap-3">
-                          <span className="mt-1 inline-flex h-5 w-5 items-center justify-center rounded-md border border-hawkes-blue-500/30 bg-hawkes-blue-600/15 text-hawkes-blue-300">
+                          <span className="mt-1 inline-flex h-5 w-5 items-center justify-center rounded-md border border-safepalette-500/30 bg-safepalette-600/15 text-safepalette-300">
                             {CHECK_ICON}
                           </span>
                           <span className="text-slate-300">{feature}</span>
@@ -376,27 +347,17 @@ export default function Servicios() {
 
                 <div className="mt-6">
                   {item.soon ? (
-                    <button
-                      type="button"
-                      className={BTN_DISABLED}
-                      aria-disabled="true"
-                      title="Disponible pronto"
-                    >
+                    <button type="button" className={BTN_DISABLED}>
                       {item.cta}
                     </button>
                   ) : (
-                    <Link
-                      to={item.link}
-                      className={BTN_PRIMARY}
-                      aria-label={`Acceder a ${item.title}`}
-                    >
+                    <Link to={item.link} className={BTN_PRIMARY}>
                       {item.cta}
                       <svg
                         className="ml-2 h-4 w-4 rtl:rotate-180"
                         xmlns="http://www.w3.org/2000/svg"
                         viewBox="0 0 14 10"
                         fill="none"
-                        aria-hidden="true"
                       >
                         <path
                           stroke="currentColor"
@@ -411,8 +372,7 @@ export default function Servicios() {
                 </div>
               </div>
 
-              {/* Línea de acento al hover */}
-              <div className="pointer-events-none absolute inset-x-0 bottom-0 h-1 origin-left scale-x-0 bg-hawkes-blue-600/80 transition-transform duration-300 group-hover:scale-x-100" />
+              <div className="pointer-events-none absolute inset-x-0 bottom-0 h-1 origin-left scale-x-0 bg-safepalette-600/80 transition-transform duration-300 group-hover:scale-x-100" />
             </article>
           ))}
         </div>
