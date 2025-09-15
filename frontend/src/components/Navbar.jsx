@@ -1,15 +1,15 @@
 import React, { useState, useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
-import { FaChevronDown, FaChevronRight, FaShieldAlt, FaEnvelope } from "react-icons/fa";
+import { FaChevronDown, FaChevronRight, FaShieldAlt } from "react-icons/fa";
 
-// Imágenes (sin cambiar rutas)
-import logoAzul from "../assets/logoAzul.png";
-import logoBlanco from "../assets/logoBlanco.png";
-import adminImg from "../assets/admin.png";
-import padresImg from "../assets/padres.png";
-import schoolImg from "../assets/school.png";
-import autobusImg from "../assets/autobus.jpg";
-import configuracionImg from "../assets/configuracion.png"; // NUEVA: para "Productos"
+// Imágenes (con alias @)
+import logoAzul from "@/assets/logoAzul.png";
+import logoBlanco from "@/assets/logoBlanco.png";
+import adminImg from "@/assets/admin.png";
+import padresImg from "@/assets/padres.png";
+import schoolImg from "@/assets/school.png";
+import autobusImg from "@/assets/autobus.jpg";
+import configuracionImg from "@/assets/configuracion.png"; // NUEVA: para "Productos"
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -18,8 +18,7 @@ export default function Navbar() {
 
   // Desktop (tabs)
   const [accederActiveOption, setAccederActiveOption] = useState("administrador");
-  const [menuPrincipalActive, setMenuPrincipalActive] = useState("quienes");
-  const [nosotrosActiveOption, setNosotrosActiveOption] = useState("mision");
+  const [nosotrosActiveOption, setNosotrosActiveOption] = useState("quienes"); // por defecto: ¿Quiénes somos?
 
   // Móvil (drawer)
   const [mobileActiveSection, setMobileActiveSection] = useState(null);
@@ -68,17 +67,15 @@ export default function Navbar() {
   };
   const currentAccederData = accederData[accederActiveOption];
 
-  const menuPrincipalData = {
+  // Nosotros con 3 secciones: quienes, mision, vision
+  const nosotrosData = {
     quienes: {
       title: "¿Quiénes somos?",
       description:
         "En SafeTech somos una empresa dedicada a brindar soluciones inteligentes de seguridad.\nCombinamos experiencia y tecnología de vanguardia en CCTV, control de accesos y monitoreo 24/7 para proteger lo que más importa con confianza y compromiso.",
+      details: [],
       image: autobusImg,
     },
-  };
-  const currentMenuPrincipalData = menuPrincipalData[menuPrincipalActive];
-
-  const nosotrosData = {
     mision: {
       title: "Misión",
       description:
@@ -111,16 +108,14 @@ export default function Navbar() {
         "Esta parte está en configuración. Muy pronto podrás explorar nuestro catálogo de soluciones.",
       details: ["Catálogo en preparación", "Integraciones y precios", "Demos y documentación"],
       image: configuracionImg,
-      buttonText: "Muy pronto",
     },
   };
 
+  // Solo estas secciones: Nosotros, Productos, Acceso
   const menuItems = [
-    { name: "Principal", isMenuPrincipal: true },
     { name: "Nosotros", isNosotros: true },
-    { name: "Acceder", isAcceder: true },
     { name: "Productos", isProductos: true },
-    { name: "Soporte en línea", isSoporte: true },
+    { name: "Acceso", isAcceso: true },
   ];
 
   // Efectos
@@ -171,12 +166,12 @@ export default function Navbar() {
     setMobileSubKey(null);
   };
 
-  // ========== THEME helpers para escritorio ==========
+  // ========== THEME helpers para escritorio (solo colores) ==========
   const PANEL_OUTER =
     "w-[min(92vw,920px)] bg-neutral-950 text-white shadow-2xl border border-white/10 overflow-hidden";
   const PANEL_COL_BORDER = "md:border-r border-white/10";
   const TAB_BASE = "w-full text-left p-5 transition";
-  const TAB_ACTIVE = "bg-white/10 border-l-4 border-golden-500";
+  const TAB_ACTIVE = "bg-white/10 border-l-4 border-safepalette-500";
   const TAB_HOVER = "hover:bg-white/5";
   const MEDIA_BG = "bg-white/10";
 
@@ -202,26 +197,26 @@ export default function Navbar() {
     >
       <div className="mx-auto max-w-screen-xl px-4">
         <div className="flex h-14 md:h-16 items-center justify-between">
-          {/* Logo */}
+          {/* Logo (más grande) + texto (un poco más pequeño) */}
           <a
             href="#"
             onClick={(e) => {
               e.preventDefault();
               window.scrollTo({ top: 0, behavior: "smooth" });
             }}
-            className="flex min-w-0 items-center gap-2 shrink-0 cursor-pointer"
+            className="flex min-w-0 items-center gap-2 md:gap-3 shrink-0 cursor-pointer"
             aria-label="SafeTech - Inicio"
             role="button"
           >
             <img
               src={scrolled ? logoBlanco : logoAzul}
-              className="h-8 md:h-10 w-auto object-contain transition-all duration-300"
+              className="h-12 md:h-14 w-auto object-contain transition-all duration-300"
               alt="Logo de SafeTech"
               loading="eager"
-              width={120}
-              height={40}
+              width={160}
+              height={56}
             />
-            <span className="inline text-base md:text-2xl font-bold text-white whitespace-nowrap max-w-[40vw] md:max-w-none truncate">
+            <span className="inline text-xs md:text-lg font-bold text-white whitespace-nowrap max-w-[40vw] md:max-w-none truncate">
               SafeTech
             </span>
           </a>
@@ -230,7 +225,7 @@ export default function Navbar() {
           <button
             onClick={() => setMenuOpen((v) => !v)}
             type="button"
-            className="inline-flex items-center justify-center rounded-md p-2 md:hidden text-white hover:bg-white/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-golden-300/70"
+            className="inline-flex items-center justify-center rounded-md p-2 md:hidden text-white hover:bg-white/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-safepalette-300/70"
             aria-controls="mobile-drawer"
             aria-expanded={menuOpen}
             aria-label={menuOpen ? "Cerrar menú" : "Abrir menú"}
@@ -253,7 +248,7 @@ export default function Navbar() {
                 >
                   <button
                     type="button"
-                    className="flex items-center gap-1 px-3 py-2 text-white hover:text-golden-200 focus-visible:ring-2 focus-visible:ring-golden-300/70 rounded-md"
+                    className="flex items-center gap-1 px-3 py-2 text-white hover:text-safepalette-200 focus-visible:ring-2 focus-visible:ring-safepalette-300/70 rounded-md"
                     aria-haspopup="true"
                     aria-expanded={activeDropdown === item.name}
                     onClick={() => toggleDropdown(item.name)}
@@ -262,47 +257,14 @@ export default function Navbar() {
                     <FaChevronDown className="w-3 h-3" aria-hidden="true" />
                   </button>
 
-                  {/* Principal */}
-                  {item.isMenuPrincipal && activeDropdown === "Principal" && (
-                    <PanelWrapper label="Menú Principal">
-                      <div className="flex flex-col md:flex-row">
-                        {/* Tabs */}
-                        <div className="md:w-1/4 border-b md:border-b-0 md:border-r border-white/10">
-                          <button
-                            onMouseEnter={() => setMenuPrincipalActive("quienes")}
-                            onFocus={() => setMenuPrincipalActive("quienes")}
-                            className={`${TAB_BASE} ${menuPrincipalActive === "quienes" ? TAB_ACTIVE : TAB_HOVER}`}
-                          >
-                            <span className={`${menuPrincipalActive === "quienes" ? "text-white" : "text-neutral-200"} font-medium`}>
-                              ¿Quiénes somos?
-                            </span>
-                          </button>
-                        </div>
-
-                        {/* Content */}
-                        <div className={`md:w-2/4 p-6 ${PANEL_COL_BORDER}`}>
-                          <h2 className="text-xl lg:text-2xl font-bold text-white mb-3">
-                            {currentMenuPrincipalData.title}
-                          </h2>
-                          <p className="text-neutral-200 whitespace-pre-line">
-                            {currentMenuPrincipalData.description}
-                          </p>
-                        </div>
-
-                        {/* Media */}
-                        <div className={`md:w-1/4 ${MEDIA_BG} p-6 flex items-center justify-center`}>
-                          <img src={currentMenuPrincipalData.image} alt={currentMenuPrincipalData.title} className="max-w-full max-h-48 object-contain" loading="lazy" />
-                        </div>
-                      </div>
-                    </PanelWrapper>
-                  )}
-
                   {/* Nosotros */}
                   {item.isNosotros && activeDropdown === "Nosotros" && (
                     <PanelWrapper label="Menú Nosotros">
                       <div className="flex flex-col md:flex-row">
+                        {/* Tabs: quienes, mision, vision */}
                         <div className="md:w-1/4 border-b md:border-b-0 md:border-r border-white/10">
                           {[
+                            { key: "quienes", label: "¿Quiénes somos?" },
                             { key: "mision", label: "Misión" },
                             { key: "vision", label: "Visión" },
                           ].map((opt) => (
@@ -319,21 +281,25 @@ export default function Navbar() {
                           ))}
                         </div>
 
+                        {/* Content */}
                         <div className={`md:w-2/4 p-6 ${PANEL_COL_BORDER}`}>
                           <h2 className="text-xl lg:text-2xl font-bold text-white mb-3">
                             {currentNosotrosData.title}
                           </h2>
-                          <p className="text-neutral-200 mb-6">{currentNosotrosData.description}</p>
-                          <ul className="space-y-3">
-                            {currentNosotrosData.details.map((detail, idx) => (
-                              <li key={idx} className="flex items-start">
-                                <FaShieldAlt className="text-golden-400 mt-1 mr-3 shrink-0" aria-hidden="true" />
-                                <span className="text-neutral-100">{detail}</span>
-                              </li>
-                            ))}
-                          </ul>
+                          <p className="text-neutral-200 mb-6 whitespace-pre-line">{currentNosotrosData.description}</p>
+                          {currentNosotrosData.details?.length > 0 && (
+                            <ul className="space-y-3">
+                              {currentNosotrosData.details.map((detail, idx) => (
+                                <li key={idx} className="flex items-start">
+                                  <FaShieldAlt className="text-safepalette-300 mt-1 mr-3 shrink-0" aria-hidden="true" />
+                                  <span className="text-neutral-100">{detail}</span>
+                                </li>
+                              ))}
+                            </ul>
+                          )}
                         </div>
 
+                        {/* Media */}
                         <div className={`md:w-1/4 ${MEDIA_BG} p-6 flex items-center justify-center`}>
                           <img src={currentNosotrosData.image} alt={currentNosotrosData.title} className="max-w-full max-h-48 object-contain" loading="lazy" />
                         </div>
@@ -341,9 +307,9 @@ export default function Navbar() {
                     </PanelWrapper>
                   )}
 
-                  {/* Acceder */}
-                  {item.isAcceder && activeDropdown === "Acceder" && (
-                    <PanelWrapper label="Menú Acceder">
+                  {/* Acceso */}
+                  {item.isAcceso && activeDropdown === "Acceso" && (
+                    <PanelWrapper label="Menú Acceso">
                       <div className="flex flex-col md:flex-row">
                         <div className="md:w-1/4 border-b md:border-b-0 md:border-r border-white/10">
                           {Object.keys(accederData).map((key) => (
@@ -366,7 +332,7 @@ export default function Navbar() {
                           <ul className="space-y-3">
                             {currentAccederData.details.map((detail, idx) => (
                               <li key={idx} className="flex items-start">
-                                <FaShieldAlt className="text-golden-400 mt-1 mr-3 shrink-0" aria-hidden="true" />
+                                <FaShieldAlt className="text-safepalette-300 mt-1 mr-3 shrink-0" aria-hidden="true" />
                                 <span className="text-neutral-100">{detail}</span>
                               </li>
                             ))}
@@ -379,7 +345,7 @@ export default function Navbar() {
                           </div>
                           <a
                             href={currentAccederData.buttonLink}
-                            className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-golden-600 text-white font-medium hover:bg-golden-700 focus-visible:ring-2 focus-visible:ring-golden-300 w-full text-center rounded-md"
+                            className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-safepalette-700 text-white font-medium hover:bg-safepalette-600 focus-visible:ring-2 focus-visible:ring-safepalette-300 w-full text-center rounded-md"
                           >
                             {currentAccederData.buttonText} <FaChevronRight className="inline" aria-hidden="true" />
                           </a>
@@ -400,14 +366,11 @@ export default function Navbar() {
                           <ul className="space-y-3">
                             {productosData.estado.details.map((d, i) => (
                               <li key={i} className="flex items-start">
-                                <FaShieldAlt className="text-golden-400 mt-1 mr-3 shrink-0" aria-hidden="true" />
+                                <FaShieldAlt className="text-safepalette-300 mt-1 mr-3 shrink-0" aria-hidden="true" />
                                 <span className="text-neutral-100">{d}</span>
                               </li>
                             ))}
                           </ul>
-                          <div className="mt-6 inline-flex items-center justify-center gap-2 px-6 py-3 bg-white/10 text-neutral-100 border border-white/10 font-medium cursor-not-allowed rounded-md">
-                            {productosData.estado.buttonText}
-                          </div>
                         </div>
                         <div className={`md:w-1/3 ${MEDIA_BG} p-6 flex items-center justify-center`}>
                           <img
@@ -416,34 +379,6 @@ export default function Navbar() {
                             className="max-w-full max-h-48 object-contain"
                             loading="lazy"
                           />
-                        </div>
-                      </div>
-                    </PanelWrapper>
-                  )}
-
-                  {/* Soporte */}
-                  {item.isSoporte && activeDropdown === "Soporte en línea" && (
-                    <PanelWrapper label="Menú Soporte en línea">
-                      <div className="flex flex-col md:flex-row">
-                        <div className="md:w-1/4 border-b md:border-b-0 md:border-r border-white/10 p-6">
-                          <h3 className="text-lg font-semibold text-white">Centro de Ayuda</h3>
-                          <p className="text-sm text-neutral-200 mt-2">Encuentra guías, tutoriales y documentación.</p>
-                        </div>
-                        <div className={`md:w-2/4 p-6 ${PANEL_COL_BORDER}`}>
-                          <h3 className="text-lg font-semibold text-white">Soporte Técnico</h3>
-                          <ul className="mt-4 space-y-2 text-sm text-neutral-200">
-                            <li>✔ Preguntas frecuentes</li>
-                            <li>✔ Tutoriales interactivos</li>
-                            <li>✔ Reportar incidencias</li>
-                          </ul>
-                        </div>
-                        <div className={`md:w-1/4 ${MEDIA_BG} p-6 flex flex-col items-center justify-center`}>
-                          <a href="https://wa.me/593999047935" target="_blank" rel="noopener noreferrer" className="px-6 py-3 bg-green-600 text-white font-medium hover:bg-green-700 w-full text-center mb-3 rounded-md" aria-label="Chatear por WhatsApp">
-                            WhatsApp
-                          </a>
-                          <a href="mailto:soporte@safetech-ec.com" className="px-6 py-3 bg-red-600 text-white font-medium hover:bg-red-700 w-full text-center flex items-center justify-center gap-2 rounded-md" aria-label="Enviar correo a soporte@safetech-ec.com">
-                            <FaEnvelope aria-hidden="true" /> Gmail
-                          </a>
                         </div>
                       </div>
                     </PanelWrapper>
@@ -480,8 +415,8 @@ export default function Navbar() {
               {/* Header del drawer */}
               <div className="flex items-center justify-between px-4 h-14 border-b border-white/10">
                 <div className="flex items-center gap-2">
-                  <img src={logoBlanco} className="h-6 w-auto" alt="SafeTech" />
-                  <span className="text-white font-semibold">SafeTech</span>
+                  <img src={logoBlanco} className="h-7 w-auto" alt="SafeTech" />
+                  <span className="text-white font-semibold text-sm">SafeTech</span>
                 </div>
                 <button
                   onClick={closeMobileMenu}
@@ -522,36 +457,11 @@ export default function Navbar() {
                       <div className={`grid transition-all ${open ? "grid-rows-[1fr]" : "grid-rows-[0fr]"}`}>
                         <div className="overflow-hidden">
                           <div className="px-4 pb-4 space-y-3">
-                            {/* PRINCIPAL */}
-                            {item.isMenuPrincipal && (
-                              <div>
-                                <button
-                                  className="w-full text-left text-sm py-2 px-3 rounded-md bg-white/10 hover:bg-white/15 border border-white/10 text-white"
-                                  onClick={() => setMobileSubKey((k) => (k === "quienes" ? null : "quienes"))}
-                                  aria-expanded={mobileSubKey === "quienes"}
-                                >
-                                  ¿Quiénes somos?
-                                </button>
-                                <div className={`grid transition-all ${mobileSubKey === "quienes" ? "grid-rows-[1fr] mt-2" : "grid-rows-[0fr]"}`}>
-                                  <div className="overflow-hidden">
-                                    <p className="text-sm text-neutral-200">
-                                      {menuPrincipalData.quienes.description.slice(0, 160)}…
-                                    </p>
-                                    <img
-                                      src={menuPrincipalData.quienes.image}
-                                      alt={menuPrincipalData.quienes.title}
-                                      className="mt-3 w-full max-h-40 object-cover border border-white/10"
-                                      loading="lazy"
-                                    />
-                                  </div>
-                                </div>
-                              </div>
-                            )}
-
                             {/* NOSOTROS */}
                             {item.isNosotros && (
                               <div className="space-y-2">
                                 {[
+                                  { key: "quienes", data: nosotrosData.quienes, label: "¿Quiénes somos?" },
                                   { key: "mision", data: nosotrosData.mision, label: "Misión" },
                                   { key: "vision", data: nosotrosData.vision, label: "Visión" },
                                 ].map(({ key, data, label }) => (
@@ -565,7 +475,7 @@ export default function Navbar() {
                                     </button>
                                     <div className={`grid transition-all ${mobileSubKey === key ? "grid-rows-[1fr] mt-2" : "grid-rows-[0fr]"}`}>
                                       <div className="overflow-hidden">
-                                        <p className="text-sm text-neutral-200">{data.description}</p>
+                                        <p className="text-sm text-neutral-200 whitespace-pre-line">{data.description}</p>
                                       </div>
                                     </div>
                                   </div>
@@ -573,8 +483,8 @@ export default function Navbar() {
                               </div>
                             )}
 
-                            {/* ACCEDER */}
-                            {item.isAcceder && (
+                            {/* ACCESO */}
+                            {item.isAcceso && (
                               <div className="space-y-3">
                                 {Object.keys(accederData).map((key) => {
                                   const d = accederData[key];
@@ -597,7 +507,7 @@ export default function Navbar() {
                                       <a
                                         href={d.buttonLink}
                                         onClick={closeMobileMenu}
-                                        className="mt-3 inline-flex items-center gap-2 px-3 py-2 text-sm bg-golden-600 text-white rounded-md hover:bg-golden-700"
+                                        className="mt-3 inline-flex items-center gap-2 px-3 py-2 text-sm bg-safepalette-700 text-white rounded-md hover:bg-safepalette-600"
                                       >
                                         {d.buttonText} <FaChevronRight aria-hidden="true" />
                                       </a>
@@ -614,7 +524,7 @@ export default function Navbar() {
                                 <ul className="text-sm space-y-1">
                                   {productosData.estado.details.map((d, i) => (
                                     <li key={i} className="flex items-start text-neutral-100">
-                                      <FaShieldAlt className="mt-0.5 mr-2 text-golden-300" /> {d}
+                                      <FaShieldAlt className="mt-0.5 mr-2 text-safepalette-300" /> {d}
                                     </li>
                                   ))}
                                 </ul>
@@ -624,36 +534,6 @@ export default function Navbar() {
                                   className="mt-2 w-full max-h-40 object-contain border border-white/10"
                                   loading="lazy"
                                 />
-                                <div className="mt-2 inline-flex items-center justify-center w-full px-3 py-2 bg-white/10 text-neutral-100 border border-white/10 rounded-md cursor-not-allowed text-sm">
-                                  Muy pronto
-                                </div>
-                              </div>
-                            )}
-
-                            {/* SOPORTE */}
-                            {item.isSoporte && (
-                              <div className="space-y-2">
-                                <p className="text-sm text-neutral-200">¿Necesitas ayuda?</p>
-                                <a
-                                  href="https://wa.me/593999047935"
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                  onClick={closeMobileMenu}
-                                  className="block w-full text-center px-4 py-2 bg-green-600 text-white hover:bg-green-700 rounded-md text-sm"
-                                  aria-label="Chatear por WhatsApp"
-                                >
-                                  WhatsApp
-                                </a>
-                                <a
-                                  href="mailto:soporte@safetech-ec.com"
-                                  onClick={closeMobileMenu}
-                                  className="block w-full text-center px-4 py-2 bg-red-600 text-white hover:bg-red-700 rounded-md text-sm"
-                                  aria-label="Enviar correo a soporte@safetech-ec.com"
-                                >
-                                  <span className="inline-flex items-center gap-2 justify-center">
-                                    <FaEnvelope aria-hidden="true" /> Gmail
-                                  </span>
-                                </a>
                               </div>
                             )}
                           </div>

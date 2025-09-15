@@ -1,5 +1,5 @@
 import React from "react";
-import nosotrosImg from "../assets/nosotros.png";
+import nosotrosImg from "@/assets/nosotros.png";
 
 export default function Nosotros() {
   return (
@@ -10,19 +10,16 @@ export default function Nosotros() {
           <h1 className="mb-4 text-4xl md:text-5xl font-bold text-white">
             Quiénes Somos
           </h1>
-          <div className="mx-auto h-[3px] w-24 rounded-full bg-hawkes-blue-600" />
+          <div className="mx-auto h-[3px] w-24 rounded-full bg-safepalette-600" />
         </div>
 
         {/* Bloque principal */}
         <div className="mb-20 flex flex-col items-center gap-10 lg:flex-row">
           {/* Texto */}
           <div className="lg:w-1/2">
-            <h2 className="mb-6 text-3xl font-bold text-white">
-              Nuestra Identidad
-            </h2>
+            <h2 className="mb-6 text-3xl font-bold text-white">Nuestra Identidad</h2>
             <p className="mb-6 text-lg leading-relaxed text-slate-300">
-              En{" "}
-              <span className="font-semibold text-hawkes-blue-400">SafeTech</span> creemos que la seguridad escolar debe ser moderna,
+              En <span className="font-semibold text-safepalette-300">SafeTech</span> creemos que la seguridad escolar debe ser moderna,
               accesible y confiable. Somos una empresa ecuatoriana comprometida
               con la innovación tecnológica aplicada al bienestar de estudiantes,
               padres de familia y administradores educativos.
@@ -47,12 +44,12 @@ export default function Nosotros() {
                 className="w-full h-auto rounded-xl border border-slate-800 shadow-2xl"
               />
               {/* Glow sutil */}
-              <div className="pointer-events-none absolute -inset-2 rounded-2xl bg-gradient-to-b from-hawkes-blue-600/10 via-transparent to-hawkes-blue-600/10" />
+              <div className="pointer-events-none absolute -inset-2 rounded-2xl bg-gradient-to-b from-safepalette-600/10 via-transparent to-safepalette-600/10" />
             </div>
           </div>
         </div>
 
-        {/* Aquí se mantienen las secciones de Misión, Visión y Valores */}
+        {/* (Opcional) Misión, Visión y Valores aquí */}
       </div>
     </section>
   );

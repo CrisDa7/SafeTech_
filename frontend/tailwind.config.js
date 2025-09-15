@@ -1,64 +1,39 @@
 /** @type {import('tailwindcss').Config} */
+import flowbite from 'flowbite/plugin'
+
 export default {
   content: [
     "./index.html",
     "./src/**/*.{js,jsx,ts,tsx}",
-    "node_modules/flowbite-react/**/*.{js,jsx,ts,tsx}",
+    "./node_modules/flowbite/**/*.js",
+    "./node_modules/flowbite-react/**/*.{js,jsx,ts,tsx}"
   ],
   theme: {
     extend: {
       colors: {
-        // Dorado corporativo (SafeTech)
-        golden: {
-          50:  "#fffbea",
-          100: "#fef3c7",
-          200: "#fde68a",
-          300: "#fcd34d",
-          400: "#fbbf24",
-          500: "#f59e0b", // principal
-          600: "#d97706",
-          700: "#b45309",
-          800: "#92400e",
-          900: "#78350f",
-          950: "#451a03", // dorado oscuro para fondos
-        },
-
-        // Grises oscuros para fondos y textos secundarios (ya estaban bien)
-        neutral: {
-          100: "#e5e5e5",
-          200: "#cfcfcf",
-          300: "#a8a8a8",
-          400: "#7a7a7a",
-          500: "#555555",
-          600: "#3f3f3f",
-          700: "#2e2e2e",
-          800: "#1f1f1f",
-          900: "#141414",
-        },
-
-        // Acentos (puedes mantenerlos o ajustarlos al dorado/negro)
-        success: {
-          500: "#10b981",
-          600: "#059669",
-        },
-        warning: {
-          500: "#f59e0b",
-          600: "#d97706",
-        },
-        danger: {
-          500: "#ef4444",
-          600: "#dc2626",
-        },
+        // 🎨 Paleta gris-azulada personalizada
+        safepalette: {
+          50:  "#f7f8fa",
+          100: "#eaecef",
+          200: "#d5d8de",
+          300: "#b5bac9",
+          400: "#a3a8b7",
+          500: "#8990a2",
+          600: "#788199",
+          700: "#666f88",
+          800: "#4f586f",
+          900: "#3a4155",
+          950: "#262a38"
+        }
       },
-
       boxShadow: {
-        soft: "0 8px 30px rgba(0,0,0,0.25)", // sombra marcada para oscuro
+        soft: "0 8px 30px rgba(0,0,0,0.25)"
       },
       borderRadius: {
         xl: "1rem",
-        "2xl": "1.25rem",
-      },
-    },
+        "2xl": "1.25rem"
+      }
+    }
   },
-  plugins: [require("flowbite/plugin")],
+  plugins: [flowbite]
 }

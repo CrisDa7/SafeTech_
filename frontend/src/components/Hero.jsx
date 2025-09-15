@@ -1,6 +1,5 @@
-// src/components/Hero.jsx
 import React, { useEffect, useRef } from "react";
-import fondoBus from "../assets/bus.mp4"; // 👈 video
+import fondoBus from "@/assets/bus.mp4"; // 👈 alias @
 
 export default function Hero() {
   const videoRef = useRef(null);
@@ -52,15 +51,13 @@ export default function Hero() {
     };
   }, []);
 
-  // 🎨 Colores actualizados
+  // Botones usando tu paleta safepalette
   const BTN_BASE =
-    "inline-flex items-center justify-center px-5 py-3 text-base font-medium focus:outline-none transition";
+    "inline-flex items-center justify-center px-5 py-3 text-base font-medium focus:outline-none transition rounded-lg";
   const BTN_PRIMARY =
-    `${BTN_BASE} text-white rounded-lg bg-golden-600 hover:bg-golden-700 ` +
-    `focus-visible:ring-4 focus-visible:ring-golden-300`;
+    `${BTN_BASE} text-white bg-safepalette-700 hover:bg-safepalette-600 focus-visible:ring-4 focus-visible:ring-safepalette-300/60`;
   const BTN_OUTLINE =
-    `${BTN_BASE} text-white rounded-lg border border-white hover:bg-white hover:text-golden-900 ` +
-    `focus-visible:ring-4 focus-visible:ring-golden-400`;
+    `${BTN_BASE} text-white border border-white hover:bg-white hover:text-safepalette-900 focus-visible:ring-4 focus-visible:ring-safepalette-300/60`;
 
   return (
     <section
@@ -83,14 +80,10 @@ export default function Hero() {
         disablePictureInPicture
       />
 
-      {/* Ocultar botón grande de reproducir en iOS */}
-      <style jsx>{`
-        .hero-video::-webkit-media-controls-start-playback-button {
-          display: none !important;
-        }
-        .hero-video::-webkit-media-controls {
-          display: none !important;
-        }
+      {/* Ocultar controles nativos grandes (iOS) */}
+      <style>{`
+        .hero-video::-webkit-media-controls-start-playback-button { display: none !important; }
+        .hero-video::-webkit-media-controls { display: none !important; }
       `}</style>
 
       {/* Overlay oscuro */}
@@ -107,7 +100,7 @@ export default function Hero() {
           id="hero-title"
           className="mb-4 text-4xl font-extrabold leading-tight tracking-tight text-white md:text-5xl lg:text-6xl"
         >
-          Bienvenido a <span className="text-golden-400">SafeTech</span>
+          Bienvenido a <span className="text-safepalette-300">SafeTech</span>
         </h1>
 
         <p className="mx-auto mb-8 max-w-3xl text-pretty text-neutral-200 text-lg md:text-xl">
@@ -115,11 +108,9 @@ export default function Hero() {
           avanzada con innovación y confianza"
         </p>
 
-        {/* CTAs */}
+        {/* CTAs (deja uno activo por ahora) */}
         <div className="flex flex-col gap-4 sm:flex-row sm:justify-center">
-          {/* Ejemplo botón primario si lo quieres usar */}
           {/* <a href="#nosotros" className={BTN_PRIMARY}>Nosotros</a> */}
-
           <a
             href="#servicios"
             className={BTN_OUTLINE}
