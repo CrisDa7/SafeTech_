@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
-import { FaChevronDown, FaChevronRight, FaShieldAlt } from "react-icons/fa";
+import { FaChevronDown, FaShieldAlt } from "react-icons/fa";
 
 // Imágenes (con alias @)
 import logoAzul from "@/assets/logoAzul.png";
@@ -9,7 +9,7 @@ import adminImg from "@/assets/admin.png";
 import padresImg from "@/assets/padres.png";
 import schoolImg from "@/assets/school.png";
 import autobusImg from "@/assets/autobus.jpg";
-import configuracionImg from "@/assets/configuracion.png"; // NUEVA: para "Productos"
+import configuracionImg from "@/assets/configuracion.png";
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -18,7 +18,7 @@ export default function Navbar() {
 
   // Desktop (tabs)
   const [accederActiveOption, setAccederActiveOption] = useState("administrador");
-  const [nosotrosActiveOption, setNosotrosActiveOption] = useState("quienes"); // por defecto: ¿Quiénes somos?
+  const [nosotrosActiveOption, setNosotrosActiveOption] = useState("quienes");
 
   // Móvil (drawer)
   const [mobileActiveSection, setMobileActiveSection] = useState(null);
@@ -29,16 +29,14 @@ export default function Navbar() {
   // Data
   const accederData = {
     administrador: {
-      title: "Safe Administrador",
-      description: "Control y gestión completa para instituciones.",
+      title: "Safe Conductor",
+      description: "Herramientas simples y claras para conductores de transporte escolar.",
       details: [
-        "Rastreo en tiempo real de buses.",
-        "Reportes automáticos y detallados.",
-        "Gestión eficiente para directivos.",
+        "Itinerarios y paradas al día.",
+        "Alertas de ruta y mantenimiento.",
+        "Comunicación directa con coordinación.",
       ],
       image: adminImg,
-      buttonLink: "#admin",
-      buttonText: "Acceder",
     },
     padres: {
       title: "Safe Padres",
@@ -49,8 +47,6 @@ export default function Navbar() {
         "Confianza y seguridad en cada trayecto.",
       ],
       image: padresImg,
-      buttonLink: "#padres",
-      buttonText: "Acceder",
     },
     school: {
       title: "Safe School",
@@ -61,41 +57,28 @@ export default function Navbar() {
         "Fortalece la reputación institucional.",
       ],
       image: schoolImg,
-      buttonLink: "#school",
-      buttonText: "Acceder",
     },
   };
   const currentAccederData = accederData[accederActiveOption];
 
-  // Nosotros con 3 secciones: quienes, mision, vision
   const nosotrosData = {
     quienes: {
       title: "¿Quiénes somos?",
       description:
-        "En SafeTech somos una empresa dedicada a brindar soluciones inteligentes de seguridad.\nCombinamos experiencia y tecnología de vanguardia en CCTV, control de accesos y monitoreo 24/7 para proteger lo que más importa con confianza y compromiso.",
+        "En SafeTech nos especializamos en el diseño e implementacion de sistemas de seguridad de vanguardia.",
       details: [],
       image: autobusImg,
     },
     mision: {
       title: "Misión",
       description:
-        "Proteger a las comunidades educativas mediante soluciones inteligentes de seguridad. Garantizamos trayectos escolares seguros, confianza para las familias y herramientas eficientes para las instituciones.",
-      details: [
-        "Enfoque en prevención y monitoreo 24/7.",
-        "Tecnología accesible y confiable.",
-        "Acompañamiento cercano a instituciones y familias.",
-      ],
+        "Brindar protección y tranquilidad a través de tecnología confiable y moderna",
       image: autobusImg,
     },
     vision: {
       title: "Visión",
       description:
-        "Ser el referente regional en seguridad escolar inteligente, construyendo un futuro donde cada estudiante viaje protegido y cada familia tenga tranquilidad.",
-      details: [
-        "Innovación continua y escalabilidad.",
-        "Estándares altos en protección y datos.",
-        "Impacto social positivo y sostenible.",
-      ],
+        "Ser líderes en soluciones tecnológicas que inspiren seguridad y confianza.",
       image: autobusImg,
     },
   };
@@ -106,7 +89,7 @@ export default function Navbar() {
       title: "Productos",
       description:
         "Esta parte está en configuración. Muy pronto podrás explorar nuestro catálogo de soluciones.",
-      details: ["Catálogo en preparación", "Integraciones y precios", "Demos y documentación"],
+      details: ["Próximamente"],
       image: configuracionImg,
     },
   };
@@ -171,9 +154,9 @@ export default function Navbar() {
     "w-[min(92vw,920px)] bg-neutral-950 text-white shadow-2xl border border-white/10 overflow-hidden";
   const PANEL_COL_BORDER = "md:border-r border-white/10";
   const TAB_BASE = "w-full text-left p-5 transition";
-  const TAB_ACTIVE = "bg-white/10 border-l-4 border-safepalette-500";
+  const TAB_ACTIVE = "bg-white/10 border-l-4 border-safepalette-gold"; // dorado
   const TAB_HOVER = "hover:bg-white/5";
-  const MEDIA_BG = "bg-white/10";
+  const MEDIA_BG = "bg-safepalette-gray/10"; // gris metálico muy tenue
 
   // Panel wrapper (desktop)
   const PanelWrapper = ({ children, label }) => (
@@ -188,16 +171,15 @@ export default function Navbar() {
   return (
     <nav
       ref={navRef}
-      className={`fixed w-full z-50 transition-all duration-300 ${
-        scrolled
+      className={`fixed w-full z-50 transition-all duration-300 ${scrolled
           ? "bg-neutral-950/80 backdrop-blur supports-[backdrop-filter]:bg-neutral-950/60 shadow-lg py-2"
           : "bg-transparent py-3"
-      }`}
+        }`}
       aria-label="Barra de navegación principal"
     >
       <div className="mx-auto max-w-screen-xl px-4">
         <div className="flex h-14 md:h-16 items-center justify-between">
-          {/* Logo (más grande) + texto (un poco más pequeño) */}
+          {/* Logo */}
           <a
             href="#"
             onClick={(e) => {
@@ -210,22 +192,23 @@ export default function Navbar() {
           >
             <img
               src={scrolled ? logoBlanco : logoAzul}
-              className="h-12 md:h-14 w-auto object-contain transition-all duration-300"
+              className="h-14 md:h-16 w-auto object-contain transition-all duration-300"
               alt="Logo de SafeTech"
               loading="eager"
-              width={160}
-              height={56}
+              width={200}  // puedes aumentar si quieres aún más ancho
+              height={72}
             />
-            <span className="inline text-xs md:text-lg font-bold text-white whitespace-nowrap max-w-[40vw] md:max-w-none truncate">
+            <span className="inline text-[0.6rem] md:text-sm font-bold text-white whitespace-nowrap max-w-[40vw] md:max-w-none truncate">
               SafeTech
             </span>
           </a>
+
 
           {/* Botón menú móvil */}
           <button
             onClick={() => setMenuOpen((v) => !v)}
             type="button"
-            className="inline-flex items-center justify-center rounded-md p-2 md:hidden text-white hover:bg-white/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-safepalette-300/70"
+            className="inline-flex items-center justify-center rounded-md p-2 md:hidden text-white hover:text-safepalette-gold focus:outline-none focus-visible:ring-2 focus-visible:ring-safepalette-gold/50"
             aria-controls="mobile-drawer"
             aria-expanded={menuOpen}
             aria-label={menuOpen ? "Cerrar menú" : "Abrir menú"}
@@ -248,7 +231,7 @@ export default function Navbar() {
                 >
                   <button
                     type="button"
-                    className="flex items-center gap-1 px-3 py-2 text-white hover:text-safepalette-200 focus-visible:ring-2 focus-visible:ring-safepalette-300/70 rounded-md"
+                    className="flex items-center gap-1 px-3 py-2 text-white hover:text-safepalette-gold focus-visible:ring-2 focus-visible:ring-safepalette-gold/50 rounded-md"
                     aria-haspopup="true"
                     aria-expanded={activeDropdown === item.name}
                     onClick={() => toggleDropdown(item.name)}
@@ -291,7 +274,7 @@ export default function Navbar() {
                             <ul className="space-y-3">
                               {currentNosotrosData.details.map((detail, idx) => (
                                 <li key={idx} className="flex items-start">
-                                  <FaShieldAlt className="text-safepalette-300 mt-1 mr-3 shrink-0" aria-hidden="true" />
+                                  <FaShieldAlt className="text-safepalette-gold mt-1 mr-3 shrink-0" aria-hidden="true" />
                                   <span className="text-neutral-100">{detail}</span>
                                 </li>
                               ))}
@@ -332,23 +315,18 @@ export default function Navbar() {
                           <ul className="space-y-3">
                             {currentAccederData.details.map((detail, idx) => (
                               <li key={idx} className="flex items-start">
-                                <FaShieldAlt className="text-safepalette-300 mt-1 mr-3 shrink-0" aria-hidden="true" />
+                                <FaShieldAlt className="text-safepalette-gold mt-1 mr-3 shrink-0" aria-hidden="true" />
                                 <span className="text-neutral-100">{detail}</span>
                               </li>
                             ))}
                           </ul>
                         </div>
 
-                        <div className={`md:w-1/4 ${MEDIA_BG} p-6 flex flex-col items-center justify-center`}>
-                          <div className="mb-6 w-36 h-36 md:w-40 md:h-40 bg-neutral-950 border border-white/10 shadow-md flex items-center justify-center p-4">
+                        {/* Solo imagen (sin botón) */}
+                        <div className={`md:w-1/4 ${MEDIA_BG} p-6 flex items-center justify-center`}>
+                          <div className="w-36 h-36 md:w-40 md:h-40 bg-neutral-950 border border-white/10 shadow-md flex items-center justify-center p-4">
                             <img src={currentAccederData.image} alt={currentAccederData.title} className="max-w-full max-h-full object-contain" loading="lazy" />
                           </div>
-                          <a
-                            href={currentAccederData.buttonLink}
-                            className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-safepalette-700 text-white font-medium hover:bg-safepalette-600 focus-visible:ring-2 focus-visible:ring-safepalette-300 w-full text-center rounded-md"
-                          >
-                            {currentAccederData.buttonText} <FaChevronRight className="inline" aria-hidden="true" />
-                          </a>
                         </div>
                       </div>
                     </PanelWrapper>
@@ -366,7 +344,7 @@ export default function Navbar() {
                           <ul className="space-y-3">
                             {productosData.estado.details.map((d, i) => (
                               <li key={i} className="flex items-start">
-                                <FaShieldAlt className="text-safepalette-300 mt-1 mr-3 shrink-0" aria-hidden="true" />
+                                <FaShieldAlt className="text-safepalette-gold mt-1 mr-3 shrink-0" aria-hidden="true" />
                                 <span className="text-neutral-100">{d}</span>
                               </li>
                             ))}
@@ -397,9 +375,8 @@ export default function Navbar() {
           <>
             {/* Backdrop global */}
             <div
-              className={`fixed inset-0 z-[1000] transition ${
-                menuOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
-              } bg-black/50 md:hidden`}
+              className={`fixed inset-0 z-[1000] transition ${menuOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
+                } bg-black/50 md:hidden`}
               onClick={closeMobileMenu}
               aria-hidden="true"
             />
@@ -420,7 +397,7 @@ export default function Navbar() {
                 </div>
                 <button
                   onClick={closeMobileMenu}
-                  className="p-2 rounded-md text-neutral-200 hover:bg-white/10"
+                  className="p-2 rounded-md text-neutral-200 hover:text-safepalette-gold hover:bg-white/10"
                   aria-label="Cerrar menú"
                 >
                   <svg className="w-5 h-5" viewBox="0 0 20 20" fill="currentColor">
@@ -445,11 +422,11 @@ export default function Navbar() {
                         className="w-full flex items-center justify-between text-left px-4 py-3"
                         aria-expanded={open}
                       >
-                        <span className={`font-medium ${open ? "text-white" : "text-neutral-100"}`}>
+                        <span className={`font-medium ${open ? "text-safepalette-gold" : "text-neutral-100"}`}>
                           {item.name}
                         </span>
                         <FaChevronDown
-                          className={`w-4 h-4 transition-transform ${open ? "rotate-180" : ""} text-white`}
+                          className={`w-4 h-4 transition-transform ${open ? "rotate-180" : ""} ${open ? "text-safepalette-gold" : "text-white"}`}
                           aria-hidden="true"
                         />
                       </button>
@@ -504,13 +481,6 @@ export default function Navbar() {
                                           </p>
                                         </div>
                                       </div>
-                                      <a
-                                        href={d.buttonLink}
-                                        onClick={closeMobileMenu}
-                                        className="mt-3 inline-flex items-center gap-2 px-3 py-2 text-sm bg-safepalette-700 text-white rounded-md hover:bg-safepalette-600"
-                                      >
-                                        {d.buttonText} <FaChevronRight aria-hidden="true" />
-                                      </a>
                                     </div>
                                   );
                                 })}
@@ -524,7 +494,7 @@ export default function Navbar() {
                                 <ul className="text-sm space-y-1">
                                   {productosData.estado.details.map((d, i) => (
                                     <li key={i} className="flex items-start text-neutral-100">
-                                      <FaShieldAlt className="mt-0.5 mr-2 text-safepalette-300" /> {d}
+                                      <FaShieldAlt className="mt-0.5 mr-2 text-safepalette-gold" /> {d}
                                     </li>
                                   ))}
                                 </ul>

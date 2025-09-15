@@ -1,8 +1,9 @@
 import React, { useEffect, useRef } from "react";
-import fondoBus from "@/assets/bus.mp4"; // 👈 alias @
+import fondoBus from "@/assets/bus.mp4";
 
 export default function Hero() {
   const videoRef = useRef(null);
+  const OVERLAY_ALPHA = 0.7;
 
   useEffect(() => {
     const v = videoRef.current;
@@ -17,10 +18,7 @@ export default function Hero() {
     v.setAttribute("playsinline", "");
     v.setAttribute("webkit-playsinline", "true");
 
-    const tryPlay = () => {
-      v.play().catch(() => {});
-    };
-
+    const tryPlay = () => v.play().catch(() => {});
     const onCanPlay = () => tryPlay();
     const onLoaded = () => tryPlay();
     const onVisibility = () => {
@@ -51,13 +49,22 @@ export default function Hero() {
     };
   }, []);
 
-  // Botones usando tu paleta safepalette
+  // 🎨 Botón borde blanco + hover amarillo
   const BTN_BASE =
-    "inline-flex items-center justify-center px-5 py-3 text-base font-medium focus:outline-none transition rounded-lg";
-  const BTN_PRIMARY =
-    `${BTN_BASE} text-white bg-safepalette-700 hover:bg-safepalette-600 focus-visible:ring-4 focus-visible:ring-safepalette-300/60`;
-  const BTN_OUTLINE =
-    `${BTN_BASE} text-white border border-white hover:bg-white hover:text-safepalette-900 focus-visible:ring-4 focus-visible:ring-safepalette-300/60`;
+    "inline-flex items-center justify-center px-6 py-3 text-base font-medium transition rounded-lg shadow-md focus:outline-none";
+
+  const BTN_WHITE_TO_GOLD = `
+    ${BTN_BASE}
+    border-2 border-white 
+    text-white 
+    bg-transparent 
+    hover:bg-safepalette-gold 
+    hover:border-safepalette-gold 
+    hover:text-black 
+    focus-visible:ring-4 
+    focus-visible:ring-safepalette-gold/40
+    transition-colors duration-300
+  `;
 
   return (
     <section
@@ -80,40 +87,43 @@ export default function Hero() {
         disablePictureInPicture
       />
 
-      {/* Ocultar controles nativos grandes (iOS) */}
       <style>{`
         .hero-video::-webkit-media-controls-start-playback-button { display: none !important; }
         .hero-video::-webkit-media-controls { display: none !important; }
       `}</style>
 
       {/* Overlay oscuro */}
-      <div aria-hidden="true" className="pointer-events-none absolute inset-0 bg-black/85" />
-      {/* Gradiente sutil */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-0 bg-gradient-to-b from-black/60 via-transparent to-black/60"
+        className="pointer-events-none absolute inset-0"
+        style={{ backgroundColor: `rgba(0,0,0,${OVERLAY_ALPHA})` }}
+      />
+
+      {/* Gradiente */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/40"
       />
 
       {/* Contenido */}
       <div className="relative z-10 mx-auto max-w-screen-xl px-4 py-20 text-center md:py-28">
         <h1
           id="hero-title"
-          className="mb-4 text-4xl font-extrabold leading-tight tracking-tight text-white md:text-5xl lg:text-6xl"
+          className="mb-6 text-5xl font-extrabold leading-tight tracking-tight text-white md:text-7xl lg:text-8xl"
         >
-          Bienvenido a <span className="text-safepalette-300">SafeTech</span>
+          Bienvenido a SafeTech
         </h1>
 
-        <p className="mx-auto mb-8 max-w-3xl text-pretty text-neutral-200 text-lg md:text-xl">
+        <p className="mx-auto mb-10 max-w-4xl text-white text-xl md:text-2xl lg:text-3xl">
           "Empresa tecnológica enfocada en brindar soluciones de seguridad
           avanzada con innovación y confianza"
         </p>
 
-        {/* CTAs (deja uno activo por ahora) */}
+        {/* CTA principal */}
         <div className="flex flex-col gap-4 sm:flex-row sm:justify-center">
-          {/* <a href="#nosotros" className={BTN_PRIMARY}>Nosotros</a> */}
           <a
             href="#servicios"
-            className={BTN_OUTLINE}
+            className={BTN_WHITE_TO_GOLD}
             aria-label="Ver la sección de Servicios"
           >
             Ver Servicios

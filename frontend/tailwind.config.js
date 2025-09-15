@@ -1,4 +1,4 @@
-/** @type {import('tailwindcss').Config} */
+// tailwind.config.js
 import flowbite from 'flowbite/plugin'
 
 export default {
@@ -11,23 +11,20 @@ export default {
   theme: {
     extend: {
       colors: {
-        // 🎨 Paleta gris-azulada personalizada
         safepalette: {
-          50:  "#f7f8fa",
-          100: "#eaecef",
-          200: "#d5d8de",
-          300: "#b5bac9",
-          400: "#a3a8b7",
-          500: "#8990a2",
-          600: "#788199",
-          700: "#666f88",
-          800: "#4f586f",
-          900: "#3a4155",
-          950: "#262a38"
+          blue: "#0A2342",
+          gray: "#4F5D75",
+          white: "#FFFFFF",
+          gold: "#F4B400",
+          // 👇 nuevas capas para modo oscuro elegante
+          ink: "#0A0B0D",        // fondo de página (más profundo)
+          surface: "#0F141B",    // tarjeta (un poco más clara)
+          edge: "#1B2330"        // líneas y bordes internos
         }
       },
       boxShadow: {
-        soft: "0 8px 30px rgba(0,0,0,0.25)"
+        soft: "0 8px 30px rgba(0,0,0,0.25)",
+        goldglow: "0 0 0 1px rgba(244,180,0,0.45), 0 8px 30px rgba(0,0,0,0.35)"
       },
       borderRadius: {
         xl: "1rem",

@@ -26,19 +26,19 @@ const serviciosData = [
     soon: false,
   },
   {
-    title: "Configurando",
+    title: "Próximamente",
     features: [],
     img: configuracionImg,
     link: "#",
-    cta: "Muy pronto",
+    cta: "",
     soon: true,
   },
   {
-    title: "Configurando",
+    title: "Próximamente",
     features: [],
     img: configuracionImg,
     link: "#",
-    cta: "Muy pronto",
+    cta: "",
     soon: true,
   },
 ];
@@ -47,20 +47,29 @@ const serviciosData = [
 const BTN_BASE =
   "inline-flex items-center justify-center px-5 py-3 text-base font-medium focus:outline-none transition";
 const BTN_PRIMARY =
-  `${BTN_BASE} rounded-md text-white bg-safepalette-600 hover:bg-safepalette-700 focus-visible:ring-4 focus-visible:ring-safepalette-400/50`;
+  `${BTN_BASE} rounded-md text-black bg-safepalette-gold hover:opacity-90 focus-visible:ring-4 focus-visible:ring-safepalette-gold/40`;
 const BTN_DISABLED =
   `${BTN_BASE} rounded-md bg-neutral-800 text-neutral-500 cursor-not-allowed`;
 
-const CARD =
-  "group relative flex h-full flex-col rounded-2xl bg-slate-900 text-slate-100 " +
-  "ring-1 ring-white/10 shadow-[0_8px_30px_rgba(0,0,0,0.25)] transition-all duration-300 " +
-  "hover:-translate-y-0.5 hover:shadow-[0_10px_40px_rgba(0,0,0,0.35)] hover:ring-safepalette-500/25";
-const CARD_MEDIA =
-  "flex items-center justify-center bg-gradient-to-b from-slate-800 via-slate-900 to-slate-900 " +
-  "px-6 pt-8 pb-6";
+// ⭐ Tarjetas negras con borde dorado permanente y hover/focus borde blanco
+// (template strings + .replace para evitar errores de comillas)
+const CARD = `
+  group relative flex h-full flex-col rounded-2xl
+  bg-gradient-to-b from-black via-black/95 to-black
+  text-safepalette-white
+  border-2 border-safepalette-gold
+  shadow-[0_8px_30px_rgba(0,0,0,0.4)] transition-all duration-300
+  hover:-translate-y-0.5 hover:border-white
+  focus-within:border-white
+`.replace(/\s+/g, " ").trim();
+
+const CARD_MEDIA = `
+  flex items-center justify-center bg-gradient-to-b
+  from-black via-black/95 to-black px-6 pt-8 pb-6
+`.replace(/\s+/g, " ").trim();
+
 const CARD_BODY = "flex flex-col gap-4 p-6";
 
-// ---- Icono check ----
 const CHECK_ICON = (
   <svg
     className="h-3.5 w-3.5"
@@ -126,7 +135,7 @@ function FeatureCarousel({ items }) {
                 loading="lazy"
                 draggable="false"
               />
-              <figcaption className="absolute inset-x-0 bottom-0 bg-slate-950/60 backdrop-blur-sm p-3 text-center text-sm">
+              <figcaption className="absolute inset-x-0 bottom-0 bg-black/60 backdrop-blur-sm p-3 text-center text-sm">
                 {it.title}
               </figcaption>
             </figure>
@@ -142,9 +151,7 @@ function FeatureCarousel({ items }) {
             onClick={() => goTo(i)}
             className={
               "h-2.5 w-2.5 rounded-full transition " +
-              (i === index
-                ? "bg-safepalette-500"
-                : "bg-white/20 hover:bg-white/30")
+              (i === index ? "bg-safepalette-gold" : "bg-white/20 hover:bg-white/30")
             }
             aria-label={`Ir al slide ${i + 1}`}
             aria-current={i === index ? "true" : "false"}
@@ -188,13 +195,14 @@ function MobileServiciosCarousel({ items }) {
               key={item.title}
               className={`${CARD} overflow-hidden snap-start shrink-0 w-full`}
               aria-labelledby={`card-${item.title}-title-mobile`}
+              tabIndex={0}
             >
               <div className={CARD_MEDIA + " aspect-[16/9]"}>
                 <img
                   src={item.img}
                   alt={item.title}
                   loading="lazy"
-                  className="h-28 w-auto object-contain md:h-32 drop-shadow-[0_6px_20px_rgba(137,144,162,.25)]"
+                  className="h-28 w-auto object-contain md:h-32 drop-shadow-[0_6px_20px_rgba(0,0,0,0.35)]"
                 />
               </div>
 
@@ -214,10 +222,10 @@ function MobileServiciosCarousel({ items }) {
                     <ul className="mt-2 space-y-2.5">
                       {item.features.map((feature) => (
                         <li key={feature} className="flex items-start gap-3">
-                          <span className="mt-1 inline-flex h-5 w-5 items-center justify-center rounded-md border border-safepalette-500/30 bg-safepalette-600/15 text-safepalette-300">
+                          <span className="mt-1 inline-flex h-5 w-5 items-center justify-center rounded-md border border-safepalette-gold/30 bg-black/40 text-safepalette-gold">
                             {CHECK_ICON}
                           </span>
-                          <span className="text-slate-300">{feature}</span>
+                          <span className="text-neutral-300">{feature}</span>
                         </li>
                       ))}
                     </ul>
@@ -225,12 +233,8 @@ function MobileServiciosCarousel({ items }) {
                 )}
 
                 <div className="mt-6">
-                  {item.soon ? (
-                    <button type="button" className={BTN_DISABLED} aria-disabled="true">
-                      {item.cta}
-                    </button>
-                  ) : (
-                    <Link to={item.link} className={BTN_PRIMARY}>
+                  {item.soon ? null : (
+                    <Link to={item.link} className={BTN_PRIMARY} aria-label={`Acceder a ${item.title}`}>
                       {item.cta}
                       <svg
                         className="ml-2 h-4 w-4 rtl:rotate-180"
@@ -251,7 +255,8 @@ function MobileServiciosCarousel({ items }) {
                 </div>
               </div>
 
-              <div className="pointer-events-none absolute inset-x-0 bottom-0 h-1 origin-left scale-x-0 bg-safepalette-600/80 transition-transform duration-300 group-hover:scale-x-100" />
+              {/* Línea dorada animada opcional (dejarla si te gusta) */}
+              {/* <div className="pointer-events-none absolute inset-x-0 bottom-0 h-1 origin-left scale-x-0 bg-safepalette-gold/80 transition-transform duration-300 group-hover:scale-x-100" /> */}
             </article>
           ))}
         </div>
@@ -265,7 +270,7 @@ function MobileServiciosCarousel({ items }) {
             onClick={() => goTo(i)}
             className={
               "h-2.5 w-2.5 rounded-full transition " +
-              (i === page ? "bg-safepalette-500" : "bg-white/20 hover:bg-white/30")
+              (i === page ? "bg-safepalette-gold" : "bg-white/20 hover:bg-white/30")
             }
           />
         ))}
@@ -287,20 +292,29 @@ export default function Servicios() {
     <section
       id="servicios"
       aria-labelledby="servicios-title"
-      className="bg-slate-950 px-4 py-16 md:py-24"
+      className="
+        relative
+        px-4 py-16 md:py-24
+        bg-gradient-to-b
+        from-[#0b0b0b]
+        via-[#0e0e0e]
+        to-[#131313]
+      "
     >
+      {/* Sin separador curvo */}
+
       <div className="mx-auto max-w-6xl">
         <header className="mb-12 text-center md:mb-16">
           <h2
             id="servicios-title"
-            className="text-4xl font-bold text-white md:text-5xl"
+            className="text-4xl font-bold text-safepalette-white md:text-5xl"
           >
-            Nuestros <span className="text-safepalette-500">Servicios</span>
+            Nuestros <span className="text-safepalette-gold">Servicios</span>
           </h2>
-          <p className="mx-auto mt-4 max-w-3xl text-lg text-slate-300 md:text-xl">
+          <p className="mx-auto mt-4 max-w-3xl text-lg text-safepalette-white/80 md:text-xl">
             Soluciones especializadas para cada integrante de la comunidad
           </p>
-          <div className="mx-auto mt-6 h-[3px] w-24 rounded-full bg-safepalette-600" />
+          <div className="mx-auto mt-6 h-[3px] w-24 rounded-full bg-safepalette-gold" />
         </header>
 
         {/* Móvil */}
@@ -312,20 +326,19 @@ export default function Servicios() {
             <article
               key={item.title}
               className={CARD + " overflow-hidden"}
+              tabIndex={0}
             >
               <div className={CARD_MEDIA + " aspect-[16/9]"}>
                 <img
                   src={item.img}
                   alt={item.title}
                   loading="lazy"
-                  className="h-28 w-auto object-contain md:h-32 drop-shadow-[0_6px_20px_rgba(137,144,162,.25)]"
+                  className="h-28 w-auto object-contain md:h-32 drop-shadow-[0_6px_20px_rgba(0,0,0,0.35)]"
                 />
               </div>
 
               <div className={CARD_BODY + " grow"}>
-                <h3 className="text-xl font-semibold text-white">
-                  {item.title}
-                </h3>
+                <h3 className="text-xl font-semibold text-white">{item.title}</h3>
 
                 {Array.isArray(item.carouselItems) && item.carouselItems.length > 0 ? (
                   <FeatureCarousel items={item.carouselItems} />
@@ -335,10 +348,10 @@ export default function Servicios() {
                     <ul className="mt-2 space-y-2.5">
                       {item.features.map((feature) => (
                         <li key={feature} className="flex items-start gap-3">
-                          <span className="mt-1 inline-flex h-5 w-5 items-center justify-center rounded-md border border-safepalette-500/30 bg-safepalette-600/15 text-safepalette-300">
+                          <span className="mt-1 inline-flex h-5 w-5 items-center justify-center rounded-md border border-safepalette-gold/30 bg-black/40 text-safepalette-gold">
                             {CHECK_ICON}
                           </span>
-                          <span className="text-slate-300">{feature}</span>
+                          <span className="text-neutral-300">{feature}</span>
                         </li>
                       ))}
                     </ul>
@@ -346,12 +359,12 @@ export default function Servicios() {
                 )}
 
                 <div className="mt-6">
-                  {item.soon ? (
-                    <button type="button" className={BTN_DISABLED}>
-                      {item.cta}
-                    </button>
-                  ) : (
-                    <Link to={item.link} className={BTN_PRIMARY}>
+                  {item.soon ? null : (
+                    <Link
+                      to={item.link}
+                      className={BTN_PRIMARY}
+                      aria-label={`Acceder a ${item.title}`}
+                    >
                       {item.cta}
                       <svg
                         className="ml-2 h-4 w-4 rtl:rotate-180"
@@ -372,7 +385,8 @@ export default function Servicios() {
                 </div>
               </div>
 
-              <div className="pointer-events-none absolute inset-x-0 bottom-0 h-1 origin-left scale-x-0 bg-safepalette-600/80 transition-transform duration-300 group-hover:scale-x-100" />
+              {/* Línea dorada animada opcional */}
+              {/* <div className="pointer-events-none absolute inset-x-0 bottom-0 h-1 origin-left scale-x-0 bg-safepalette-gold/80 transition-transform duration-300 group-hover:scale-x-100" /> */}
             </article>
           ))}
         </div>
