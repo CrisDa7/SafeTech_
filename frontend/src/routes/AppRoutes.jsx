@@ -3,7 +3,6 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import WhatsFloatingButton from "@/components/WhatsFloatingButton";
-import EmailFloatingButton from "@/components/EmailFloatingButton";
 import { Spinner } from "flowbite-react";
 import ScrollToTop from "@/components/ScrollToTop"; // 👈 importado
 
@@ -35,7 +34,6 @@ export default function AppRoutes() {
           </Suspense>
 
           <WhatsFloatingButton />
-          <EmailFloatingButton />
         </main>
         <Footer />
       </div>

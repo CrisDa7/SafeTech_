@@ -22,7 +22,7 @@ const serviciosData = [
     ],
     img: adminImg,
     link: "/safe-escolar",
-    cta: "Ver más",
+    cta: "Conoce más",
     soon: false,
   },
   {
@@ -51,8 +51,6 @@ const BTN_PRIMARY =
 const BTN_DISABLED =
   `${BTN_BASE} rounded-md bg-neutral-800 text-neutral-500 cursor-not-allowed`;
 
-// ⭐ Tarjetas negras con borde dorado permanente y hover/focus borde blanco
-// (template strings + .replace para evitar errores de comillas)
 const CARD = `
   group relative flex h-full flex-col rounded-2xl
   bg-gradient-to-b from-black via-black/95 to-black
@@ -85,7 +83,6 @@ const CHECK_ICON = (
   </svg>
 );
 
-// ---- Carrusel con autoplay cada 3s ----
 function FeatureCarousel({ items }) {
   const [index, setIndex] = useState(0);
   const [hovering, setHovering] = useState(false);
@@ -143,7 +140,6 @@ function FeatureCarousel({ items }) {
         </div>
       </div>
 
-      {/* Dots */}
       <div className="mt-3 flex justify-center gap-2">
         {items.map((_, i) => (
           <button
@@ -162,7 +158,6 @@ function FeatureCarousel({ items }) {
   );
 }
 
-// ---- Carrusel móvil ----
 function MobileServiciosCarousel({ items }) {
   const trackRef = useRef(null);
   const [page, setPage] = useState(0);
@@ -254,15 +249,11 @@ function MobileServiciosCarousel({ items }) {
                   )}
                 </div>
               </div>
-
-              {/* Línea dorada animada opcional (dejarla si te gusta) */}
-              {/* <div className="pointer-events-none absolute inset-x-0 bottom-0 h-1 origin-left scale-x-0 bg-safepalette-gold/80 transition-transform duration-300 group-hover:scale-x-100" /> */}
             </article>
           ))}
         </div>
       </div>
 
-      {/* Dots */}
       <div className="mt-4 flex justify-center gap-2">
         {items.map((_, i) => (
           <button
@@ -295,14 +286,9 @@ export default function Servicios() {
       className="
         relative
         px-4 py-16 md:py-24
-        bg-gradient-to-b
-        from-[#0b0b0b]
-        via-[#0e0e0e]
-        to-[#131313]
+        bg-safepalette-ink
       "
     >
-      {/* Sin separador curvo */}
-
       <div className="mx-auto max-w-6xl">
         <header className="mb-12 text-center md:mb-16">
           <h2
@@ -317,10 +303,8 @@ export default function Servicios() {
           <div className="mx-auto mt-6 h-[3px] w-24 rounded-full bg-safepalette-gold" />
         </header>
 
-        {/* Móvil */}
         <MobileServiciosCarousel items={serviciosData} />
 
-        {/* Desktop */}
         <div className="hidden md:grid grid-cols-1 gap-8 md:grid-cols-3">
           {serviciosData.map((item) => (
             <article
@@ -384,9 +368,6 @@ export default function Servicios() {
                   )}
                 </div>
               </div>
-
-              {/* Línea dorada animada opcional */}
-              {/* <div className="pointer-events-none absolute inset-x-0 bottom-0 h-1 origin-left scale-x-0 bg-safepalette-gold/80 transition-transform duration-300 group-hover:scale-x-100" /> */}
             </article>
           ))}
         </div>

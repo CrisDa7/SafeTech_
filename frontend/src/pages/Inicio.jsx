@@ -1,6 +1,8 @@
 import React from "react";
 import Hero from "@/components/Hero";
 import Servicios from "@/components/Servicios";
+import Achievements from "@/components/Achievements";
+
 
 export default function Inicio() {
   return (
@@ -8,6 +10,7 @@ export default function Inicio() {
       <main className="flex-grow">
         <Hero />
         <Servicios />
+        <Achievements />
       </main>
     </div>
   );
