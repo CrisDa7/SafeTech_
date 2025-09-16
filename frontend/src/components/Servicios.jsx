@@ -7,7 +7,7 @@ import configuracionImg from "@/assets/configuracion.png";
 
 const serviciosData = [
   {
-    title: "Safe Escolar",
+    title: "Safe School",
     carouselItems: [
       {
         title: "Safe School",

@@ -1,10 +1,9 @@
+// src/components/Navbar.jsx
 import React, { useState, useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
 import { FaChevronDown, FaShieldAlt } from "react-icons/fa";
 
 // Imágenes (con alias @)
-import logoAzul from "@/assets/logoNavbar.png";
-import logoBlanco from "@/assets/logoNavbar.png";
 import adminImg from "@/assets/admin.png";
 import padresImg from "@/assets/padres.png";
 import schoolImg from "@/assets/school.png";
@@ -65,20 +64,18 @@ export default function Navbar() {
     quienes: {
       title: "¿Quiénes somos?",
       description:
-        "En SafeTech nos especializamos en el diseño e implementacion de sistemas de seguridad de vanguardia.",
+        "En SafeTech nos especializamos en el diseño e implementación de sistemas de seguridad de vanguardia.",
       details: [],
       image: autobusImg,
     },
     mision: {
       title: "Misión",
-      description:
-        "Brindar protección y tranquilidad a través de tecnología confiable y moderna",
+      description: "Brindar protección y tranquilidad a través de tecnología confiable y moderna",
       image: autobusImg,
     },
     vision: {
       title: "Visión",
-      description:
-        "Ser líderes en soluciones tecnológicas que inspiren seguridad y confianza.",
+      description: "Ser líderes en soluciones tecnológicas que inspiren seguridad y confianza.",
       image: autobusImg,
     },
   };
@@ -171,14 +168,15 @@ export default function Navbar() {
   return (
     <nav
       ref={navRef}
-      className={`fixed w-full z-50 transition-all duration-300 ${scrolled
-          ? "bg-neutral-950/80 backdrop-blur supports-[backdrop-filter]:bg-neutral-950/60 shadow-lg py-2"
+      className={`fixed z-50 w-full transition-all duration-300 ${
+        scrolled
+          ? "bg-neutral-950/80 py-2 shadow-lg backdrop-blur supports-[backdrop-filter]:bg-neutral-950/60"
           : "bg-transparent py-3"
-        }`}
+      }`}
       aria-label="Barra de navegación principal"
     >
       <div className="mx-auto max-w-screen-xl px-4">
-        <div className="flex h-14 md:h-16 items-center justify-between">
+        <div className="flex h-14 items-center justify-between md:h-16">
           {/* Texto SafeTech (logo eliminado) */}
           <a
             href="#"
@@ -186,11 +184,11 @@ export default function Navbar() {
               e.preventDefault();
               window.scrollTo({ top: 0, behavior: "smooth" });
             }}
-            className="flex min-w-0 items-center gap-2 md:gap-3 shrink-0 cursor-pointer"
+            className="flex min-w-0 shrink-0 cursor-pointer items-center gap-2 md:gap-3"
             aria-label="SafeTech - Inicio"
             role="button"
           >
-            <span className="inline text-lg md:text-2xl font-extrabold text-white whitespace-nowrap max-w-[40vw] md:max-w-none truncate">
+            <span className="max-w-[40vw] truncate whitespace-nowrap text-lg font-extrabold text-white md:max-w-none md:text-2xl">
               SafeTech
             </span>
           </a>
@@ -199,19 +197,35 @@ export default function Navbar() {
           <button
             onClick={() => setMenuOpen((v) => !v)}
             type="button"
-            className="inline-flex items-center justify-center rounded-md p-2 md:hidden text-white hover:text-safepalette-gold focus:outline-none focus-visible:ring-2 focus-visible:ring-safepalette-gold/50"
+            className="inline-flex items-center justify-center rounded-md p-2 text-white hover:text-safepalette-gold focus:outline-none focus-visible:ring-2 focus-visible:ring-safepalette-gold/50 md:hidden"
             aria-controls="mobile-drawer"
             aria-expanded={menuOpen}
             aria-label={menuOpen ? "Cerrar menú" : "Abrir menú"}
           >
-            <svg className="w-6 h-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 14">
-              <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M1 1h15M1 7h15M1 13h15" />
+            <svg
+              className="h-6 w-6"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 17 14"
+            >
+              <path
+                stroke="currentColor"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M1 1h15M1 7h15M1 13h15"
+              />
             </svg>
           </button>
 
           {/* Menú desktop */}
           <div className="hidden md:flex">
-            <ul id="primary-menu" className="flex items-center gap-2 lg:gap-4 font-medium" role="menubar">
+            <ul
+              id="primary-menu"
+              className="flex items-center gap-2 font-medium lg:gap-4"
+              role="menubar"
+            >
               {menuItems.map((item) => (
                 <li
                   key={item.name}
@@ -222,13 +236,13 @@ export default function Navbar() {
                 >
                   <button
                     type="button"
-                    className="flex items-center gap-1 px-3 py-2 text-white hover:text-safepalette-gold focus-visible:ring-2 focus-visible:ring-safepalette-gold/50 rounded-md"
+                    className="flex items-center gap-1 rounded-md px-3 py-2 text-white hover:text-safepalette-gold focus-visible:ring-2 focus-visible:ring-safepalette-gold/50"
                     aria-haspopup="true"
                     aria-expanded={activeDropdown === item.name}
                     onClick={() => toggleDropdown(item.name)}
                   >
                     <span className="text-sm lg:text-base">{item.name}</span>
-                    <FaChevronDown className="w-3 h-3" aria-hidden="true" />
+                    <FaChevronDown className="h-3 w-3" aria-hidden="true" />
                   </button>
 
                   {/* Nosotros */}
@@ -236,7 +250,7 @@ export default function Navbar() {
                     <PanelWrapper label="Menú Nosotros">
                       <div className="flex flex-col md:flex-row">
                         {/* Tabs: quienes, mision, vision */}
-                        <div className="md:w-1/4 border-b md:border-b-0 md:border-r border-white/10">
+                        <div className="border-b border-white/10 md:w-1/4 md:border-b-0 md:border-r">
                           {[
                             { key: "quienes", label: "¿Quiénes somos?" },
                             { key: "mision", label: "Misión" },
@@ -246,9 +260,17 @@ export default function Navbar() {
                               key={opt.key}
                               onMouseEnter={() => setNosotrosActiveOption(opt.key)}
                               onFocus={() => setNosotrosActiveOption(opt.key)}
-                              className={`${TAB_BASE} ${nosotrosActiveOption === opt.key ? TAB_ACTIVE : TAB_HOVER}`}
+                              className={`${TAB_BASE} ${
+                                nosotrosActiveOption === opt.key ? TAB_ACTIVE : TAB_HOVER
+                              }`}
                             >
-                              <span className={`${nosotrosActiveOption === opt.key ? "text-white" : "text-neutral-200"} font-medium`}>
+                              <span
+                                className={`font-medium ${
+                                  nosotrosActiveOption === opt.key
+                                    ? "text-white"
+                                    : "text-neutral-200"
+                                }`}
+                              >
                                 {opt.label}
                               </span>
                             </button>
@@ -256,16 +278,21 @@ export default function Navbar() {
                         </div>
 
                         {/* Content */}
-                        <div className={`md:w-2/4 p-6 ${PANEL_COL_BORDER}`}>
-                          <h2 className="text-xl lg:text-2xl font-bold text-white mb-3">
+                        <div className={`p-6 ${PANEL_COL_BORDER} md:w-2/4`}>
+                          <h2 className="mb-3 text-xl font-bold text-white lg:text-2xl">
                             {currentNosotrosData.title}
                           </h2>
-                          <p className="text-neutral-200 mb-6 whitespace-pre-line">{currentNosotrosData.description}</p>
+                          <p className="mb-6 whitespace-pre-line text-neutral-200">
+                            {currentNosotrosData.description}
+                          </p>
                           {currentNosotrosData.details?.length > 0 && (
                             <ul className="space-y-3">
                               {currentNosotrosData.details.map((detail, idx) => (
                                 <li key={idx} className="flex items-start">
-                                  <FaShieldAlt className="text-safepalette-gold mt-1 mr-3 shrink-0" aria-hidden="true" />
+                                  <FaShieldAlt
+                                    className="mt-1 mr-3 shrink-0 text-safepalette-gold"
+                                    aria-hidden="true"
+                                  />
                                   <span className="text-neutral-100">{detail}</span>
                                 </li>
                               ))}
@@ -274,8 +301,15 @@ export default function Navbar() {
                         </div>
 
                         {/* Media */}
-                        <div className={`md:w-1/4 ${MEDIA_BG} p-6 flex items-center justify-center`}>
-                          <img src={currentNosotrosData.image} alt={currentNosotrosData.title} className="max-w-full max-h-48 object-contain" loading="lazy" />
+                        <div
+                          className={`${MEDIA_BG} flex items-center justify-center p-6 md:w-1/4`}
+                        >
+                          <img
+                            src={currentNosotrosData.image}
+                            alt={currentNosotrosData.title}
+                            className="max-h-48 max-w-full object-contain"
+                            loading="lazy"
+                          />
                         </div>
                       </div>
                     </PanelWrapper>
@@ -285,28 +319,43 @@ export default function Navbar() {
                   {item.isAcceso && activeDropdown === "Acceso" && (
                     <PanelWrapper label="Menú Acceso">
                       <div className="flex flex-col md:flex-row">
-                        <div className="md:w-1/4 border-b md:border-b-0 md:border-r border-white/10">
+                        <div className="border-b border-white/10 md:w-1/4 md:border-b-0 md:border-r">
                           {Object.keys(accederData).map((key) => (
                             <button
                               key={key}
                               onMouseEnter={() => setAccederActiveOption(key)}
                               onFocus={() => setAccederActiveOption(key)}
-                              className={`${TAB_BASE} ${accederActiveOption === key ? TAB_ACTIVE : TAB_HOVER}`}
+                              className={`${TAB_BASE} ${
+                                accederActiveOption === key ? TAB_ACTIVE : TAB_HOVER
+                              }`}
                             >
-                              <span className={`${accederActiveOption === key ? "text-white" : "text-neutral-200"} font-medium`}>
+                              <span
+                                className={`font-medium ${
+                                  accederActiveOption === key
+                                    ? "text-white"
+                                    : "text-neutral-200"
+                                }`}
+                              >
                                 {accederData[key].title}
                               </span>
                             </button>
                           ))}
                         </div>
 
-                        <div className={`md:w-2/4 p-6 ${PANEL_COL_BORDER}`}>
-                          <h2 className="text-xl lg:text-2xl font-bold text-white mb-3">{currentAccederData.title}</h2>
-                          <p className="text-neutral-200 mb-6">{currentAccederData.description}</p>
+                        <div className={`p-6 ${PANEL_COL_BORDER} md:w-2/4`}>
+                          <h2 className="mb-3 text-xl font-bold text-white lg:text-2xl">
+                            {currentAccederData.title}
+                          </h2>
+                          <p className="mb-6 text-neutral-200">
+                            {currentAccederData.description}
+                          </p>
                           <ul className="space-y-3">
                             {currentAccederData.details.map((detail, idx) => (
                               <li key={idx} className="flex items-start">
-                                <FaShieldAlt className="text-safepalette-gold mt-1 mr-3 shrink-0" aria-hidden="true" />
+                                <FaShieldAlt
+                                  className="mt-1 mr-3 shrink-0 text-safepalette-gold"
+                                  aria-hidden="true"
+                                />
                                 <span className="text-neutral-100">{detail}</span>
                               </li>
                             ))}
@@ -314,9 +363,16 @@ export default function Navbar() {
                         </div>
 
                         {/* Solo imagen (sin botón) */}
-                        <div className={`md:w-1/4 ${MEDIA_BG} p-6 flex items-center justify-center`}>
-                          <div className="w-36 h-36 md:w-40 md:h-40 bg-neutral-950 border border-white/10 shadow-md flex items-center justify-center p-4">
-                            <img src={currentAccederData.image} alt={currentAccederData.title} className="max-w-full max-h-full object-contain" loading="lazy" />
+                        <div
+                          className={`${MEDIA_BG} flex items-center justify-center p-6 md:w-1/4`}
+                        >
+                          <div className="flex h-36 w-36 items-center justify-center border border-white/10 bg-neutral-950 p-4 shadow-md md:h-40 md:w-40">
+                            <img
+                              src={currentAccederData.image}
+                              alt={currentAccederData.title}
+                              className="max-h-full max-w-full object-contain"
+                              loading="lazy"
+                            />
                           </div>
                         </div>
                       </div>
@@ -327,25 +383,32 @@ export default function Navbar() {
                   {item.isProductos && activeDropdown === "Productos" && (
                     <PanelWrapper label="Menú Productos">
                       <div className="flex flex-col md:flex-row">
-                        <div className={`md:w-2/3 p-6 ${PANEL_COL_BORDER}`}>
-                          <h2 className="text-xl lg:text-2xl font-bold text-white mb-3">
+                        <div className={`p-6 ${PANEL_COL_BORDER} md:w-2/3`}>
+                          <h2 className="mb-3 text-xl font-bold text-white lg:text-2xl">
                             {productosData.estado.title}
                           </h2>
-                          <p className="text-neutral-200 mb-6">{productosData.estado.description}</p>
+                          <p className="mb-6 text-neutral-200">
+                            {productosData.estado.description}
+                          </p>
                           <ul className="space-y-3">
                             {productosData.estado.details.map((d, i) => (
                               <li key={i} className="flex items-start">
-                                <FaShieldAlt className="text-safepalette-gold mt-1 mr-3 shrink-0" aria-hidden="true" />
+                                <FaShieldAlt
+                                  className="mt-1 mr-3 shrink-0 text-safepalette-gold"
+                                  aria-hidden="true"
+                                />
                                 <span className="text-neutral-100">{d}</span>
                               </li>
                             ))}
                           </ul>
                         </div>
-                        <div className={`md:w-1/3 ${MEDIA_BG} p-6 flex items-center justify-center`}>
+                        <div
+                          className={`${MEDIA_BG} flex items-center justify-center p-6 md:w-1/3`}
+                        >
                           <img
                             src={productosData.estado.image}
                             alt="Sección en configuración"
-                            className="max-w-full max-h-48 object-contain"
+                            className="max-h-48 w-full object-contain"
                             loading="lazy"
                           />
                         </div>
@@ -366,33 +429,34 @@ export default function Navbar() {
           <>
             {/* Backdrop global */}
             <div
-              className={`fixed inset-0 z-[1000] transition ${menuOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
-                } bg-black/50 md:hidden`}
+              className={`fixed inset-0 z-[1000] transition ${
+                menuOpen ? "pointer-events-auto opacity-100" : "pointer-events-none opacity-0"
+              } bg-black/50 md:hidden`}
               onClick={closeMobileMenu}
               aria-hidden="true"
             />
             {/* Drawer global */}
             <aside
               id="mobile-drawer"
-              className={`md:hidden fixed right-0 top-0 h-full w-[88%] max-w-sm z-[1001] transform transition-transform duration-300
-                ${menuOpen ? "translate-x-0" : "translate-x-full"} bg-neutral-950 border-l border-white/10`}
+              className={`fixed right-0 top-0 z-[1001] h-full w-[88%] max-w-sm transform border-l border-white/10 bg-neutral-950 transition-transform duration-300 md:hidden ${
+                menuOpen ? "translate-x-0" : "translate-x-full"
+              }`}
               role="dialog"
               aria-modal="true"
               aria-label="Menú de SafeTech"
             >
               {/* Header del drawer */}
-              <div className="flex items-center justify-between px-4 h-14 border-b border-white/10">
+              <div className="flex h-14 items-center justify-between border-b border-white/10 px-4">
                 <div className="flex items-center gap-2">
-                  {/* Logo eliminado en móvil, dejamos solo el texto */}
-                  {/* <img src={logoBlanco} className="h-7 w-auto" alt="SafeTech" /> */}
-                  <span className="text-white font-extrabold text-base">SafeTech</span>
+                  <span className="text-base font-extrabold text-white">SafeTech</span>
                 </div>
                 <button
                   onClick={closeMobileMenu}
-                  className="p-2 rounded-md text-neutral-200 hover:text-safepalette-gold hover:bg-white/10"
+                  type="button"
+                  className="rounded-md p-2 text-neutral-200 hover:bg-white/10 hover:text-safepalette-gold"
                   aria-label="Cerrar menú"
                 >
-                  <svg className="w-5 h-5" viewBox="0 0 20 20" fill="currentColor">
+                  <svg className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                     <path
                       fillRule="evenodd"
                       d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
@@ -403,7 +467,7 @@ export default function Navbar() {
               </div>
 
               {/* Lista principal (móvil) */}
-              <ul className="px-2 py-3 space-y-2 overflow-y-auto h-[calc(100%-3.5rem)]">
+              <ul className="h-[calc(100%-3.5rem)] space-y-2 overflow-y-auto px-2 py-3">
                 {menuItems.map((item) => {
                   const open = mobileActiveSection === item.name;
                   return (
@@ -411,21 +475,31 @@ export default function Navbar() {
                       <button
                         type="button"
                         onClick={() => setMobileActiveSection(open ? null : item.name)}
-                        className="w-full flex items-center justify-between text-left px-4 py-3"
+                        className="flex w-full items-center justify-between px-4 py-3 text-left"
                         aria-expanded={open}
                       >
-                        <span className={`font-medium ${open ? "text-safepalette-gold" : "text-neutral-100"}`}>
+                        <span
+                          className={`font-medium ${
+                            open ? "text-safepalette-gold" : "text-neutral-100"
+                          }`}
+                        >
                           {item.name}
                         </span>
                         <FaChevronDown
-                          className={`w-4 h-4 transition-transform ${open ? "rotate-180" : ""} ${open ? "text-safepalette-gold" : "text-white"}`}
+                          className={`h-4 w-4 transition-transform ${
+                            open ? "rotate-180" : ""
+                          } ${open ? "text-safepalette-gold" : "text-white"}`}
                           aria-hidden="true"
                         />
                       </button>
 
-                      <div className={`grid transition-all ${open ? "grid-rows-[1fr]" : "grid-rows-[0fr]"}`}>
+                      <div
+                        className={`grid transition-all ${
+                          open ? "grid-rows-[1fr]" : "grid-rows-[0fr]"
+                        }`}
+                      >
                         <div className="overflow-hidden">
-                          <div className="px-4 pb-4 space-y-3">
+                          <div className="space-y-3 px-4 pb-4">
                             {/* NOSOTROS */}
                             {item.isNosotros && (
                               <div className="space-y-2">
@@ -436,15 +510,22 @@ export default function Navbar() {
                                 ].map(({ key, data, label }) => (
                                   <div key={key}>
                                     <button
-                                      className="w-full text-left text-sm py-2 px-3 rounded-md bg-white/10 hover:bg-white/15 border border-white/10 text-white"
+                                      type="button"
+                                      className="w-full rounded-md border border-white/10 bg-white/10 px-3 py-2 text-left text-sm text-white hover:bg-white/15"
                                       onClick={() => setMobileSubKey((k) => (k === key ? null : key))}
                                       aria-expanded={mobileSubKey === key}
                                     >
                                       {label}
                                     </button>
-                                    <div className={`grid transition-all ${mobileSubKey === key ? "grid-rows-[1fr] mt-2" : "grid-rows-[0fr]"}`}>
+                                    <div
+                                      className={`grid transition-all ${
+                                        mobileSubKey === key ? "mt-2 grid-rows-[1fr]" : "grid-rows-[0fr]"
+                                      }`}
+                                    >
                                       <div className="overflow-hidden">
-                                        <p className="text-sm text-neutral-200 whitespace-pre-line">{data.description}</p>
+                                        <p className="text-sm text-neutral-200 whitespace-pre-line">
+                                          {data.description}
+                                        </p>
                                       </div>
                                     </div>
                                   </div>
@@ -463,12 +544,12 @@ export default function Navbar() {
                                         <img
                                           src={d.image}
                                           alt={d.title}
-                                          className="w-12 h-12 object-contain border border-white/10 bg-neutral-900"
+                                          className="h-12 w-12 bg-neutral-900 object-contain border border-white/10"
                                           loading="lazy"
                                         />
                                         <div className="min-w-0">
                                           <p className="text-sm font-medium text-white">{d.title}</p>
-                                          <p className="text-xs text-neutral-200 line-clamp-2">
+                                          <p className="line-clamp-2 text-xs text-neutral-200">
                                             {d.description}
                                           </p>
                                         </div>
@@ -482,18 +563,20 @@ export default function Navbar() {
                             {/* PRODUCTOS */}
                             {item.isProductos && (
                               <div className="space-y-2">
-                                <p className="text-sm text-neutral-200">{productosData.estado.description}</p>
-                                <ul className="text-sm space-y-1">
+                                <p className="text-sm text-neutral-200">
+                                  {productosData.estado.description}
+                                </p>
+                                <ul className="space-y-1 text-sm">
                                   {productosData.estado.details.map((d, i) => (
                                     <li key={i} className="flex items-start text-neutral-100">
-                                      <FaShieldAlt className="mt-0.5 mr-2 text-safepalette-gold" /> {d}
+                                      <FaShieldAlt className="mr-2 mt-0.5 text-safepalette-gold" /> {d}
                                     </li>
                                   ))}
                                 </ul>
                                 <img
                                   src={productosData.estado.image}
                                   alt="Sección en configuración"
-                                  className="mt-2 w-full max-h-40 object-contain border border-white/10"
+                                  className="mt-2 w-full max-h-40 border border-white/10 object-contain"
                                   loading="lazy"
                                 />
                               </div>

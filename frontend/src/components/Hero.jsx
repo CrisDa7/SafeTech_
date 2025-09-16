@@ -1,3 +1,4 @@
+// src/components/Hero.jsx
 import React, { useEffect, useRef } from "react";
 import fondoBus from "@/assets/bus.mp4";
 
@@ -9,22 +10,20 @@ export default function Hero() {
     const v = videoRef.current;
     if (!v) return;
 
+    // Asegura autoplay en móviles (muted + playsInline)
     v.muted = true;
     v.defaultMuted = true;
     v.playsInline = true;
 
-    v.setAttribute("muted", "");
-    v.setAttribute("autoplay", "");
-    v.setAttribute("playsinline", "");
-    v.setAttribute("webkit-playsinline", "true");
-
     const tryPlay = () => v.play().catch(() => {});
+
     const onCanPlay = () => tryPlay();
     const onLoaded = () => tryPlay();
     const onVisibility = () => {
       if (!document.hidden) tryPlay();
     };
 
+    // Desbloqueo por gesto (iOS antiguo)
     const unlockOnGesture = () => {
       tryPlay();
       window.removeEventListener("touchstart", unlockOnGesture);
@@ -34,7 +33,6 @@ export default function Hero() {
     v.addEventListener("canplay", onCanPlay);
     v.addEventListener("loadeddata", onLoaded);
     document.addEventListener("visibilitychange", onVisibility);
-
     window.addEventListener("touchstart", unlockOnGesture, { once: true, passive: true });
     window.addEventListener("click", unlockOnGesture, { once: true });
 
@@ -51,18 +49,13 @@ export default function Hero() {
 
   // 🎨 Botón borde blanco + hover amarillo
   const BTN_BASE =
-    "inline-flex items-center justify-center px-6 py-3 text-base font-medium transition rounded-lg shadow-md focus:outline-none";
-
+    "inline-flex items-center justify-center rounded-lg px-6 py-3 text-base font-medium shadow-md transition focus:outline-none";
   const BTN_WHITE_TO_GOLD = `
     ${BTN_BASE}
-    border-2 border-white 
-    text-white 
-    bg-transparent 
-    hover:bg-safepalette-gold 
-    hover:border-safepalette-gold 
-    hover:text-black 
-    focus-visible:ring-4 
-    focus-visible:ring-safepalette-gold/40
+    border-2 border-white
+    bg-transparent text-white
+    hover:bg-safepalette-gold hover:border-safepalette-gold hover:text-black
+    focus-visible:ring-4 focus-visible:ring-safepalette-gold/40
     transition-colors duration-300
   `;
 
@@ -70,12 +63,12 @@ export default function Hero() {
     <section
       id="inicio"
       aria-labelledby="hero-title"
-      className="relative isolate flex items-center justify-center min-h-[90svh] md:min-h-screen overflow-hidden"
+      className="relative isolate flex min-h-[90vh] items-center justify-center overflow-hidden md:min-h-screen"
     >
       {/* 🎥 Video de fondo */}
       <video
         ref={videoRef}
-        className="hero-video absolute inset-0 w-full h-full object-cover pointer-events-none"
+        className="hero-video pointer-events-none absolute inset-0 h-full w-full object-cover"
         src={fondoBus}
         autoPlay
         loop
@@ -85,6 +78,7 @@ export default function Hero() {
         controls={false}
         controlsList="nodownload noplaybackrate nofullscreen"
         disablePictureInPicture
+        onContextMenu={(e) => e.preventDefault()}
       />
 
       <style>{`
@@ -99,7 +93,7 @@ export default function Hero() {
         style={{ backgroundColor: `rgba(0,0,0,${OVERLAY_ALPHA})` }}
       />
 
-      {/* Gradiente */}
+      {/* Gradiente superior/inferior */}
       <div
         aria-hidden="true"
         className="pointer-events-none absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/40"
@@ -114,18 +108,13 @@ export default function Hero() {
           Bienvenido a SafeTech
         </h1>
 
-        <p className="mx-auto mb-10 max-w-4xl text-white text-xl md:text-2xl lg:text-3xl">
-          "Empresa tecnológica enfocada en brindar soluciones de seguridad
-          avanzada con innovación y confianza"
+        <p className="mx-auto mb-10 max-w-4xl text-xl text-white md:text-2xl lg:text-3xl">
+          Empresa tecnológica enfocada en brindar soluciones de seguridad avanzada con innovación y confianza
         </p>
 
         {/* CTA principal */}
         <div className="flex flex-col gap-4 sm:flex-row sm:justify-center">
-          <a
-            href="#servicios"
-            className={BTN_WHITE_TO_GOLD}
-            aria-label="Ver la sección de Servicios"
-          >
+          <a href="#servicios" className={BTN_WHITE_TO_GOLD} aria-label="Ver la sección de Servicios">
             Ver Servicios
           </a>
         </div>
