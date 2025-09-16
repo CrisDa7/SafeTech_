@@ -13,6 +13,7 @@ const Servicios = lazy(() => import("@/components/Servicios"));
 const SafeServicios = lazy(() => import("@/pages/safeServicios"));
 // 👇 ahora usamos el Contacto desde components
 const Contacto = lazy(() => import("@/components/Contacto"));
+const ContactoHome = lazy(() => import("@/components/ContactHome"));
 
 export default function AppRoutes() {
   return (
@@ -34,6 +35,7 @@ export default function AppRoutes() {
               <Route path="/nosotros" element={<Nosotros />} />
               <Route path="/safe-escolar" element={<SafeServicios />} />
               <Route path="/contacto" element={<Contacto />} />
+              <Route path="/contacto-home" element={<ContactoHome />} />
             </Routes>
           </Suspense>
 
