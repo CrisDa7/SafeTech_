@@ -29,7 +29,7 @@ export default function Contacto() {
       <div className="mx-auto max-w-5xl">
         <header className="mb-8 text-center">
           <h2 className="text-4xl md:text-5xl font-bold text-safepalette-gold">
-            Contacto
+            Contáctanos
           </h2>
           <p className="mt-3 text-safepalette-white/80">
             Déjanos tus datos y te escribimos de inmediato.

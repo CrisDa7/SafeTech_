@@ -3,7 +3,7 @@ import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 
 // Importo componentes internos
-import Contacto from "@/components/Contacto";       // Formulario de contacto
+import Contacto from "@/components/Contacto";        // Formulario de contacto (con su propio título "Contáctanos")
 import Achievements from "@/components/Achievements"; // Reseñas / estadísticas
 
 // Fondo para el hero
@@ -77,7 +77,6 @@ export default function SafeServicios() {
         />
         <div className="relative mx-auto max-w-6xl px-4 py-14 md:py-20">
           <div className="grid grid-cols-1 md:grid-cols-12 gap-10 md:gap-14 items-center">
-            {/* Texto principal */}
             <div className="md:col-span-7">
               <h2 className="text-4xl md:text-5xl font-extrabold tracking-tight text-white">
                 ¿Qué es <span className="text-safepalette-gold">SAFE SCHOOL</span>?
@@ -88,14 +87,12 @@ export default function SafeServicios() {
                 inteligente de garantizar la seguridad y la eficiencia del transporte
                 escolar para cualquier Establecimiento Educativo, público o privado.
               </p>
-
               <p className="mt-4 text-slate-200/90 text-lg leading-relaxed">
                 Integra seguimiento en tiempo real, comunicación transparente y flujos
                 operativos optimizados para que cada recorrido sea más seguro y sin
                 preocupaciones dentro del territorio nacional.
               </p>
 
-              {/* Lista de puntos clave con íconos (sin tarjetas) */}
               <ul className="mt-8 space-y-4">
                 {[
                   "Seguimiento en tiempo real y notificaciones contextuales.",
@@ -121,7 +118,6 @@ export default function SafeServicios() {
               </ul>
             </div>
 
-            {/* Columna visual */}
             <div className="md:col-span-5">
               <div className="relative">
                 <div
@@ -141,12 +137,11 @@ export default function SafeServicios() {
             </div>
           </div>
 
-          {/* divisor sutil */}
           <div className="mt-14 h-px bg-gradient-to-r from-transparent via-safepalette-gold/20 to-transparent" />
         </div>
       </section>
 
-      {/* ================= ¿POR QUÉ ES UNA DECISIÓN ACERTADA? (SIN TARJETAS) ================= */}
+      {/* ================= ¿POR QUÉ ES UNA DECISIÓN ACERTADA? ================= */}
       <section className="relative z-10">
         <div className="mx-auto max-w-6xl px-4 py-10 md:py-14">
           <h3 className="text-center text-3xl md:text-4xl font-bold text-white">
@@ -155,38 +150,17 @@ export default function SafeServicios() {
 
           <div className="mt-10 grid grid-cols-1 md:grid-cols-3">
             {[
-              {
-                title: "ETA confiable",
-                desc: "Estimaciones precisas de llegada para reducir esperas y ansiedades.",
-                img: busArrivalImg,
-              },
-              {
-                title: "Seguridad prioritaria",
-                desc: "Alertas y protocolos integrados para estudiantes en cada etapa.",
-                img: safetyImg,
-              },
-              {
-                title: "Transparencia real",
-                desc: "Información clara para familias y directivos en un mismo lugar.",
-                img: transparencyImg,
-              },
+              { title: "ETA confiable", desc: "Estimaciones precisas de llegada para reducir esperas y ansiedades.", img: busArrivalImg },
+              { title: "Seguridad prioritaria", desc: "Alertas y protocolos integrados para estudiantes en cada etapa.", img: safetyImg },
+              { title: "Transparencia real", desc: "Información clara para familias y directivos en un mismo lugar.", img: transparencyImg },
             ].map((item, idx) => (
               <div
                 key={item.title}
-                className={[
-                  "flex flex-col items-start md:items-center gap-4 px-0 md:px-6 py-6",
-                  idx !== 2 ? "md:border-r md:border-white/10" : "",
-                ].join(" ")}
+                className={["flex flex-col items-start md:items-center gap-4 px-0 md:px-6 py-6", idx !== 2 ? "md:border-r md:border-white/10" : ""].join(" ")}
               >
                 <div className="flex items-center gap-3">
                   <span className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-safepalette-gold/15">
-                    <svg
-                      viewBox="0 0 24 24"
-                      className="h-5 w-5 text-safepalette-gold"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                    >
+                    <svg viewBox="0 0 24 24" className="h-5 w-5 text-safepalette-gold" fill="none" stroke="currentColor" strokeWidth="2">
                       <path d="M12 3l2.5 6H21l-5 3.6L17.5 21 12 17.7 6.5 21 8 12.6 3 9h6.5L12 3z" />
                     </svg>
                   </span>
@@ -199,11 +173,9 @@ export default function SafeServicios() {
         </div>
       </section>
 
-      {/* ================= (CTA “Solicitar demo” eliminado) ================= */}
-
-      {/* ================= CONTACTO (SOLO FORM, SIN FONDO GRIS) ================= */}
+      {/* ================= CONTACTO (SOLO FORM, SIN FONDO GRIS, UN SOLO TÍTULO) ================= */}
       <section id="contacto" className="relative z-10 mt-10 md:mt-12">
-        {/* halo suave arriba, sin caja */}
+        {/* halo suave arriba, sin tarjeta detrás */}
         <div
           className="absolute inset-x-0 -top-10 h-[320px] -z-10 pointer-events-none"
           aria-hidden="true"
@@ -213,12 +185,9 @@ export default function SafeServicios() {
           }}
         />
         <div className="mx-auto max-w-6xl px-4">
-          {/* Marco externo: solo borde amarillo + padding; sin fondo atrás */}
+          {/* Marco amarillo externo. NO pongo ningún <h3> aquí para no duplicar. */}
           <div className="contacto-frame relative rounded-2xl p-5 md:p-6 lg:p-7">
-            <h3 className="text-center text-3xl md:text-4xl font-bold text-safepalette-gold mb-6">
-              Contacto
-            </h3>
-            {/* El formulario en modo "bare": quitamos cualquier card/fondo interno */}
+            {/* El componente ya imprime su propio título “Contáctanos” */}
             <div className="contacto-bare">
               <Contacto />
             </div>
@@ -226,7 +195,7 @@ export default function SafeServicios() {
         </div>
       </section>
 
-      {/* ================= RESEÑAS / ESTADÍSTICAS (SIN “TARJETA” GRIS) ================= */}
+      {/* ================= RESEÑAS / ESTADÍSTICAS (SIN TARJETA GRIS) ================= */}
       <section className="relative z-10 mt-10 md:mt-12">
         <div className="mx-auto max-w-6xl px-4">
           <div className="achievements-bare">
@@ -237,7 +206,7 @@ export default function SafeServicios() {
 
       {/* ================= OVERRIDES SÓLO PARA CONTACTO/RESEÑAS ================= */}
       <style>{`
-        /* Marco amarillo del bloque Contacto (sin fondo, sólo borde) */
+        /* Marco amarillo del bloque Contacto (sin fondo, sólo borde + glow) */
         .contacto-frame {
           background: transparent !important;
           border: 1.6px solid rgba(250, 204, 21, 0.55);
@@ -256,25 +225,34 @@ export default function SafeServicios() {
           padding: 1.6px;
         }
 
-        /* Quitar "cuadro gris" de Contacto SIN tocar inputs/selects/textarea/botón */
-        .contacto-bare *:not(input):not(select):not(textarea):not(button) {
+        /* Quitar "card" gris del contenedor raíz que suele envolver el formulario,
+           sin tocar los inputs/labels/btn internos.  (Selectores más finos) */
+        .contacto-bare .bg-safepalette-surface,
+        .contacto-bare .bg-slate-900,
+        .contacto-bare .bg-neutral-900,
+        .contacto-bare .shadow,
+        .contacto-bare .shadow-goldglow,
+        .contacto-bare .border {
           background: transparent !important;
           box-shadow: none !important;
           border-color: transparent !important;
         }
 
-        /* Si tu componente Contacto envuelve todo en una tarjeta con .rounded-2xl o .bg-*, la anulamos */
-        .contacto-bare > div,
-        .contacto-bare > section,
-        .contacto-bare > form {
+        /* Si el Contacto usa un wrapper con .rounded-2xl/.rounded-xl como "card", lo limpiamos */
+        .contacto-bare > .rounded-2xl,
+        .contacto-bare > .rounded-xl {
           background: transparent !important;
           box-shadow: none !important;
           border-color: transparent !important;
         }
 
-        /* Reseñas/estadísticas: eliminar fondos tipo tarjeta del contenedor */
-        .achievements-bare > div,
-        .achievements-bare > section {
+        /* Reseñas/estadísticas: sin tarjeta gris */
+        .achievements-bare .bg-safepalette-surface,
+        .achievements-bare .bg-slate-900,
+        .achievements-bare .bg-neutral-900,
+        .achievements-bare .shadow,
+        .achievements-bare .shadow-goldglow,
+        .achievements-bare .border {
           background: transparent !important;
           box-shadow: none !important;
           border-color: transparent !important;
