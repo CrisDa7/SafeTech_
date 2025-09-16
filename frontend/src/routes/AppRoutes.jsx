@@ -1,3 +1,4 @@
+// src/AppRoutes.jsx
 import { lazy, Suspense } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Navbar from "@/components/Navbar";
@@ -10,6 +11,7 @@ const Inicio = lazy(() => import("@/pages/Inicio"));
 const Nosotros = lazy(() => import("@/components/Nosotros"));
 const Servicios = lazy(() => import("@/components/Servicios"));
 const SafeServicios = lazy(() => import("@/pages/safeServicios"));
+const Contacto = lazy(() => import("@/pages/Contacto")); // 👈 NUEVO
 
 export default function AppRoutes() {
   return (
@@ -30,6 +32,7 @@ export default function AppRoutes() {
               <Route path="/servicios" element={<Servicios />} />
               <Route path="/nosotros" element={<Nosotros />} />
               <Route path="/safe-escolar" element={<SafeServicios />} />
+              <Route path="/contacto" element={<Contacto />} /> {/* 👈 NUEVO */}
             </Routes>
           </Suspense>
 
