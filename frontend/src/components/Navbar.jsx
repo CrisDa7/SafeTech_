@@ -3,8 +3,8 @@ import { createPortal } from "react-dom";
 import { FaChevronDown, FaShieldAlt } from "react-icons/fa";
 
 // Imágenes (con alias @)
-import logoAzul from "@/assets/logoAzul.png";
-import logoBlanco from "@/assets/logoBlanco.png";
+import logoAzul from "@/assets/logoNavbar.png";
+import logoBlanco from "@/assets/logoNavbar.png";
 import adminImg from "@/assets/admin.png";
 import padresImg from "@/assets/padres.png";
 import schoolImg from "@/assets/school.png";
