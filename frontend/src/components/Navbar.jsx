@@ -179,7 +179,7 @@ export default function Navbar() {
     >
       <div className="mx-auto max-w-screen-xl px-4">
         <div className="flex h-14 md:h-16 items-center justify-between">
-          {/* Logo */}
+          {/* Texto SafeTech (logo eliminado) */}
           <a
             href="#"
             onClick={(e) => {
@@ -190,19 +190,10 @@ export default function Navbar() {
             aria-label="SafeTech - Inicio"
             role="button"
           >
-            <img
-              src={scrolled ? logoBlanco : logoAzul}
-              className="h-14 md:h-16 w-auto object-contain transition-all duration-300"
-              alt="Logo de SafeTech"
-              loading="eager"
-              width={200}  // puedes aumentar si quieres aún más ancho
-              height={72}
-            />
-            <span className="inline text-[0.6rem] md:text-sm font-bold text-white whitespace-nowrap max-w-[40vw] md:max-w-none truncate">
+            <span className="inline text-lg md:text-2xl font-extrabold text-white whitespace-nowrap max-w-[40vw] md:max-w-none truncate">
               SafeTech
             </span>
           </a>
-
 
           {/* Botón menú móvil */}
           <button
@@ -392,8 +383,9 @@ export default function Navbar() {
               {/* Header del drawer */}
               <div className="flex items-center justify-between px-4 h-14 border-b border-white/10">
                 <div className="flex items-center gap-2">
-                  <img src={logoBlanco} className="h-7 w-auto" alt="SafeTech" />
-                  <span className="text-white font-semibold text-sm">SafeTech</span>
+                  {/* Logo eliminado en móvil, dejamos solo el texto */}
+                  {/* <img src={logoBlanco} className="h-7 w-auto" alt="SafeTech" /> */}
+                  <span className="text-white font-extrabold text-base">SafeTech</span>
                 </div>
                 <button
                   onClick={closeMobileMenu}

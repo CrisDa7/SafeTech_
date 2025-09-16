@@ -147,7 +147,7 @@ export default function Contacto() {
               >
                 {status.type === "loading"
                   ? "Enviando…"
-                  : "Estoy interesado, por favor, ponte en contacto conmigo."}
+                  : "Enviar mensaje"}
               </button>
             </div>
 

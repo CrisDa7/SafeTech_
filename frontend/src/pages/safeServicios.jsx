@@ -1,6 +1,6 @@
 // src/pages/safeServicios.jsx
 import React, { useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 // Importo componentes internos
 import Contacto from "@/components/Contacto";        // Formulario de contacto (con su propio título "Contáctanos")
@@ -15,9 +15,64 @@ import safetyImg from "@/assets/admin.png";
 import transparencyImg from "@/assets/admin.png";
 
 export default function SafeServicios() {
+  const location = useLocation();
+
   useEffect(() => {
     document.title = "Safe Escolar — Servicios";
   }, []);
+
+  // Desactiva la restauración automática de scroll del navegador
+  useEffect(() => {
+    if ("scrollRestoration" in window.history) {
+      const prev = window.history.scrollRestoration;
+      window.history.scrollRestoration = "manual";
+      return () => {
+        window.history.scrollRestoration = prev;
+      };
+    }
+  }, []);
+
+  // Scroll robusto al #hash (funciona al entrar directo, reload, y cambios de hash)
+  useEffect(() => {
+    let raf = 0;
+
+    const tryScroll = (attempt = 0) => {
+      const hash = (location?.hash ?? window.location.hash) || "";
+      if (!hash) return;
+
+      const id = hash.slice(1);
+      const el = document.getElementById(id);
+
+      if (el) {
+        // Si tienes header fijo, el scroll-mt-24 ya ayuda. Aun así, puedes ajustar un OFFSET manual.
+        const OFFSET = 0; // si necesitas más, prueba 80/96
+        const y = el.getBoundingClientRect().top + window.pageYOffset - OFFSET;
+        window.scrollTo({ top: y, behavior: "smooth" });
+        return;
+      }
+
+      // Reintenta por ~1.5s (90 frames aprox.) hasta que el DOM esté listo
+      if (attempt < 90) {
+        raf = requestAnimationFrame(() => tryScroll(attempt + 1));
+      }
+    };
+
+    const onLoad = () => tryScroll(0);
+    const onHashChange = () => tryScroll(0);
+
+    // 1) intenta ya
+    tryScroll(0);
+    // 2) cuando terminen de cargar recursos
+    window.addEventListener("load", onLoad);
+    // 3) por si el hash cambia en runtime
+    window.addEventListener("hashchange", onHashChange);
+
+    return () => {
+      cancelAnimationFrame(raf);
+      window.removeEventListener("load", onLoad);
+      window.removeEventListener("hashchange", onHashChange);
+    };
+  }, [location]);
 
   const BTN_BASE =
     "inline-flex items-center justify-center rounded-md px-6 py-3 text-base font-medium transition shadow-md focus:outline-none";
@@ -174,7 +229,7 @@ export default function SafeServicios() {
       </section>
 
       {/* ================= CONTACTO (SOLO FORM, SIN FONDO GRIS, UN SOLO TÍTULO) ================= */}
-      <section id="contacto" className="relative z-10 mt-10 md:mt-12">
+      <section id="contacto" className="scroll-mt-24 relative z-10 mt-10 md:mt-12">
         {/* halo suave arriba, sin tarjeta detrás */}
         <div
           className="absolute inset-x-0 -top-10 h-[320px] -z-10 pointer-events-none"
@@ -206,6 +261,9 @@ export default function SafeServicios() {
 
       {/* ================= OVERRIDES SÓLO PARA CONTACTO/RESEÑAS ================= */}
       <style>{`
+        /* Suaviza el scroll para anclas y scrollIntoView */
+        html { scroll-behavior: smooth; }
+
         /* Marco amarillo del bloque Contacto (sin fondo, sólo borde + glow) */
         .contacto-frame {
           background: transparent !important;
