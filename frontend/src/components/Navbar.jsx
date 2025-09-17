@@ -16,7 +16,7 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
 
   // Desktop (tabs)
-  const [accederActiveOption, setAccederActiveOption] = useState("administrador");
+  const [accederActiveOption, setAccederActiveOption] = useState("conductor");
   const [nosotrosActiveOption, setNosotrosActiveOption] = useState("quienes");
 
   // Móvil (drawer)
@@ -27,7 +27,7 @@ export default function Navbar() {
 
   // Data
   const accederData = {
-    administrador: {
+    conductor: {
       title: "Safe Conductor",
       description: "Herramientas simples y claras para conductores de transporte escolar.",
       details: [
@@ -98,9 +98,23 @@ export default function Navbar() {
     { name: "Acceso", isAcceso: true },
   ];
 
-  // Efectos
+  // ========== Helpers ==========
+  const isMdUp = () =>
+    typeof window !== "undefined" &&
+    window.matchMedia("(min-width: 768px)").matches;
+
+  // ========== Efectos ==========
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 50);
+    let ticking = false;
+    const onScroll = () => {
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          setScrolled(window.scrollY > 50);
+          ticking = false;
+        });
+        ticking = true;
+      }
+    };
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
@@ -128,9 +142,18 @@ export default function Navbar() {
     }
   }, [menuOpen]);
 
-  // Helpers
-  const isMdUp = () => window.matchMedia("(min-width: 768px)").matches;
+  useEffect(() => {
+    const onClickAway = (e) => {
+      if (!navRef.current) return;
+      if (!navRef.current.contains(e.target)) {
+        setActiveDropdown(null);
+      }
+    };
+    document.addEventListener("mousedown", onClickAway);
+    return () => document.removeEventListener("mousedown", onClickAway);
+  }, []);
 
+  // ========== Toggle helpers ==========
   const toggleDropdown = (name) => {
     if (isMdUp()) {
       setActiveDropdown((prev) => (prev === name ? null : name)); // desktop
@@ -146,16 +169,16 @@ export default function Navbar() {
     setMobileSubKey(null);
   };
 
-  // ========== THEME helpers para escritorio (solo colores) ==========
+  // ========== THEME helpers (paleta) ==========
   const PANEL_OUTER =
-    "w-[min(92vw,920px)] bg-neutral-950 text-white shadow-2xl border border-white/10 overflow-hidden";
-  const PANEL_COL_BORDER = "md:border-r border-white/10";
-  const TAB_BASE = "w-full text-left p-5 transition";
-  const TAB_ACTIVE = "bg-white/10 border-l-4 border-safepalette-gold"; // dorado
-  const TAB_HOVER = "hover:bg-white/5";
-  const MEDIA_BG = "bg-safepalette-gray/10"; // gris metálico muy tenue
+    "w-[min(92vw,920px)] bg-safepalette-ink text-safepalette-white shadow-2xl border border-safepalette-edge overflow-hidden";
+  const PANEL_COL_BORDER = "md:border-r border-safepalette-edge";
+  const TAB_BASE =
+    "w-full text-left p-5 transition focus:outline-none focus-visible:ring-2 focus-visible:ring-safepalette-gold/50";
+  const TAB_ACTIVE = "bg-safepalette-white/10 border-l-4 border-safepalette-gold";
+  const TAB_HOVER = "hover:bg-safepalette-white/5";
+  const MEDIA_BG = "bg-safepalette-gray/10";
 
-  // Panel wrapper (desktop)
   const PanelWrapper = ({ children, label }) => (
     <div className="fixed inset-x-0 top-[56px] md:top-[64px] z-[60]" role="menu" aria-label={label}>
       <div className="mx-auto max-w-screen-xl px-4 flex justify-end">
@@ -170,14 +193,21 @@ export default function Navbar() {
       ref={navRef}
       className={`fixed z-50 w-full transition-all duration-300 ${
         scrolled
-          ? "bg-neutral-950/80 py-2 shadow-lg backdrop-blur supports-[backdrop-filter]:bg-neutral-950/60"
+          ? "bg-safepalette-ink/80 py-2 shadow-lg backdrop-blur supports-[backdrop-filter]:bg-safepalette-ink/60"
           : "bg-transparent py-3"
       }`}
       aria-label="Barra de navegación principal"
     >
+      <a
+        href="#primary-content"
+        className="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 bg-safepalette-gold text-safepalette-blue px-3 py-1 rounded"
+      >
+        Saltar al contenido
+      </a>
+
       <div className="mx-auto max-w-screen-xl px-4">
         <div className="flex h-14 items-center justify-between md:h-16">
-          {/* Texto SafeTech (logo eliminado) */}
+          {/* Marca */}
           <a
             href="#"
             onClick={(e) => {
@@ -188,7 +218,7 @@ export default function Navbar() {
             aria-label="SafeTech - Inicio"
             role="button"
           >
-            <span className="max-w-[40vw] truncate whitespace-nowrap text-lg font-extrabold text-white md:max-w-none md:text-2xl">
+            <span className="max-w-[40vw] truncate whitespace-nowrap text-lg font-extrabold text-safepalette-white md:max-w-none md:text-2xl">
               SafeTech
             </span>
           </a>
@@ -197,7 +227,7 @@ export default function Navbar() {
           <button
             onClick={() => setMenuOpen((v) => !v)}
             type="button"
-            className="inline-flex items-center justify-center rounded-md p-2 text-white hover:text-safepalette-gold focus:outline-none focus-visible:ring-2 focus-visible:ring-safepalette-gold/50 md:hidden"
+            className="inline-flex items-center justify-center rounded-md p-2 text-safepalette-white hover:text-safepalette-gold focus:outline-none focus-visible:ring-2 focus-visible:ring-safepalette-gold/50 md:hidden"
             aria-controls="mobile-drawer"
             aria-expanded={menuOpen}
             aria-label={menuOpen ? "Cerrar menú" : "Abrir menú"}
@@ -236,7 +266,7 @@ export default function Navbar() {
                 >
                   <button
                     type="button"
-                    className="flex items-center gap-1 rounded-md px-3 py-2 text-white hover:text-safepalette-gold focus-visible:ring-2 focus-visible:ring-safepalette-gold/50"
+                    className="flex items-center gap-1 rounded-md px-3 py-2 text-safepalette-white hover:text-safepalette-gold focus-visible:ring-2 focus-visible:ring-safepalette-gold/50"
                     aria-haspopup="true"
                     aria-expanded={activeDropdown === item.name}
                     onClick={() => toggleDropdown(item.name)}
@@ -249,8 +279,8 @@ export default function Navbar() {
                   {item.isNosotros && activeDropdown === "Nosotros" && (
                     <PanelWrapper label="Menú Nosotros">
                       <div className="flex flex-col md:flex-row">
-                        {/* Tabs: quienes, mision, vision */}
-                        <div className="border-b border-white/10 md:w-1/4 md:border-b-0 md:border-r">
+                        {/* Tabs */}
+                        <div className="border-b border-safepalette-edge md:w-1/4 md:border-b-0 md:border-r">
                           {[
                             { key: "quienes", label: "¿Quiénes somos?" },
                             { key: "mision", label: "Misión" },
@@ -267,8 +297,8 @@ export default function Navbar() {
                               <span
                                 className={`font-medium ${
                                   nosotrosActiveOption === opt.key
-                                    ? "text-white"
-                                    : "text-neutral-200"
+                                    ? "text-safepalette-white"
+                                    : "text-safepalette-white/80"
                                 }`}
                               >
                                 {opt.label}
@@ -279,10 +309,10 @@ export default function Navbar() {
 
                         {/* Content */}
                         <div className={`p-6 ${PANEL_COL_BORDER} md:w-2/4`}>
-                          <h2 className="mb-3 text-xl font-bold text-white lg:text-2xl">
+                          <h2 className="mb-3 text-xl font-bold text-safepalette-white lg:text-2xl">
                             {currentNosotrosData.title}
                           </h2>
-                          <p className="mb-6 whitespace-pre-line text-neutral-200">
+                          <p className="mb-6 whitespace-pre-line text-safepalette-white/80">
                             {currentNosotrosData.description}
                           </p>
                           {currentNosotrosData.details?.length > 0 && (
@@ -293,7 +323,7 @@ export default function Navbar() {
                                     className="mt-1 mr-3 shrink-0 text-safepalette-gold"
                                     aria-hidden="true"
                                   />
-                                  <span className="text-neutral-100">{detail}</span>
+                                  <span className="text-safepalette-white/90">{detail}</span>
                                 </li>
                               ))}
                             </ul>
@@ -301,9 +331,7 @@ export default function Navbar() {
                         </div>
 
                         {/* Media */}
-                        <div
-                          className={`${MEDIA_BG} flex items-center justify-center p-6 md:w-1/4`}
-                        >
+                        <div className={`${MEDIA_BG} flex items-center justify-center p-6 md:w-1/4`}>
                           <img
                             src={currentNosotrosData.image}
                             alt={currentNosotrosData.title}
@@ -319,7 +347,7 @@ export default function Navbar() {
                   {item.isAcceso && activeDropdown === "Acceso" && (
                     <PanelWrapper label="Menú Acceso">
                       <div className="flex flex-col md:flex-row">
-                        <div className="border-b border-white/10 md:w-1/4 md:border-b-0 md:border-r">
+                        <div className="border-b border-safepalette-edge md:w-1/4 md:border-b-0 md:border-r">
                           {Object.keys(accederData).map((key) => (
                             <button
                               key={key}
@@ -332,8 +360,8 @@ export default function Navbar() {
                               <span
                                 className={`font-medium ${
                                   accederActiveOption === key
-                                    ? "text-white"
-                                    : "text-neutral-200"
+                                    ? "text-safepalette-white"
+                                    : "text-safepalette-white/80"
                                 }`}
                               >
                                 {accederData[key].title}
@@ -343,10 +371,10 @@ export default function Navbar() {
                         </div>
 
                         <div className={`p-6 ${PANEL_COL_BORDER} md:w-2/4`}>
-                          <h2 className="mb-3 text-xl font-bold text-white lg:text-2xl">
+                          <h2 className="mb-3 text-xl font-bold text-safepalette-white lg:text-2xl">
                             {currentAccederData.title}
                           </h2>
-                          <p className="mb-6 text-neutral-200">
+                          <p className="mb-6 text-safepalette-white/80">
                             {currentAccederData.description}
                           </p>
                           <ul className="space-y-3">
@@ -356,17 +384,15 @@ export default function Navbar() {
                                   className="mt-1 mr-3 shrink-0 text-safepalette-gold"
                                   aria-hidden="true"
                                 />
-                                <span className="text-neutral-100">{detail}</span>
+                                <span className="text-safepalette-white/90">{detail}</span>
                               </li>
                             ))}
                           </ul>
                         </div>
 
-                        {/* Solo imagen (sin botón) */}
-                        <div
-                          className={`${MEDIA_BG} flex items-center justify-center p-6 md:w-1/4`}
-                        >
-                          <div className="flex h-36 w-36 items-center justify-center border border-white/10 bg-neutral-950 p-4 shadow-md md:h-40 md:w-40">
+                        {/* Solo imagen */}
+                        <div className={`${MEDIA_BG} flex items-center justify-center p-6 md:w-1/4`}>
+                          <div className="flex h-36 w-36 items-center justify-center border border-safepalette-edge bg-safepalette-ink p-4 shadow-md md:h-40 md:w-40">
                             <img
                               src={currentAccederData.image}
                               alt={currentAccederData.title}
@@ -384,10 +410,10 @@ export default function Navbar() {
                     <PanelWrapper label="Menú Productos">
                       <div className="flex flex-col md:flex-row">
                         <div className={`p-6 ${PANEL_COL_BORDER} md:w-2/3`}>
-                          <h2 className="mb-3 text-xl font-bold text-white lg:text-2xl">
+                          <h2 className="mb-3 text-xl font-bold text-safepalette-white lg:text-2xl">
                             {productosData.estado.title}
                           </h2>
-                          <p className="mb-6 text-neutral-200">
+                          <p className="mb-6 text-safepalette-white/80">
                             {productosData.estado.description}
                           </p>
                           <ul className="space-y-3">
@@ -397,14 +423,12 @@ export default function Navbar() {
                                   className="mt-1 mr-3 shrink-0 text-safepalette-gold"
                                   aria-hidden="true"
                                 />
-                                <span className="text-neutral-100">{d}</span>
+                                <span className="text-safepalette-white/90">{d}</span>
                               </li>
                             ))}
                           </ul>
                         </div>
-                        <div
-                          className={`${MEDIA_BG} flex items-center justify-center p-6 md:w-1/3`}
-                        >
+                        <div className={`${MEDIA_BG} flex items-center justify-center p-6 md:w-1/3`}>
                           <img
                             src={productosData.estado.image}
                             alt="Sección en configuración"
@@ -427,36 +451,36 @@ export default function Navbar() {
         typeof document !== "undefined" &&
         createPortal(
           <>
-            {/* Backdrop global */}
+            {/* Backdrop */}
             <div
               className={`fixed inset-0 z-[1000] transition ${
                 menuOpen ? "pointer-events-auto opacity-100" : "pointer-events-none opacity-0"
-              } bg-black/50 md:hidden`}
+              } bg-safepalette-ink/70 md:hidden`}
               onClick={closeMobileMenu}
               aria-hidden="true"
             />
-            {/* Drawer global */}
+            {/* Drawer */}
             <aside
               id="mobile-drawer"
-              className={`fixed right-0 top-0 z-[1001] h-full w-[88%] max-w-sm transform border-l border-white/10 bg-neutral-950 transition-transform duration-300 md:hidden ${
+              className={`fixed right-0 top-0 z-[1001] h-full w-[88%] max-w-sm transform border-l border-safepalette-edge bg-safepalette-ink transition-transform duration-300 md:hidden ${
                 menuOpen ? "translate-x-0" : "translate-x-full"
               }`}
               role="dialog"
               aria-modal="true"
               aria-label="Menú de SafeTech"
             >
-              {/* Header del drawer */}
-              <div className="flex h-14 items-center justify-between border-b border-white/10 px-4">
+              {/* Header */}
+              <div className="flex h-14 items-center justify-between border-b border-safepalette-edge px-4">
                 <div className="flex items-center gap-2">
-                  <span className="text-base font-extrabold text-white">SafeTech</span>
+                  <span className="text-base font-extrabold text-safepalette-white">SafeTech</span>
                 </div>
                 <button
                   onClick={closeMobileMenu}
                   type="button"
-                  className="rounded-md p-2 text-neutral-200 hover:bg-white/10 hover:text-safepalette-gold"
+                  className="rounded-md p-2 text-safepalette-white/80 hover:bg-safepalette-white/10 hover:text-safepalette-gold focus:outline-none focus-visible:ring-2 focus-visible:ring-safepalette-gold/50"
                   aria-label="Cerrar menú"
                 >
-                  <svg className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                  <svg className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                     <path
                       fillRule="evenodd"
                       d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
@@ -471,16 +495,16 @@ export default function Navbar() {
                 {menuItems.map((item) => {
                   const open = mobileActiveSection === item.name;
                   return (
-                    <li key={item.name} className="rounded-lg bg-white/10">
+                    <li key={item.name} className="rounded-lg bg-safepalette-white/10">
                       <button
                         type="button"
                         onClick={() => setMobileActiveSection(open ? null : item.name)}
-                        className="flex w-full items-center justify-between px-4 py-3 text-left"
+                        className="flex w-full items-center justify-between px-4 py-3 text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-safepalette-gold/50"
                         aria-expanded={open}
                       >
                         <span
                           className={`font-medium ${
-                            open ? "text-safepalette-gold" : "text-neutral-100"
+                            open ? "text-safepalette-gold" : "text-safepalette-white/90"
                           }`}
                         >
                           {item.name}
@@ -488,7 +512,7 @@ export default function Navbar() {
                         <FaChevronDown
                           className={`h-4 w-4 transition-transform ${
                             open ? "rotate-180" : ""
-                          } ${open ? "text-safepalette-gold" : "text-white"}`}
+                          } ${open ? "text-safepalette-gold" : "text-safepalette-white"}`}
                           aria-hidden="true"
                         />
                       </button>
@@ -511,7 +535,7 @@ export default function Navbar() {
                                   <div key={key}>
                                     <button
                                       type="button"
-                                      className="w-full rounded-md border border-white/10 bg-white/10 px-3 py-2 text-left text-sm text-white hover:bg-white/15"
+                                      className="w-full rounded-md border border-safepalette-edge bg-safepalette-white/10 px-3 py-2 text-left text-sm text-safepalette-white hover:bg-safepalette-white/15 focus:outline-none focus-visible:ring-2 focus-visible:ring-safepalette-gold/50"
                                       onClick={() => setMobileSubKey((k) => (k === key ? null : key))}
                                       aria-expanded={mobileSubKey === key}
                                     >
@@ -523,7 +547,7 @@ export default function Navbar() {
                                       }`}
                                     >
                                       <div className="overflow-hidden">
-                                        <p className="text-sm text-neutral-200 whitespace-pre-line">
+                                        <p className="text-sm text-safepalette-white/80 whitespace-pre-line">
                                           {data.description}
                                         </p>
                                       </div>
@@ -539,17 +563,17 @@ export default function Navbar() {
                                 {Object.keys(accederData).map((key) => {
                                   const d = accederData[key];
                                   return (
-                                    <div key={key} className="rounded-md border border-white/10 p-3">
+                                    <div key={key} className="rounded-md border border-safepalette-edge p-3">
                                       <div className="flex items-center gap-3">
                                         <img
                                           src={d.image}
                                           alt={d.title}
-                                          className="h-12 w-12 bg-neutral-900 object-contain border border-white/10"
+                                          className="h-12 w-12 bg-safepalette-ink object-contain border border-safepalette-edge"
                                           loading="lazy"
                                         />
                                         <div className="min-w-0">
-                                          <p className="text-sm font-medium text-white">{d.title}</p>
-                                          <p className="line-clamp-2 text-xs text-neutral-200">
+                                          <p className="text-sm font-medium text-safepalette-white">{d.title}</p>
+                                          <p className="line-clamp-2 text-xs text-safepalette-white/80">
                                             {d.description}
                                           </p>
                                         </div>
@@ -563,20 +587,20 @@ export default function Navbar() {
                             {/* PRODUCTOS */}
                             {item.isProductos && (
                               <div className="space-y-2">
-                                <p className="text-sm text-neutral-200">
+                                <p className="text-sm text-safepalette-white/80">
                                   {productosData.estado.description}
                                 </p>
                                 <ul className="space-y-1 text-sm">
                                   {productosData.estado.details.map((d, i) => (
-                                    <li key={i} className="flex items-start text-neutral-100">
-                                      <FaShieldAlt className="mr-2 mt-0.5 text-safepalette-gold" /> {d}
+                                    <li key={i} className="flex items-start text-safepalette-white/90">
+                                      <FaShieldAlt className="mr-2 mt-0.5 text-safepalette-gold" aria-hidden="true" /> {d}
                                     </li>
                                   ))}
                                 </ul>
                                 <img
                                   src={productosData.estado.image}
                                   alt="Sección en configuración"
-                                  className="mt-2 w-full max-h-40 border border-white/10 object-contain"
+                                  className="mt-2 w-full max-h-40 border border-safepalette-edge object-contain"
                                   loading="lazy"
                                 />
                               </div>

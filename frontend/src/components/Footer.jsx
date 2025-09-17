@@ -1,22 +1,22 @@
-// Footer.jsx
+// src/components/Footer.jsx
 import React from "react";
 import {
   FaFacebookF, FaEnvelope, FaTiktok, FaWhatsapp, FaMapMarkerAlt, FaPhoneAlt,
 } from "react-icons/fa";
-import logo from "@/assets/negro.png";
+import logo from "@/assets/logoNavbar.png";
 
 export default function Footer() {
   const year = new Date().getFullYear();
 
-  // Clases utilitarias para fondo oscuro
+  // Utilitarias (alineadas a safepalette)
   const WRAP = "mx-auto w-full max-w-7xl px-4";
   const HEADING =
-    "mb-4 text-base md:text-lg font-semibold uppercase border-b pb-2 border-white/20 text-white";
+    "mb-4 text-base md:text-lg font-semibold uppercase border-b pb-2 border-safepalette-edge/40 text-safepalette-white";
   const LINK_FOOT =
-    "text-white/80 hover:text-white transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-safepalette-gold/60 rounded";
+    "text-safepalette-white/80 hover:text-safepalette-white transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-safepalette-gold/60 rounded";
   const ICON_BTN =
-    "inline-flex h-9 w-9 items-center justify-center rounded-full border border-white/15 bg-white/5 text-white/80 " +
-    "hover:text-safepalette-gold hover:border-safepalette-gold/60 hover:bg-white/10 " +
+    "inline-flex h-9 w-9 items-center justify-center rounded-full border border-safepalette-edge/40 bg-safepalette-white/5 text-safepalette-white/80 " +
+    "hover:text-safepalette-gold hover:border-safepalette-gold/60 hover:bg-safepalette-white/10 " +
     "focus:outline-none focus-visible:ring-2 focus-visible:ring-safepalette-gold/60";
 
   // JSON-LD (SEO)
@@ -50,11 +50,11 @@ export default function Footer() {
   return (
     <footer
       className="
-        text-white relative
+        text-safepalette-white relative
         bg-gradient-to-b
-        from-black
-        via-neutral-900
-        to-black
+        from-safepalette-ink
+        via-safepalette-surface
+        to-safepalette-ink
       "
       aria-labelledby="footer-heading"
       role="contentinfo"
@@ -64,11 +64,12 @@ export default function Footer() {
       <div className={`${WRAP} py-12 lg:py-16`}>
         <h2 id="footer-heading" className="sr-only">Información y enlaces de SafeTech</h2>
 
-        <div className="mb-10 grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4">
+        {/* 3 columnas (quitamos Enlaces Rápidos) */}
+        <div className="mb-10 grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
           {/* Marca */}
           <section aria-labelledby="footer-brand">
             <div className="mb-6 flex items-center gap-3">
-              <a href="/" className="flex items-center gap-3" aria-label="Ir al inicio" rel="noopener">
+              <a href="/" className="flex items-center gap-3" aria-label="Ir al inicio">
                 <img
                   src={logo}
                   alt="Logo de SafeTech"
@@ -80,7 +81,7 @@ export default function Footer() {
                 <span className="text-2xl font-bold">SafeTech</span>
               </a>
             </div>
-            <p className="max-w-xs text-white/80">
+            <p className="max-w-xs text-safepalette-white/80">
               Transformando la seguridad escolar a través de la innovación tecnológica en Ecuador.
             </p>
 
@@ -101,24 +102,13 @@ export default function Footer() {
             </div>
           </section>
 
-          {/* Enlaces rápidos */}
-          <nav aria-labelledby="footer-quicklinks">
-            <h3 id="footer-quicklinks" className={HEADING}>Enlaces Rápidos</h3>
-            <ul className="space-y-3">
-              <li><a href="#inicio" className={LINK_FOOT}>Inicio</a></li>
-              <li><a href="#nosotros" className={LINK_FOOT}>Nosotros</a></li>
-              <li><a href="#servicios" className={LINK_FOOT}>Servicios</a></li>
-              <li><a href="#contacto" className={LINK_FOOT}>Contacto</a></li>
-            </ul>
-          </nav>
-
           {/* Servicios */}
           <section aria-labelledby="footer-services">
             <h3 id="footer-services" className={HEADING}>Nuestros Servicios</h3>
             <ul className="space-y-3">
-              <li><span className="block text-white/80">Safe Administrador</span></li>
-              <li><span className="block text-white/80">Safe School</span></li>
-              <li><span className="block text-white/80">Safe Padres</span></li>
+              <li><span className="block text-safepalette-white/80">Safe Conductor</span></li>
+              <li><span className="block text-safepalette-white/80">Safe School</span></li>
+              <li><span className="block text-safepalette-white/80">Safe Padres</span></li>
             </ul>
           </section>
 
@@ -128,7 +118,7 @@ export default function Footer() {
             <ul className="space-y-4">
               <li className="flex items-start">
                 <FaMapMarkerAlt className="mr-3 mt-0.5 h-5 w-5 flex-shrink-0 text-safepalette-gold" aria-hidden="true" />
-                <span className="text-white/80">Quito, Ecuador</span>
+                <span className="text-safepalette-white/80">Quito, Ecuador</span>
               </li>
               <li className="flex items-start">
                 <FaEnvelope className="mr-3 mt-0.5 h-5 w-5 flex-shrink-0 text-safepalette-gold" aria-hidden="true" />
@@ -154,15 +144,15 @@ export default function Footer() {
           </address>
         </div>
 
-        <hr className="my-8 border-white/20" />
+        <hr className="my-8 border-safepalette-edge/40" />
 
         <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
-          <span className="text-sm text-white/70">© {year} CK Systems. Todos los derechos reservados.</span>
+          <span className="text-sm text-safepalette-white/70">© {year} CK Systems. Todos los derechos reservados.</span>
           <ul className="flex items-center gap-6">
             <li>
               <a
                 href="https://safetech-ec.com/politica-de-privacidad"
-                className="text-sm text-white/80 hover:text-white transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-safepalette-gold/60 rounded"
+                className="text-sm text-safepalette-white/80 hover:text-safepalette-white transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-safepalette-gold/60 rounded"
               >
                 Política de Privacidad
               </a>
@@ -170,7 +160,7 @@ export default function Footer() {
             <li>
               <a
                 href="https://safetech-ec.com/terminos"
-                className="text-sm text-white/80 hover:text-white transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-safepalette-gold/60 rounded"
+                className="text-sm text-safepalette-white/80 hover:text-safepalette-white transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-safepalette-gold/60 rounded"
               >
                 Términos y Condiciones
               </a>

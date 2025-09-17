@@ -2,14 +2,10 @@
 import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 
-// Importo componentes internos
-import Contacto from "@/components/Contacto";        // Formulario de contacto (con su propio título "Contáctanos")
-import Achievements from "@/components/Achievements"; // Reseñas / estadísticas
+import Contacto from "@/components/Contacto";
+import Achievements from "@/components/Achievements";
 
-// Fondo para el hero
 import fondoBus from "@/assets/bus2.gif";
-
-// (Opcional) imágenes decorativas
 import busArrivalImg from "@/assets/admin.png";
 import safetyImg from "@/assets/admin.png";
 import transparencyImg from "@/assets/admin.png";
@@ -31,45 +27,29 @@ export default function SafeServicios() {
 
   return (
     <div className="relative bg-black">
-      {/* ================= HERO (NO TOCAR) ================= */}
+      {/* HERO */}
       <section className="relative min-h-[88svh] md:min-h-screen flex items-center justify-center text-center overflow-hidden">
-        <img
-          className="absolute inset-0 h-full w-full object-cover"
-          src={fondoBus}
-          alt="Fondo Safe Escolar"
-          aria-hidden="true"
-        />
+        <img className="absolute inset-0 h-full w-full object-cover" src={fondoBus} alt="Fondo Safe Escolar" />
         <div className="absolute inset-0 bg-black/55" aria-hidden="true" />
-        <div
-          aria-hidden="true"
-          className="pointer-events-none absolute inset-0 bg-gradient-to-b from-black/35 via-transparent to-black/35"
-        />
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-black/35 via-transparent to-black/35" />
         <div className="relative z-10 mx-auto max-w-5xl px-4">
           <h1 className="text-white font-extrabold leading-tight tracking-tight text-5xl sm:text-6xl md:text-7xl lg:text-8xl">
-            Safe{" "}
-            <span className="text-safepalette-gold drop-shadow-[0_6px_24px_rgba(250,204,21,0.25)]">
-              Escolar
-            </span>
+            Safe <span className="text-safepalette-gold drop-shadow-[0_6px_24px_rgba(250,204,21,0.25)]">Escolar</span>
           </h1>
           <p className="mt-5 text-slate-100/95 text-xl md:text-2xl lg:text-[1.7rem]">
             Plataforma integral para instituciones, familias y administración.
           </p>
           <div className="mt-9 flex flex-col sm:flex-row gap-4 justify-center">
-            <Link to="/" className={BTN_WHITE_TO_GOLD} aria-label="Volver al inicio">
-              ← Volver al inicio
-            </Link>
-            <a href="#contacto" className={BTN_WHITE_TO_GOLD} aria-label="Ir a contacto">
-              Contáctanos
-            </a>
+            <Link to="/" className={BTN_WHITE_TO_GOLD}>← Volver al inicio</Link>
+            <a href="#contacto" className={BTN_WHITE_TO_GOLD}>Contáctanos</a>
           </div>
         </div>
       </section>
 
-      {/* ================= ¿QUÉ ES SAFE SCHOOL? (SIN TARJETAS) ================= */}
+      {/* ¿QUÉ ES SAFE SCHOOL? */}
       <section className="relative z-10">
         <div
           className="absolute inset-0 h-[120%] -top-[10%] pointer-events-none"
-          aria-hidden="true"
           style={{
             background:
               "radial-gradient(80% 60% at 50% 0%, rgba(250,204,21,0.07) 0%, rgba(250,204,21,0.02) 40%, transparent 70%)",
@@ -90,7 +70,7 @@ export default function SafeServicios() {
               <p className="mt-4 text-slate-200/90 text-lg leading-relaxed">
                 Integra seguimiento en tiempo real, comunicación transparente y flujos
                 operativos optimizados para que cada recorrido sea más seguro y sin
-                preocupaciones dentro del territorio nacional.
+                preocupaciones.
               </p>
 
               <ul className="mt-8 space-y-4">
@@ -102,13 +82,7 @@ export default function SafeServicios() {
                 ].map((t, i) => (
                   <li key={i} className="flex items-start gap-3">
                     <span className="mt-1 inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-safepalette-gold/15">
-                      <svg
-                        viewBox="0 0 24 24"
-                        className="h-4 w-4 text-safepalette-gold"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                      >
+                      <svg viewBox="0 0 24 24" className="h-4 w-4 text-safepalette-gold" fill="none" stroke="currentColor" strokeWidth="2">
                         <path d="M20 6L9 17l-5-5" />
                       </svg>
                     </span>
@@ -126,22 +100,18 @@ export default function SafeServicios() {
                     background:
                       "conic-gradient(from 180deg at 50% 50%, rgba(250,204,21,0.18), transparent 30%, rgba(250,204,21,0.12) 60%, transparent 90%)",
                   }}
-                  aria-hidden="true"
                 />
-                <img
-                  src={busArrivalImg}
-                  alt="Ilustración Safe School"
-                  className="relative w-full rounded-3xl object-cover"
-                />
+                <img src={busArrivalImg} alt="Ilustración Safe School" className="relative w/full rounded-3xl object-cover" />
               </div>
             </div>
           </div>
 
-          <div className="mt-14 h-px bg-gradient-to-r from-transparent via-safepalette-gold/20 to-transparent" />
+          {/* separador amarillo */}
+          <div className="mt-14 h-px bg-gradient-to-r from-transparent via-safepalette-gold/60 to-transparent" />
         </div>
       </section>
 
-      {/* ================= ¿POR QUÉ ES UNA DECISIÓN ACERTADA? ================= */}
+      {/* ¿POR QUÉ ES UNA DECISIÓN ACERTADA? */}
       <section className="relative z-10">
         <div className="mx-auto max-w-6xl px-4 py-10 md:py-14">
           <h3 className="text-center text-3xl md:text-4xl font-bold text-white">
@@ -150,13 +120,16 @@ export default function SafeServicios() {
 
           <div className="mt-10 grid grid-cols-1 md:grid-cols-3">
             {[
-              { title: "ETA confiable", desc: "Estimaciones precisas de llegada para reducir esperas y ansiedades.", img: busArrivalImg },
-              { title: "Seguridad prioritaria", desc: "Alertas y protocolos integrados para estudiantes en cada etapa.", img: safetyImg },
-              { title: "Transparencia real", desc: "Información clara para familias y directivos en un mismo lugar.", img: transparencyImg },
+              { title: "Confiable", desc: "Estimaciones de llegada precisas para reducir esperas y ansiedades.", img: busArrivalImg },
+              { title: "Seguridad", desc: "Alertas y protocolos integrados para estudiantes en cada etapa.", img: safetyImg },
+              { title: "Transparencia", desc: "Información clara para familias y directivos en un mismo lugar.", img: transparencyImg },
             ].map((item, idx) => (
               <div
                 key={item.title}
-                className={["flex flex-col items-start md:items-center gap-4 px-0 md:px-6 py-6", idx !== 2 ? "md:border-r md:border-white/10" : ""].join(" ")}
+                className={[
+                  "flex flex-col items-start md:items-center gap-4 px-0 md:px-6 py-6",
+                  idx !== 2 ? "md:border-r md:border-white/10" : "",
+                ].join(" ")}
               >
                 <div className="flex items-center gap-3">
                   <span className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-safepalette-gold/15">
@@ -173,89 +146,48 @@ export default function SafeServicios() {
         </div>
       </section>
 
-      {/* ================= CONTACTO (SOLO FORM, SIN FONDO GRIS, UN SOLO TÍTULO) ================= */}
+      {/* CONTACTO (sin marco externo ni panel gris) */}
       <section id="contacto" className="relative z-10 mt-10 md:mt-12">
-        {/* halo suave arriba, sin tarjeta detrás */}
-        <div
-          className="absolute inset-x-0 -top-10 h-[320px] -z-10 pointer-events-none"
-          aria-hidden="true"
-          style={{
-            background:
-              "radial-gradient(45% 35% at 50% 0%, rgba(250,204,21,0.06) 0%, transparent 70%)",
-          }}
-        />
-        <div className="mx-auto max-w-6xl px-4">
-          {/* Marco amarillo externo. NO pongo ningún <h3> aquí para no duplicar. */}
-          <div className="contacto-frame relative rounded-2xl p-5 md:p-6 lg:p-7">
-            {/* El componente ya imprime su propio título “Contáctanos” */}
-            <div className="contacto-bare">
-              <Contacto />
-            </div>
-          </div>
+        <div className="mx-auto max-w-4xl px-4 contacto-unframed">
+          <Contacto />
         </div>
       </section>
 
-      {/* ================= RESEÑAS / ESTADÍSTICAS (SIN TARJETA GRIS) ================= */}
+      {/* RESEÑAS / ESTADÍSTICAS (quitar solo el rectángulo de fondo externo) */}
       <section className="relative z-10 mt-10 md:mt-12">
         <div className="mx-auto max-w-6xl px-4">
-          <div className="achievements-bare">
+          <div className="mb-8 h-px bg-gradient-to-r from-transparent via-safepalette-gold/60 to-transparent" />
+          <div className="achievements-unframed">
             <Achievements />
           </div>
         </div>
       </section>
 
-      {/* ================= OVERRIDES SÓLO PARA CONTACTO/RESEÑAS ================= */}
+      {/* Overrides mínimos (sin tocar estilos internos de las tarjetas) */}
       <style>{`
-        /* Marco amarillo del bloque Contacto (sin fondo, sólo borde + glow) */
-        .contacto-frame {
+        /* Contacto embebido sin su sección propia */
+        .contacto-unframed > section#contacto {
           background: transparent !important;
-          border: 1.6px solid rgba(250, 204, 21, 0.55);
-          box-shadow: none !important;
-        }
-        .contacto-frame::after {
-          content: "";
-          position: absolute;
-          inset: -2px;
-          border-radius: 1rem;
-          pointer-events: none;
-          background: radial-gradient(60% 60% at 50% 0%,
-            rgba(250,204,21,0.10), rgba(250,204,21,0.03) 40%, transparent 70%);
-          mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-          -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-          padding: 1.6px;
+          padding: 0 !important;
         }
 
-        /* Quitar "card" gris del contenedor raíz que suele envolver el formulario,
-           sin tocar los inputs/labels/btn internos.  (Selectores más finos) */
-        .contacto-bare .bg-safepalette-surface,
-        .contacto-bare .bg-slate-900,
-        .contacto-bare .bg-neutral-900,
-        .contacto-bare .shadow,
-        .contacto-bare .shadow-goldglow,
-        .contacto-bare .border {
+        /* === Achievements: elimina SOLO el wrapper gris externo ===
+           Muchos componentes envuelven las "cards" en un <div/section> con fondo/borde/sombra.
+           Aquí quitamos ese contenedor inmediato, pero NO tocamos las tarjetas internas. */
+        .achievements-unframed > section:first-child,
+        .achievements-unframed > div:first-child {
           background: transparent !important;
+          background-image: none !important;
           box-shadow: none !important;
-          border-color: transparent !important;
+          border: none !important;
         }
-
-        /* Si el Contacto usa un wrapper con .rounded-2xl/.rounded-xl como "card", lo limpiamos */
-        .contacto-bare > .rounded-2xl,
-        .contacto-bare > .rounded-xl {
+        .achievements-unframed > section:first-child::before,
+        .achievements-unframed > section:first-child::after,
+        .achievements-unframed > div:first-child::before,
+        .achievements-unframed > div:first-child::after {
           background: transparent !important;
+          background-image: none !important;
           box-shadow: none !important;
-          border-color: transparent !important;
-        }
-
-        /* Reseñas/estadísticas: sin tarjeta gris */
-        .achievements-bare .bg-safepalette-surface,
-        .achievements-bare .bg-slate-900,
-        .achievements-bare .bg-neutral-900,
-        .achievements-bare .shadow,
-        .achievements-bare .shadow-goldglow,
-        .achievements-bare .border {
-          background: transparent !important;
-          box-shadow: none !important;
-          border-color: transparent !important;
         }
       `}</style>
     </div>
