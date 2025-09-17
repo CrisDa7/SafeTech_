@@ -3,11 +3,11 @@ import React, { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
 import emailjs from "@emailjs/browser";
 import adminImg from "@/assets/logoNavbar.png";
-import configuracionImg from "@/assets/configuracion.png";
+import configuracionImg from "@/assets/logoNavbar.png";
 
 const serviciosData = [
   {
-    title: "Safe School",
+    title: "Seguridad, transporte escolar",
     carouselItems: [
       {
         title: "Safe School",
@@ -23,7 +23,7 @@ const serviciosData = [
       },
     ],
     img: adminImg,
-    link: "/safe-escolar", // 👈 ahora navega a la página
+    link: "/safe-escolar", 
     cta: "Conoce más",
     soon: false,
   },
