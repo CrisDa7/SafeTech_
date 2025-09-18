@@ -153,9 +153,7 @@ export default function Servicios() {
           <h2 className="text-4xl font-bold text-safepalette-white md:text-5xl">
             Nuestros <span className="text-safepalette-gold">Servicios</span>
           </h2>
-          <p className="mx-auto mt-4 max-w-3xl text-lg text-safepalette-white/80 md:text-xl">
-            Soluciones especializadas para cada integrante de la comunidad
-          </p>
+          
           <div className="mx-auto mt-6 h-[3px] w-24 rounded-full bg-safepalette-gold" />
         </header>
 
