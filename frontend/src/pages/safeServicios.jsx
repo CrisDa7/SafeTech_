@@ -7,11 +7,11 @@ import Achievements from "@/components/Achievements";
 
 import fondoBus from "@/assets/bus2.gif";
 import logoAndroide from "@/assets/logoAndroide.png";
-import confiabilidadImg from "@/assets/confiabilidad.png"; // (se mantiene por si lo usas en otros lados)
+import confiabilidadImg from "@/assets/confiabilidad.png";
 import seguridadImg from "@/assets/seguridad.png";
 import eficienciaImg from "@/assets/eficiencia.png";
 
-// NUEVAS IMÁGENES DE LAS SECCIONES
+// NUEVAS IMÁGENES
 import celImg from "@/assets/cel.png";
 import notificacionesImg from "@/assets/notificaciones.png";
 
@@ -75,14 +75,14 @@ export default function SafeServicios() {
               </h2>
               <div className="mt-6 space-y-4 text-slate-200/90 text-lg leading-relaxed">
                 <p><span className="font-semibold">SAFE SCHOOL</span> es más que un
-                  sistema de transporte escolar, es una forma más inteligente de
-                  garantizar la seguridad en el transporte escolar.</p>
+                  sistema de transporte escolar; es una forma más inteligente de
+                  garantizar la seguridad en el traslado.</p>
                 <p><span className="font-semibold">SAFE SCHOOL</span> está diseñado
-                  para cualquier Establecimiento Educativo sea privado o público.</p>
+                  para cualquier institución educativa, pública o privada.</p>
                 <p><span className="font-semibold">SAFE SCHOOL</span> agiliza todo
                   el viaje escolar con tecnología avanzada y funciones fáciles de
                   usar.</p>
-                <p>Al implementarlo se mejora seguridad, eficiencia y satisfacción de las familias.</p>
+                <p>Al implementarlo se mejora la seguridad, eficiencia y satisfacción de las familias.</p>
               </div>
               <ul className="mt-8 space-y-4">
                 {[
@@ -123,14 +123,13 @@ export default function SafeServicios() {
         </div>
       </section>
 
-      {/* NUEVA SECCIÓN: APLICACIÓN DEDICADA... */}
+      {/* NUEVA 1 — APLICACIÓN DEDICADA */}
       <section className="relative z-10">
         <div className="mx-auto max-w-6xl px-4 py-10 md:py-14">
           <h3 className="text-center text-3xl md:text-4xl font-bold text-white">
             Aplicación dedicada para instituciones educativas y padres
           </h3>
 
-          {/* 3 TEMAS */}
           <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-8">
             {[
               {
@@ -182,7 +181,7 @@ export default function SafeServicios() {
             ))}
           </div>
 
-          {/* IMAGEN DEL CELULAR */}
+          {/* Imagen del celular con halo dorado */}
           <div className="mt-10 md:mt-14 flex justify-center">
             <div className="relative">
               <div
@@ -199,12 +198,12 @@ export default function SafeServicios() {
             </div>
           </div>
 
-          {/* RAYITA AMARILLA */}
+          {/* Rayita amarilla */}
           <div className="mt-12 md:mt-14 h-px bg-gradient-to-r from-transparent via-safepalette-gold/60 to-transparent" />
         </div>
       </section>
 
-      {/* NUEVA SECCIÓN: NOTIFICACIONES EN VIVO (como la tercera imagen) */}
+      {/* NUEVA 2 — NOTIFICACIONES (como la tercera imagen) */}
       <section className="relative z-10">
         <div className="mx-auto max-w-6xl px-4 py-10 md:py-14">
           <h3 className="text-center text-3xl md:text-4xl font-bold text-white">
@@ -227,8 +226,31 @@ export default function SafeServicios() {
             </div>
           </div>
 
-          {/* RAYITA AMARILLA */}
+          {/* Rayita amarilla */}
           <div className="mt-12 md:mt-14 h-px bg-gradient-to-r from-transparent via-safepalette-gold/60 to-transparent" />
+        </div>
+      </section>
+
+      {/* *** SECCIÓN ORIGINAL: ¿POR QUÉ ES UNA DECISIÓN ACERTADA? (SE MANTIENE) *** */}
+      <section className="relative z-10">
+        <div className="mx-auto max-w-6xl px-4 py-10 md:py-14">
+          <h3 className="text-center text-3xl md:text-4xl font-bold text-white">
+            ¿Por qué <span className="text-safepalette-gold">SAFE SCHOOL</span> es una decisión acertada?
+          </h3>
+          <div className="mt-10 grid grid-cols-1 md:grid-cols-3">
+            {[
+              { title: "Confiabilidad", desc: "Estimaciones de llegada precisas para reducir esperas y ansiedades.", img: confiabilidadImg, alt: "Confiabilidad" },
+              { title: "Seguridad", desc: "Alertas y protocolos integrados para estudiantes en cada etapa.", img: seguridadImg, alt: "Seguridad" },
+              { title: "Eficiencia", desc: "Información clara para familias y directivos en un mismo lugar.", img: eficienciaImg, alt: "Eficiencia" },
+            ].map((item) => (
+              <div key={item.title} className="flex flex-col items-center gap-4 px-0 md:px-6 py-6 md:border-r last:md:border-r-0 md:border-white/10">
+                <img src={item.img} alt={item.alt} className="w-28 h-28 md:w-32 md:h-32 object-contain rounded-xl" loading="lazy" />
+                <h4 className="text-xl font-semibold text-white">{item.title}</h4>
+                <p className="text-slate-300/90 text-center md:max-w-[28ch]">{item.desc}</p>
+              </div>
+            ))}
+          </div>
+          <div className="mt-12 h-px bg-gradient-to-r from-transparent via-safepalette-gold/60 to-transparent" />
         </div>
       </section>
 
