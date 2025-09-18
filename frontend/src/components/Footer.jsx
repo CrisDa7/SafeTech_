@@ -3,7 +3,7 @@ import React from "react";
 import {
   FaFacebookF, FaEnvelope, FaTiktok, FaWhatsapp, FaMapMarkerAlt, FaPhoneAlt,
 } from "react-icons/fa";
-import logo from "@/assets/logoNavbar.png";
+import logoFlotante from "@/assets/logoFlotante.png"; // <- NUEVO: reemplaza al anterior logoNavbar.png
 
 export default function Footer() {
   const year = new Date().getFullYear();
@@ -71,12 +71,12 @@ export default function Footer() {
             <div className="mb-6 flex items-center gap-3">
               <a href="/" className="flex items-center gap-3" aria-label="Ir al inicio">
                 <img
-                  src={logo}
+                  src={logoFlotante}                // <- NUEVO: usa logoFlotante
                   alt="Logo de SafeTech"
-                  className="h-12 w-auto object-contain"
+                  className="h-14 md:h-16 w-auto object-contain" // un poco más grande
                   loading="lazy"
-                  width={140}
-                  height={48}
+                  width={160}
+                  height={56}
                 />
                 <span className="text-2xl font-bold">SafeTech</span>
               </a>

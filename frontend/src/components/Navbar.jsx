@@ -328,7 +328,7 @@ export default function Navbar() {
                         </div>
 
                         {/* Content */}
-                        <div className={`p-6 ${PANEL_COL_BORDER} md:w-2/4`}>
+                        <div className={`p-6 ${PANEL_COL_BORDER} md:w-3/4`}>
                           <h2 className="mb-3 text-xl font-bold text-safepalette-white lg:text-2xl">
                             {currentNosotrosData.title}
                           </h2>
@@ -350,15 +350,7 @@ export default function Navbar() {
                           )}
                         </div>
 
-                        {/* Media */}
-                        <div className="flex items-center justify-center p-6 md:w-1/4">
-                          <img
-                            src={currentNosotrosData.image}
-                            alt={currentNosotrosData.title}
-                            className="max-h-48 max-w-full object-contain"
-                            loading="lazy"
-                          />
-                        </div>
+                        {/* (Eliminada) Columna de imagen para "Nosotros" */}
                       </div>
                     </PanelWrapper>
                   )}

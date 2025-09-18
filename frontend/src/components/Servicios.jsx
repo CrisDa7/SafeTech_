@@ -18,7 +18,6 @@ const serviciosData = [
   { title: "Próximamente", img: configuracionImg, link: "#", cta: "", soon: true },
 ];
 
-/* ==== ESTILOS ==== */
 const BTN_BASE =
   "inline-flex items-center justify-center px-5 py-3 text-base font-medium focus:outline-none transition";
 const BTN_PRIMARY = `
@@ -27,7 +26,6 @@ const BTN_PRIMARY = `
   hover:opacity-90 focus-visible:ring-4 focus-visible:ring-safepalette-gold/40
 `.replace(/\s+/g, " ").trim();
 
-// 👇 Mantenemos el degradado interno de cada tarjeta (igual que lo tenías)
 const CARD = `
   group relative flex h-full flex-col rounded-2xl
   bg-gradient-to-b from-safepalette-surface via-safepalette-surface/80 to-safepalette-ink
@@ -38,7 +36,7 @@ const CARD = `
   focus-within:border-safepalette-white
 `.replace(/\s+/g, " ").trim();
 
-const CARD_MEDIA = "px-6 pt-8 pb-6";
+const CARD_MEDIA = "px-6 pt-10 pb-6"; // + padding superior para dar espacio extra
 const CARD_BODY = "flex flex-col gap-4 p-6";
 
 function FeatureImage({ src, alt = "" }) {
@@ -89,14 +87,14 @@ function MobileServiciosCarousel({ items }) {
               key={item.title}
               className={`${CARD} overflow-hidden snap-start shrink-0 w-full`}
             >
-              {/* ✅ Logo de la primera tarjeta un poco más grande */}
+              {/* ✅ Imagen más GRANDE aún para la primera tarjeta */}
               <div className={CARD_MEDIA + " aspect-[16/9]"}>
                 <img
                   src={item.img}
                   alt=""
                   loading="lazy"
                   className={`${
-                    index === 0 ? "h-36 md:h-44" : "h-32 md:h-36"
+                    index === 0 ? "h-52 md:h-64" : "h-32 md:h-36"
                   } w-auto object-contain drop-shadow-[0_6px_20px_rgba(0,0,0,0.35)] mx-auto`}
                 />
               </div>
@@ -149,7 +147,6 @@ function MobileServiciosCarousel({ items }) {
 
 export default function Servicios() {
   return (
-    // 👇 Fondo de la sección en negro puro (se quita el “plomo” de atrás)
     <section id="servicios" className="relative px-4 py-16 md:py-24 bg-black">
       <div className="mx-auto max-w-6xl">
         <header className="mb-12 text-center md:mb-16">
@@ -175,7 +172,7 @@ export default function Servicios() {
                   alt=""
                   loading="lazy"
                   className={`${
-                    index === 0 ? "h-36 md:h-44" : "h-32 md:h-36"
+                    index === 0 ? "h-52 md:h-64" : "h-32 md:h-36"
                   } w-auto object-contain drop-shadow-[0_6px_20px_rgba(0,0,0,0.35)] mx-auto`}
                 />
               </div>
