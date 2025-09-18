@@ -14,6 +14,7 @@ import {
 import logoAndroide from "@/assets/logoAndroide.png";
 import autobusImg from "@/assets/autobus.jpg";
 import configuracionImg from "@/assets/configuracion.png";
+import logoFlotante from "@/assets/logoFlotante.png"; // <<-- NUEVO: tu logo grande a la izquierda
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -229,6 +230,14 @@ export default function Navbar() {
             aria-label="SafeTech - Inicio"
             role="button"
           >
+            {/* <<-- NUEVO: Logo a la izquierda, más grande que el texto */}
+            <img
+              src={logoFlotante}
+              alt="Logo SafeTech"
+              className="h-10 w-auto md:h-12 object-contain select-none pointer-events-none drop-shadow"
+              loading="eager"
+              decoding="async"
+            />
             <span className="max-w-[40vw] truncate whitespace-nowrap text-lg font-extrabold text-safepalette-white md:max-w-none md:text-2xl">
               SafeTech
             </span>
