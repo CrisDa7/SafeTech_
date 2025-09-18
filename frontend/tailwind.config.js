@@ -28,41 +28,29 @@ export default {
     },
 
     extend: {
-      // Tipografías (puedes mapear a variables CSS)
+      // Tipografías — ahora con Prachason Neue SemiCondensed
       fontFamily: {
-        // Ejemplo: en tu CSS define :root { --font-sans: "Inter", sans-serif; }
-        sans: ['var(--font-sans)', 'ui-sans-serif', 'system-ui']
+        sans: [
+          '"Prachason Neue SemiCondensed"',
+          'var(--font-sans)',
+          'ui-sans-serif',
+          'system-ui'
+        ],
       },
 
       // ───────────────────────────────────────────────────────
-      // 🎨 PALETA ÚNICA DE LA APP  (¡Edita SOLO estos valores!)
+      // 🎨 PALETA ÚNICA DE LA APP
       // ───────────────────────────────────────────────────────
       colors: {
         safepalette: {
-          /*
-           * ink     → Fondo de página/secciones grandes (Navbar scrolleada,
-           *            Hero overlay, Nosotros, Footer, drawers)
-           * surface → Fondo de tarjetas/paneles/dropdowns/modales
-           * edge    → Bordes y divisores sutiles
-           * gold    → Acento (botones, bullets activos, iconos destacados)
-           * blue    → Color de marca (títulos o enlaces destacados si quieres)
-           * gray    → Texto secundario neutro (si lo necesitas)
-           * white   → Texto principal sobre fondos oscuros
-           *
-           * CAMBIA AQUÍ para rediseñar toda la web sin tocar JSX.
-           */
           ink:     "#0A0B0D",  // Fondo global oscuro
           surface: "#0F141B",  // Fondo de tarjetas/paneles
           edge:    "#1B2330",  // Bordes/divisores
-          gold:    "#F4B400",  // Acento (CTA, bullets activos)
-          blue:    "#0A2342",  // Marca (opcional para títulos/links)
-          gray:    "#4F5D75",  // Texto secundario (si lo usas)
+          gold:    "#F4B400",  // Acento
+          blue:    "#0A2342",  // Marca
+          gray:    "#4F5D75",  // Texto secundario
           white:   "#FFFFFF"   // Texto principal
         },
-
-        // (Opcional) Alias semánticos: si te gusta escribir `bg-surface`
-        // en vez de `bg-safepalette-surface`. Si prefieres no usarlos,
-        // puedes borrar este bloque y usar siempre `safepalette.*`.
         surface: {
           DEFAULT: "#0F141B",
           muted:   "#131A22",
@@ -78,7 +66,6 @@ export default {
         }
       },
 
-      // Radios y sombras (puedes dejarlos así)
       borderRadius: {
         xl:  "1rem",
         "2xl":"1.25rem",
