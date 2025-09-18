@@ -36,8 +36,12 @@ export default function ContactHome() {
     if (status.type !== "idle") setStatus({ type: "idle", msg: "" });
   };
 
+  // 👉 inputs con plomito interno como los tenías
+  const inputBase =
+    "mt-1 w-full rounded-xl border border-safepalette-edge bg-safepalette-ink/40 text-safepalette-white placeholder-safepalette-white/50 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-safepalette-gold";
+
   return (
-    <section id="contacto-home" className="bg-safepalette-ink px-4 py-16 md:py-24">
+    <section id="contacto-home" className="bg-black px-4 py-16 md:py-24">
       <div className="mx-auto max-w-5xl">
         <header className="mb-8 text-center">
           <h2 className="text-4xl md:text-5xl font-bold text-safepalette-gold">
@@ -48,9 +52,14 @@ export default function ContactHome() {
           </p>
         </header>
 
-        {/* Tarjeta con degradado sutil y borde de tu paleta */}
+        {/* Panel del formulario con degradado azulito y borde dorado (como en tu segunda captura) */}
         <div className="rounded-2xl border border-safepalette-edge shadow-goldglow p-6 md:p-8 bg-gradient-to-b from-safepalette-surface via-safepalette-surface/90 to-safepalette-ink">
-          <form ref={formRef} onSubmit={onSubmit} onInput={clearStatusOnInput} className="space-y-6">
+          <form
+            ref={formRef}
+            onSubmit={onSubmit}
+            onInput={clearStatusOnInput}
+            className="space-y-6"
+          >
             {/* Variables ocultas */}
             <input type="hidden" name="title" value="Solicitud de contacto (Home)" />
 
@@ -64,14 +73,16 @@ export default function ContactHome() {
 
             {/* Ubicación */}
             <div>
-              <label htmlFor="state" className="text-sm text-safepalette-white/80">Ciudad / Provincia *</label>
+              <label htmlFor="state" className="text-sm text-safepalette-white/80">
+                Ciudad / Provincia *
+              </label>
               <input
                 id="state"
                 name="state"
                 required
                 placeholder="Ej.: Guayaquil"
                 autoComplete="address-level2"
-                className="mt-1 w-full rounded-xl border border-safepalette-edge bg-safepalette-ink/40 text-safepalette-white placeholder-safepalette-white/50 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-safepalette-gold"
+                className={inputBase}
               />
             </div>
 
@@ -79,32 +90,38 @@ export default function ContactHome() {
             <p className="pt-2 text-safepalette-white font-medium">Tus datos</p>
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
               <div>
-                <label htmlFor="firstName" className="text-sm text-safepalette-white/80">Nombre *</label>
+                <label htmlFor="firstName" className="text-sm text-safepalette-white/80">
+                  Nombre *
+                </label>
                 <input
                   id="firstName"
                   name="firstName"
                   required
                   placeholder="Nombre"
                   autoComplete="given-name"
-                  className="mt-1 w-full rounded-xl border border-safepalette-edge bg-safepalette-ink/40 text-safepalette-white placeholder-safepalette-white/50 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-safepalette-gold"
+                  className={inputBase}
                 />
               </div>
               <div>
-                <label htmlFor="lastName" className="text-sm text-safepalette-white/80">Apellido *</label>
+                <label htmlFor="lastName" className="text-sm text-safepalette-white/80">
+                  Apellido *
+                </label>
                 <input
                   id="lastName"
                   name="lastName"
                   required
                   placeholder="Apellido"
                   autoComplete="family-name"
-                  className="mt-1 w-full rounded-xl border border-safepalette-edge bg-safepalette-ink/40 text-safepalette-white placeholder-safepalette-white/50 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-safepalette-gold"
+                  className={inputBase}
                 />
               </div>
             </div>
 
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
               <div>
-                <label htmlFor="email" className="text-sm text-safepalette-white/80">E-mail *</label>
+                <label htmlFor="email" className="text-sm text-safepalette-white/80">
+                  E-mail *
+                </label>
                 <input
                   id="email"
                   type="email"
@@ -112,11 +129,13 @@ export default function ContactHome() {
                   required
                   placeholder="correo@dominio.com"
                   autoComplete="email"
-                  className="mt-1 w-full rounded-xl border border-safepalette-edge bg-safepalette-ink/40 text-safepalette-white placeholder-safepalette-white/50 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-safepalette-gold"
+                  className={inputBase}
                 />
               </div>
               <div>
-                <label htmlFor="phone" className="text-sm text-safepalette-white/80">Número de teléfono *</label>
+                <label htmlFor="phone" className="text-sm text-safepalette-white/80">
+                  Número de teléfono *
+                </label>
                 <input
                   id="phone"
                   name="phone"
@@ -125,21 +144,23 @@ export default function ContactHome() {
                   autoComplete="tel"
                   placeholder="09xxxxxxxx"
                   pattern="^\+?\d[\d\s-]{7,}$"
-                  className="mt-1 w-full rounded-xl border border-safepalette-edge bg-safepalette-ink/40 text-safepalette-white placeholder-safepalette-white/50 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-safepalette-gold"
+                  className={inputBase}
                 />
               </div>
             </div>
 
             {/* Mensaje */}
             <div>
-              <label htmlFor="message" className="text-sm text-safepalette-white/80">¿Cómo podemos ayudarle? *</label>
+              <label htmlFor="message" className="text-sm text-safepalette-white/80">
+                ¿Cómo podemos ayudarle? *
+              </label>
               <textarea
                 id="message"
                 name="message"
                 required
                 rows={4}
                 placeholder="Cuéntenos brevemente su necesidad…"
-                className="mt-1 w-full rounded-xl border border-safepalette-edge bg-safepalette-ink/40 text-safepalette-white placeholder-safepalette-white/50 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-safepalette-gold"
+                className={inputBase}
               />
             </div>
 

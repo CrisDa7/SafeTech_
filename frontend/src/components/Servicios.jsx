@@ -27,6 +27,7 @@ const BTN_PRIMARY = `
   hover:opacity-90 focus-visible:ring-4 focus-visible:ring-safepalette-gold/40
 `.replace(/\s+/g, " ").trim();
 
+// 👇 Mantenemos el degradado interno de cada tarjeta (igual que lo tenías)
 const CARD = `
   group relative flex h-full flex-col rounded-2xl
   bg-gradient-to-b from-safepalette-surface via-safepalette-surface/80 to-safepalette-ink
@@ -95,9 +96,7 @@ function MobileServiciosCarousel({ items }) {
                   alt=""
                   loading="lazy"
                   className={`${
-                    index === 0
-                      ? "h-36 md:h-44"
-                      : "h-32 md:h-36"
+                    index === 0 ? "h-36 md:h-44" : "h-32 md:h-36"
                   } w-auto object-contain drop-shadow-[0_6px_20px_rgba(0,0,0,0.35)] mx-auto`}
                 />
               </div>
@@ -150,7 +149,8 @@ function MobileServiciosCarousel({ items }) {
 
 export default function Servicios() {
   return (
-    <section id="servicios" className="relative px-4 py-16 md:py-24 bg-safepalette-ink">
+    // 👇 Fondo de la sección en negro puro (se quita el “plomo” de atrás)
+    <section id="servicios" className="relative px-4 py-16 md:py-24 bg-black">
       <div className="mx-auto max-w-6xl">
         <header className="mb-12 text-center md:mb-16">
           <h2 className="text-4xl font-bold text-safepalette-white md:text-5xl">
@@ -175,9 +175,7 @@ export default function Servicios() {
                   alt=""
                   loading="lazy"
                   className={`${
-                    index === 0
-                      ? "h-36 md:h-44"
-                      : "h-32 md:h-36"
+                    index === 0 ? "h-36 md:h-44" : "h-32 md:h-36"
                   } w-auto object-contain drop-shadow-[0_6px_20px_rgba(0,0,0,0.35)] mx-auto`}
                 />
               </div>

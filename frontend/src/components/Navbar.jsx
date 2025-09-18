@@ -1,22 +1,26 @@
-// src/components/Navbar.jsx
+// src/components/globales/Navbar.jsx
 import React, { useState, useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
-import { FaChevronDown, FaShieldAlt } from "react-icons/fa";
+import {
+  FaChevronDown,
+  FaShieldAlt,
+  FaBusAlt,
+  FaBuilding,
+  FaHome,
+  FaStar,
+} from "react-icons/fa";
 
-// Imágenes (con alias @)
-import adminImg from "@/assets/admin.png";
-import padresImg from "@/assets/padres.png";
-import schoolImg from "@/assets/school.png";
+// Imágenes
+import logoAndroide from "@/assets/logoAndroide.png";
 import autobusImg from "@/assets/autobus.jpg";
 import configuracionImg from "@/assets/configuracion.png";
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
-  const [activeDropdown, setActiveDropdown] = useState(null); // desktop
+  const [activeDropdown, setActiveDropdown] = useState(null);
   const [scrolled, setScrolled] = useState(false);
 
   // Desktop (tabs)
-  const [accederActiveOption, setAccederActiveOption] = useState("conductor");
   const [nosotrosActiveOption, setNosotrosActiveOption] = useState("quienes");
 
   // Móvil (drawer)
@@ -25,57 +29,59 @@ export default function Navbar() {
 
   const navRef = useRef(null);
 
-  // Data
+  // ======= DATA =======
   const accederData = {
-    conductor: {
-      title: "Safe Conductor",
-      description: "Herramientas simples y claras para conductores de transporte escolar.",
-      details: [
-        "Itinerarios y paradas al día.",
-        "Alertas de ruta y mantenimiento.",
-        "Comunicación directa con coordinación.",
-      ],
-      image: adminImg,
-    },
-    padres: {
-      title: "Safe Padres",
-      description: "Tranquilidad para las familias con transporte seguro.",
-      details: [
-        "Notificaciones instantáneas.",
-        "Localización en tiempo real.",
-        "Confianza y seguridad en cada trayecto.",
-      ],
-      image: padresImg,
-    },
-    school: {
+    safeschool: {
       title: "Safe School",
-      description: "Plataforma de seguridad para coordinadores escolares.",
+      description:
+        "Plataforma de seguridad y coordinación para instituciones educativas.",
       details: [
-        "Monitoreo en vivo de transporte.",
+        "Monitoreo en vivo del transporte escolar.",
         "Alertas de llegada y salida.",
-        "Fortalece la reputación institucional.",
+        "Reportes y trazabilidad para la coordinación.",
       ],
-      image: schoolImg,
+      image: logoAndroide, // tu logo
+      ctaText: "Acceder",
+      ctaHref: "#",
     },
   };
-  const currentAccederData = accederData[accederActiveOption];
+  const currentAccederData = accederData.safeschool;
 
   const nosotrosData = {
     quienes: {
       title: "¿Quiénes somos?",
       description:
-        "En SafeTech nos especializamos en el diseño e implementación de sistemas de seguridad de vanguardia.",
-      details: [],
+        "En Safe Tech nos especializamos en el diseño e implementación de sistemas de seguridad de vanguardia. Nuestra misión es brindar protección y tranquilidad a través de tecnología confiable y moderna.\n\nNuestro expertise se centra en:",
+      details: [
+        {
+          icon: <FaBusAlt className="text-safepalette-gold mt-1 mr-3" />,
+          text: "Seguridad para Transporte: Soluciones de geolocalización avanzadas, monitoreo en tiempo real y gestión de flotas para transporte institucional, empresarial y particular.",
+        },
+        {
+          icon: <FaBuilding className="text-safepalette-gold mt-1 mr-3" />,
+          text: "Seguridad Empresarial y Comercial: Sistemas integrales para oficinas, fábricas, bodegas y restaurantes, incluyendo videovigilancia, control de acceso y alarmas.",
+        },
+        {
+          icon: <FaHome className="text-safepalette-gold mt-1 mr-3" />,
+          text: "Seguridad Residencial y Personal: Protección para hogares y familias con tecnología fácil de usar y efectiva.",
+        },
+        {
+          icon: <FaStar className="text-safepalette-gold mt-1 mr-3" />,
+          text: "Integramos innovación y servicio para crear un entorno más seguro para nuestros clientes.",
+        },
+      ],
       image: autobusImg,
     },
     mision: {
       title: "Misión",
-      description: "Brindar protección y tranquilidad a través de tecnología confiable y moderna",
+      description:
+        "Brindar protección y tranquilidad a través de tecnología confiable y moderna",
       image: autobusImg,
     },
     vision: {
       title: "Visión",
-      description: "Ser líderes en soluciones tecnológicas que inspiren seguridad y confianza.",
+      description:
+        "Ser líderes en soluciones tecnológicas que inspiren seguridad y confianza.",
       image: autobusImg,
     },
   };
@@ -91,19 +97,17 @@ export default function Navbar() {
     },
   };
 
-  // Solo estas secciones: Nosotros, Productos, Acceso
   const menuItems = [
     { name: "Nosotros", isNosotros: true },
     { name: "Productos", isProductos: true },
     { name: "Acceso", isAcceso: true },
   ];
 
-  // ========== Helpers ==========
+  // ======= Helpers & efectos =======
   const isMdUp = () =>
     typeof window !== "undefined" &&
     window.matchMedia("(min-width: 768px)").matches;
 
-  // ========== Efectos ==========
   useEffect(() => {
     let ticking = false;
     const onScroll = () => {
@@ -153,10 +157,10 @@ export default function Navbar() {
     return () => document.removeEventListener("mousedown", onClickAway);
   }, []);
 
-  // ========== Toggle helpers ==========
+  // ======= Toggles =======
   const toggleDropdown = (name) => {
     if (isMdUp()) {
-      setActiveDropdown((prev) => (prev === name ? null : name)); // desktop
+      setActiveDropdown((prev) => (prev === name ? null : name));
     } else {
       setMobileActiveSection((prev) => (prev === name ? null : name));
       setMobileSubKey(null);
@@ -169,25 +173,32 @@ export default function Navbar() {
     setMobileSubKey(null);
   };
 
-  // ========== THEME helpers (paleta) ==========
+  // ======= Estilos helpers =======
   const PANEL_OUTER =
     "w-[min(92vw,920px)] bg-safepalette-ink text-safepalette-white shadow-2xl border border-safepalette-edge overflow-hidden";
   const PANEL_COL_BORDER = "md:border-r border-safepalette-edge";
   const TAB_BASE =
     "w-full text-left p-5 transition focus:outline-none focus-visible:ring-2 focus-visible:ring-safepalette-gold/50";
-  const TAB_ACTIVE = "bg-safepalette-white/10 border-l-4 border-safepalette-gold";
+  const TAB_ACTIVE =
+    "bg-safepalette-white/10 border-l-4 border-safepalette-gold";
   const TAB_HOVER = "hover:bg-safepalette-white/5";
   const MEDIA_BG = "bg-safepalette-gray/10";
+  const BTN_PRIMARY =
+    "inline-flex items-center justify-center rounded-md px-5 py-2.5 text-sm font-semibold bg-safepalette-gold text-safepalette-blue hover:brightness-110 transition shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-safepalette-gold/50";
 
   const PanelWrapper = ({ children, label }) => (
-    <div className="fixed inset-x-0 top-[56px] md:top-[64px] z-[60]" role="menu" aria-label={label}>
+    <div
+      className="fixed inset-x-0 top-[56px] md:top-[64px] z-[60]"
+      role="menu"
+      aria-label={label}
+    >
       <div className="mx-auto max-w-screen-xl px-4 flex justify-end">
         <div className={PANEL_OUTER}>{children}</div>
       </div>
     </div>
   );
 
-  // ======================== RENDER ========================
+  // ======= Render =======
   return (
     <nav
       ref={navRef}
@@ -275,7 +286,7 @@ export default function Navbar() {
                     <FaChevronDown className="h-3 w-3" aria-hidden="true" />
                   </button>
 
-                  {/* Nosotros */}
+                  {/* ====== NOSOTROS ====== */}
                   {item.isNosotros && activeDropdown === "Nosotros" && (
                     <PanelWrapper label="Menú Nosotros">
                       <div className="flex flex-col md:flex-row">
@@ -312,18 +323,18 @@ export default function Navbar() {
                           <h2 className="mb-3 text-xl font-bold text-safepalette-white lg:text-2xl">
                             {currentNosotrosData.title}
                           </h2>
-                          <p className="mb-6 whitespace-pre-line text-safepalette-white/80">
+                          <p className="mb-4 whitespace-pre-line text-safepalette-white/80 leading-relaxed">
                             {currentNosotrosData.description}
                           </p>
                           {currentNosotrosData.details?.length > 0 && (
-                            <ul className="space-y-3">
-                              {currentNosotrosData.details.map((detail, idx) => (
-                                <li key={idx} className="flex items-start">
-                                  <FaShieldAlt
-                                    className="mt-1 mr-3 shrink-0 text-safepalette-gold"
-                                    aria-hidden="true"
-                                  />
-                                  <span className="text-safepalette-white/90">{detail}</span>
+                            <ul className="space-y-4">
+                              {currentNosotrosData.details.map((d, i) => (
+                                <li
+                                  key={i}
+                                  className="flex items-start text-safepalette-white/90 leading-snug"
+                                >
+                                  {d.icon}
+                                  <span>{d.text}</span>
                                 </li>
                               ))}
                             </ul>
@@ -331,7 +342,7 @@ export default function Navbar() {
                         </div>
 
                         {/* Media */}
-                        <div className={`${MEDIA_BG} flex items-center justify-center p-6 md:w-1/4`}>
+                        <div className="flex items-center justify-center p-6 md:w-1/4">
                           <img
                             src={currentNosotrosData.image}
                             alt={currentNosotrosData.title}
@@ -343,69 +354,54 @@ export default function Navbar() {
                     </PanelWrapper>
                   )}
 
-                  {/* Acceso */}
+                  {/* ====== ACCESO (Solo Safe School) ====== */}
                   {item.isAcceso && activeDropdown === "Acceso" && (
                     <PanelWrapper label="Menú Acceso">
                       <div className="flex flex-col md:flex-row">
-                        <div className="border-b border-safepalette-edge md:w-1/4 md:border-b-0 md:border-r">
-                          {Object.keys(accederData).map((key) => (
-                            <button
-                              key={key}
-                              onMouseEnter={() => setAccederActiveOption(key)}
-                              onFocus={() => setAccederActiveOption(key)}
-                              className={`${TAB_BASE} ${
-                                accederActiveOption === key ? TAB_ACTIVE : TAB_HOVER
-                              }`}
-                            >
-                              <span
-                                className={`font-medium ${
-                                  accederActiveOption === key
-                                    ? "text-safepalette-white"
-                                    : "text-safepalette-white/80"
-                                }`}
-                              >
-                                {accederData[key].title}
-                              </span>
-                            </button>
-                          ))}
-                        </div>
-
-                        <div className={`p-6 ${PANEL_COL_BORDER} md:w-2/4`}>
+                        {/* Contenido */}
+                        <div className={`p-6 ${PANEL_COL_BORDER} md:w-2/3`}>
                           <h2 className="mb-3 text-xl font-bold text-safepalette-white lg:text-2xl">
                             {currentAccederData.title}
                           </h2>
                           <p className="mb-6 text-safepalette-white/80">
                             {currentAccederData.description}
                           </p>
-                          <ul className="space-y-3">
+                          <ul className="mb-6 space-y-3">
                             {currentAccederData.details.map((detail, idx) => (
                               <li key={idx} className="flex items-start">
                                 <FaShieldAlt
                                   className="mt-1 mr-3 shrink-0 text-safepalette-gold"
                                   aria-hidden="true"
                                 />
-                                <span className="text-safepalette-white/90">{detail}</span>
+                                <span className="text-safepalette-white/90">
+                                  {detail}
+                                </span>
                               </li>
                             ))}
                           </ul>
+                          <a
+                            href={currentAccederData.ctaHref}
+                            className={BTN_PRIMARY}
+                            aria-label="Acceder a Safe School"
+                          >
+                            {currentAccederData.ctaText}
+                          </a>
                         </div>
 
-                        {/* Solo imagen */}
-                        <div className={`${MEDIA_BG} flex items-center justify-center p-6 md:w-1/4`}>
-                          <div className="flex h-36 w-36 items-center justify-center border border-safepalette-edge bg-safepalette-ink p-4 shadow-md md:h-40 md:w-40">
-                            <img
-                              src={currentAccederData.image}
-                              alt={currentAccederData.title}
-                              className="max-h-full max-w-full object-contain"
-                              loading="lazy"
-                            />
-                          </div>
+                        {/* Imagen limpia, sin fondos ni bordes */}
+                        <div className="flex items-center justify-center p-6 md:w-1/3">
+                          <img
+                            src={currentAccederData.image}
+                            alt={currentAccederData.title}
+                            className="max-h-48 w-auto object-contain"
+                            loading="lazy"
+                          />
                         </div>
                       </div>
                     </PanelWrapper>
                   )}
 
-                  {/* Productos */}
+                  {/* ====== PRODUCTOS (restaurado) ====== */}
                   {item.isProductos && activeDropdown === "Productos" && (
                     <PanelWrapper label="Menú Productos">
                       <div className="flex flex-col md:flex-row">
@@ -446,7 +442,7 @@ export default function Navbar() {
         </div>
       </div>
 
-      {/* =================== MÓVIL: DRAWER EN PORTAL =================== */}
+      {/* =================== MÓVIL: DRAWER =================== */}
       {menuOpen &&
         typeof document !== "undefined" &&
         createPortal(
@@ -532,10 +528,10 @@ export default function Navbar() {
                                   { key: "mision", data: nosotrosData.mision, label: "Misión" },
                                   { key: "vision", data: nosotrosData.vision, label: "Visión" },
                                 ].map(({ key, data, label }) => (
-                                  <div key={key}>
+                                  <div key={key} className="rounded-md border border-safepalette-edge p-3">
                                     <button
                                       type="button"
-                                      className="w-full rounded-md border border-safepalette-edge bg-safepalette-white/10 px-3 py-2 text-left text-sm text-safepalette-white hover:bg-safepalette-white/15 focus:outline-none focus-visible:ring-2 focus-visible:ring-safepalette-gold/50"
+                                      className="w-full text-left text-sm text-safepalette-white"
                                       onClick={() => setMobileSubKey((k) => (k === key ? null : key))}
                                       aria-expanded={mobileSubKey === key}
                                     >
@@ -547,9 +543,19 @@ export default function Navbar() {
                                       }`}
                                     >
                                       <div className="overflow-hidden">
-                                        <p className="text-sm text-safepalette-white/80 whitespace-pre-line">
+                                        <p className="text-sm text-safepalette-white/80 whitespace-pre-line leading-relaxed">
                                           {data.description}
                                         </p>
+                                        {data.details?.length > 0 && (
+                                          <ul className="mt-2 space-y-2">
+                                            {data.details.map((d, i) => (
+                                              <li key={i} className="flex items-start text-sm text-safepalette-white/90">
+                                                {d.icon}
+                                                <span>{d.text}</span>
+                                              </li>
+                                            ))}
+                                          </ul>
+                                        )}
                                       </div>
                                     </div>
                                   </div>
@@ -557,50 +563,65 @@ export default function Navbar() {
                               </div>
                             )}
 
-                            {/* ACCESO */}
+                            {/* ACCESO — SOLO SAFE SCHOOL */}
                             {item.isAcceso && (
-                              <div className="space-y-3">
-                                {Object.keys(accederData).map((key) => {
-                                  const d = accederData[key];
-                                  return (
-                                    <div key={key} className="rounded-md border border-safepalette-edge p-3">
-                                      <div className="flex items-center gap-3">
-                                        <img
-                                          src={d.image}
-                                          alt={d.title}
-                                          className="h-12 w-12 bg-safepalette-ink object-contain border border-safepalette-edge"
-                                          loading="lazy"
-                                        />
-                                        <div className="min-w-0">
-                                          <p className="text-sm font-medium text-safepalette-white">{d.title}</p>
-                                          <p className="line-clamp-2 text-xs text-safepalette-white/80">
-                                            {d.description}
-                                          </p>
-                                        </div>
-                                      </div>
-                                    </div>
-                                  );
-                                })}
+                              <div className="rounded-md border border-safepalette-edge p-3">
+                                <div className="flex items-center gap-3">
+                                  <img
+                                    src={currentAccederData.image}
+                                    alt={currentAccederData.title}
+                                    className="h-12 w-12 object-contain"
+                                    loading="lazy"
+                                  />
+                                  <div className="min-w-0">
+                                    <p className="text-sm font-medium text-safepalette-white">
+                                      {currentAccederData.title}
+                                    </p>
+                                    <p className="line-clamp-2 text-xs text-safepalette-white/80">
+                                      {currentAccederData.description}
+                                    </p>
+                                  </div>
+                                </div>
+
+                                <ul className="mt-3 space-y-2">
+                                  {currentAccederData.details.map((detail, idx) => (
+                                    <li key={idx} className="flex items-start text-sm">
+                                      <FaShieldAlt className="mr-2 mt-0.5 text-safepalette-gold" aria-hidden="true" />
+                                      <span className="text-safepalette-white/90">{detail}</span>
+                                    </li>
+                                  ))}
+                                </ul>
+
+                                <div className="mt-4">
+                                  <a
+                                    href={currentAccederData.ctaHref}
+                                    className={BTN_PRIMARY}
+                                    aria-label="Acceder a Safe School"
+                                  >
+                                    {currentAccederData.ctaText}
+                                  </a>
+                                </div>
                               </div>
                             )}
 
                             {/* PRODUCTOS */}
                             {item.isProductos && (
-                              <div className="space-y-2">
+                              <div className="rounded-md border border-safepalette-edge p-3">
                                 <p className="text-sm text-safepalette-white/80">
                                   {productosData.estado.description}
                                 </p>
-                                <ul className="space-y-1 text-sm">
+                                <ul className="mt-2 space-y-1 text-sm">
                                   {productosData.estado.details.map((d, i) => (
                                     <li key={i} className="flex items-start text-safepalette-white/90">
-                                      <FaShieldAlt className="mr-2 mt-0.5 text-safepalette-gold" aria-hidden="true" /> {d}
+                                      <FaShieldAlt className="mr-2 mt-0.5 text-safepalette-gold" aria-hidden="true" />
+                                      {d}
                                     </li>
                                   ))}
                                 </ul>
                                 <img
                                   src={productosData.estado.image}
                                   alt="Sección en configuración"
-                                  className="mt-2 w-full max-h-40 border border-safepalette-edge object-contain"
+                                  className="mt-3 w-full max-h-40 object-contain"
                                   loading="lazy"
                                 />
                               </div>

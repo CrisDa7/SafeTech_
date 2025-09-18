@@ -6,9 +6,8 @@ import Contacto from "@/components/Contacto";
 import Achievements from "@/components/Achievements";
 
 import fondoBus from "@/assets/bus2.gif";
-import busArrivalImg from "@/assets/admin.png";
-import safetyImg from "@/assets/admin.png";
-import transparencyImg from "@/assets/admin.png";
+import logoAndroide from "@/assets/logoAndroide.png"; 
+import nosotrosImg from "@/assets/nosotros.png";
 
 export default function SafeServicios() {
   useEffect(() => {
@@ -33,12 +32,18 @@ export default function SafeServicios() {
         <div className="absolute inset-0 bg-black/55" aria-hidden="true" />
         <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-black/35 via-transparent to-black/35" />
         <div className="relative z-10 mx-auto max-w-5xl px-4">
-          <h1 className="text-white font-extrabold leading-tight tracking-tight text-5xl sm:text-6xl md:text-7xl lg:text-8xl">
-            Safe <span className="text-safepalette-gold drop-shadow-[0_6px_24px_rgba(250,204,21,0.25)]">Escolar</span>
-          </h1>
-          <p className="mt-5 text-slate-100/95 text-xl md:text-2xl lg:text-[1.7rem]">
-            Plataforma integral para instituciones, familias y administración.
+          {/* LOGO MUY GRANDE */}
+          <img
+            src={logoAndroide}
+            alt="Logo Androide"
+            className="mx-auto h-56 sm:h-72 md:h-80 lg:h-[28rem] xl:h-[32rem] w-auto max-w-[90vw] drop-shadow-[0_8px_36px_rgba(250,204,21,0.35)]"
+          />
+
+          {/* Texto bajo el logo */}
+          <p className="mt-6 text-slate-100/95 text-xl md:text-2xl lg:text-[1.7rem]">
+            Sistema de seguridad integral para instituciones educativas
           </p>
+
           <div className="mt-9 flex flex-col sm:flex-row gap-4 justify-center">
             <Link to="/" className={BTN_WHITE_TO_GOLD}>← Volver al inicio</Link>
             <a href="#contacto" className={BTN_WHITE_TO_GOLD}>Contáctanos</a>
@@ -101,12 +106,12 @@ export default function SafeServicios() {
                       "conic-gradient(from 180deg at 50% 50%, rgba(250,204,21,0.18), transparent 30%, rgba(250,204,21,0.12) 60%, transparent 90%)",
                   }}
                 />
-                <img src={busArrivalImg} alt="Ilustración Safe School" className="relative w/full rounded-3xl object-cover" />
+                <img src={nosotrosImg} alt="Ilustración Safe School" className="relative w-full rounded-3xl object-cover" />
               </div>
             </div>
           </div>
 
-          {/* separador amarillo */}
+          {/* separador amarillo (YA EXISTÍA) */}
           <div className="mt-14 h-px bg-gradient-to-r from-transparent via-safepalette-gold/60 to-transparent" />
         </div>
       </section>
@@ -120,40 +125,38 @@ export default function SafeServicios() {
 
           <div className="mt-10 grid grid-cols-1 md:grid-cols-3">
             {[
-              { title: "Confiable", desc: "Estimaciones de llegada precisas para reducir esperas y ansiedades.", img: busArrivalImg },
-              { title: "Seguridad", desc: "Alertas y protocolos integrados para estudiantes en cada etapa.", img: safetyImg },
-              { title: "Transparencia", desc: "Información clara para familias y directivos en un mismo lugar.", img: transparencyImg },
-            ].map((item, idx) => (
+              { title: "Confiabilidad", desc: "Estimaciones de llegada precisas para reducir esperas y ansiedades." },
+              { title: "Seguridad", desc: "Alertas y protocolos integrados para estudiantes en cada etapa." },
+              { title: "Eficiencia", desc: "Información clara para familias y directivos en un mismo lugar." },
+            ].map((item) => (
               <div
                 key={item.title}
-                className={[
-                  "flex flex-col items-start md:items-center gap-4 px-0 md:px-6 py-6",
-                  idx !== 2 ? "md:border-r md:border-white/10" : "",
-                ].join(" ")}
+                className="flex flex-col items-center gap-4 px-0 md:px-6 py-6 md:border-r last:md:border-r-0 md:border-white/10"
               >
-                <div className="flex items-center gap-3">
-                  <span className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-safepalette-gold/15">
-                    <svg viewBox="0 0 24 24" className="h-5 w-5 text-safepalette-gold" fill="none" stroke="currentColor" strokeWidth="2">
-                      <path d="M12 3l2.5 6H21l-5 3.6L17.5 21 12 17.7 6.5 21 8 12.6 3 9h6.5L12 3z" />
-                    </svg>
-                  </span>
-                  <h4 className="text-xl font-semibold text-white">{item.title}</h4>
-                </div>
-                <p className="text-slate-300/90 md:text-center md:max-w-[28ch]">{item.desc}</p>
+                <img
+                  src={nosotrosImg}
+                  alt={`Imagen ${item.title}`}
+                  className="w-28 h-28 md:w-32 md:h-32 object-contain rounded-xl"
+                />
+                <h4 className="text-xl font-semibold text-white">{item.title}</h4>
+                <p className="text-slate-300/90 text-center md:max-w-[28ch]">{item.desc}</p>
               </div>
             ))}
           </div>
+
+          {/* NUEVO separador amarillo al final de la 2da sección */}
+          <div className="mt-12 h-px bg-gradient-to-r from-transparent via-safepalette-gold/60 to-transparent" />
         </div>
       </section>
 
-      {/* CONTACTO (sin marco externo ni panel gris) */}
+      {/* CONTACTO */}
       <section id="contacto" className="relative z-10 mt-10 md:mt-12">
         <div className="mx-auto max-w-4xl px-4 contacto-unframed">
           <Contacto />
         </div>
       </section>
 
-      {/* RESEÑAS / ESTADÍSTICAS (quitar solo el rectángulo de fondo externo) */}
+      {/* RESEÑAS / ESTADÍSTICAS */}
       <section className="relative z-10 mt-10 md:mt-12">
         <div className="mx-auto max-w-6xl px-4">
           <div className="mb-8 h-px bg-gradient-to-r from-transparent via-safepalette-gold/60 to-transparent" />
@@ -163,31 +166,17 @@ export default function SafeServicios() {
         </div>
       </section>
 
-      {/* Overrides mínimos (sin tocar estilos internos de las tarjetas) */}
       <style>{`
-        /* Contacto embebido sin su sección propia */
         .contacto-unframed > section#contacto {
           background: transparent !important;
           padding: 0 !important;
         }
-
-        /* === Achievements: elimina SOLO el wrapper gris externo ===
-           Muchos componentes envuelven las "cards" en un <div/section> con fondo/borde/sombra.
-           Aquí quitamos ese contenedor inmediato, pero NO tocamos las tarjetas internas. */
         .achievements-unframed > section:first-child,
         .achievements-unframed > div:first-child {
           background: transparent !important;
           background-image: none !important;
           box-shadow: none !important;
           border: none !important;
-        }
-        .achievements-unframed > section:first-child::before,
-        .achievements-unframed > section:first-child::after,
-        .achievements-unframed > div:first-child::before,
-        .achievements-unframed > div:first-child::after {
-          background: transparent !important;
-          background-image: none !important;
-          box-shadow: none !important;
         }
       `}</style>
     </div>
