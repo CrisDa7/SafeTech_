@@ -7,9 +7,13 @@ import Achievements from "@/components/Achievements";
 
 import fondoBus from "@/assets/bus2.gif";
 import logoAndroide from "@/assets/logoAndroide.png";
-import confiabilidadImg from "@/assets/confiabilidad.png";
+import confiabilidadImg from "@/assets/confiabilidad.png"; // (se mantiene por si lo usas en otros lados)
 import seguridadImg from "@/assets/seguridad.png";
 import eficienciaImg from "@/assets/eficiencia.png";
+
+// NUEVAS IMÁGENES DE LAS SECCIONES
+import celImg from "@/assets/cel.png";
+import notificacionesImg from "@/assets/notificaciones.png";
 
 export default function SafeServicios() {
   useEffect(() => {
@@ -113,30 +117,118 @@ export default function SafeServicios() {
               </div>
             </div>
           </div>
+
+          {/* RAYITA AMARILLA */}
           <div className="mt-16 h-px bg-gradient-to-r from-transparent via-safepalette-gold/60 to-transparent" />
         </div>
       </section>
 
-      {/* ¿POR QUÉ ES UNA DECISIÓN ACERTADA? */}
+      {/* NUEVA SECCIÓN: APLICACIÓN DEDICADA... */}
       <section className="relative z-10">
         <div className="mx-auto max-w-6xl px-4 py-10 md:py-14">
           <h3 className="text-center text-3xl md:text-4xl font-bold text-white">
-            ¿Por qué <span className="text-safepalette-gold">SAFE SCHOOL</span> es una decisión acertada?
+            Aplicación dedicada para instituciones educativas y padres
           </h3>
-          <div className="mt-10 grid grid-cols-1 md:grid-cols-3">
+
+          {/* 3 TEMAS */}
+          <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-8">
             {[
-              { title: "Confiabilidad", desc: "Estimaciones de llegada precisas para reducir esperas y ansiedades.", img: confiabilidadImg, alt: "Confiabilidad" },
-              { title: "Seguridad", desc: "Alertas y protocolos integrados para estudiantes en cada etapa.", img: seguridadImg, alt: "Seguridad" },
-              { title: "Eficiencia", desc: "Información clara para familias y directivos en un mismo lugar.", img: eficienciaImg, alt: "Eficiencia" },
+              {
+                title: "Acceso a videos",
+                desc:
+                  "Visualiza en vivo el interior del bus escolar (puerta, salón y conductor) de forma segura.",
+                icon: (
+                  <svg viewBox="0 0 24 24" className="h-6 w-6" fill="none" stroke="currentColor" strokeWidth="2">
+                    <path d="M3 7h13a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2H3z" />
+                    <path d="M22 8l-4 3v2l4 3z" />
+                  </svg>
+                ),
+              },
+              {
+                title: "Notificaciones en tiempo real",
+                desc:
+                  "Alertas instantáneas sobre ETA, inicio/fin de recorrido, retrasos y novedades.",
+                icon: (
+                  <svg viewBox="0 0 24 24" className="h-6 w-6" fill="none" stroke="currentColor" strokeWidth="2">
+                    <path d="M18 8a6 6 0 1 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9" />
+                    <path d="M13.73 21a2 2 0 0 1-3.46 0" />
+                  </svg>
+                ),
+              },
+              {
+                title: "Conoce la ruta del estudiante",
+                desc:
+                  "Sigue la ubicación exacta del bus y las paradas del estudiante desde una sola app.",
+                icon: (
+                  <svg viewBox="0 0 24 24" className="h-6 w-6" fill="none" stroke="currentColor" strokeWidth="2">
+                    <path d="M21 10c0 6-9 12-9 12S3 16 3 10a9 9 0 1 1 18 0z" />
+                    <circle cx="12" cy="10" r="3" />
+                  </svg>
+                ),
+              },
             ].map((item) => (
-              <div key={item.title} className="flex flex-col items-center gap-4 px-0 md:px-6 py-6 md:border-r last:md:border-r-0 md:border-white/10">
-                <img src={item.img} alt={item.alt} className="w-28 h-28 md:w-32 md:h-32 object-contain rounded-xl" loading="lazy" />
-                <h4 className="text-xl font-semibold text-white">{item.title}</h4>
-                <p className="text-slate-300/90 text-center md:max-w-[28ch]">{item.desc}</p>
+              <div
+                key={item.title}
+                className="flex items-start gap-4 p-5 rounded-2xl bg-white/5 border border-white/10"
+              >
+                <span className="mt-1 inline-flex h-10 w-10 items-center justify-center rounded-xl bg-safepalette-gold/15 text-safepalette-gold">
+                  {item.icon}
+                </span>
+                <div>
+                  <h4 className="text-xl font-semibold text-white">{item.title}</h4>
+                  <p className="text-slate-300/90">{item.desc}</p>
+                </div>
               </div>
             ))}
           </div>
-          <div className="mt-12 h-px bg-gradient-to-r from-transparent via-safepalette-gold/60 to-transparent" />
+
+          {/* IMAGEN DEL CELULAR */}
+          <div className="mt-10 md:mt-14 flex justify-center">
+            <div className="relative">
+              <div
+                className="absolute -inset-6 rounded-[2rem] blur-2xl opacity-60"
+                style={{ background: "radial-gradient(40% 40% at 50% 60%, rgba(250,204,21,0.35), transparent 70%)" }}
+                aria-hidden="true"
+              />
+              <img
+                src={celImg}
+                alt="Aplicación SAFE SCHOOL en el celular"
+                className="relative w-full max-w-[760px] rounded-2xl shadow-2xl"
+                loading="lazy"
+              />
+            </div>
+          </div>
+
+          {/* RAYITA AMARILLA */}
+          <div className="mt-12 md:mt-14 h-px bg-gradient-to-r from-transparent via-safepalette-gold/60 to-transparent" />
+        </div>
+      </section>
+
+      {/* NUEVA SECCIÓN: NOTIFICACIONES EN VIVO (como la tercera imagen) */}
+      <section className="relative z-10">
+        <div className="mx-auto max-w-6xl px-4 py-10 md:py-14">
+          <h3 className="text-center text-3xl md:text-4xl font-bold text-white">
+            Mantente actualizado con notificaciones en tiempo real
+          </h3>
+
+          <div className="mt-8 flex justify-center">
+            <div className="relative">
+              <div
+                className="absolute -inset-6 rounded-[2rem] blur-2xl opacity-60"
+                style={{ background: "radial-gradient(40% 40% at 50% 60%, rgba(250,204,21,0.35), transparent 70%)" }}
+                aria-hidden="true"
+              />
+              <img
+                src={notificacionesImg}
+                alt="Pantalla de notificaciones en vivo de SAFE SCHOOL"
+                className="relative w-full max-w-[980px] rounded-2xl shadow-2xl"
+                loading="lazy"
+              />
+            </div>
+          </div>
+
+          {/* RAYITA AMARILLA */}
+          <div className="mt-12 md:mt-14 h-px bg-gradient-to-r from-transparent via-safepalette-gold/60 to-transparent" />
         </div>
       </section>
 
