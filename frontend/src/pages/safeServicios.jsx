@@ -72,7 +72,7 @@ export default function SafeServicios() {
                 <p>Mejora la seguridad, la eficiencia y la satisfacción de las familias.</p>
               </div>
 
-              {/* LISTA con vistos animados (staggered y más notorios) */}
+              {/* LISTA con vistos animados (staggered) */}
               <ul className="mt-8 space-y-4">
                 {[
                   "Seguimiento en tiempo real y notificaciones contextuales.",
@@ -81,10 +81,11 @@ export default function SafeServicios() {
                   "Escalable, seguro y listo para múltiples rutas/turnos.",
                 ].map((t, i) => (
                   <li key={i} className="flex items-start gap-3" style={{ "--i": i }}>
-                    <span className="relative mt-1 inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-safepalette-gold/20">
+                    {/* Badge animado */}
+                    <span className="relative mt-1 inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-safepalette-gold/15">
                       <svg
                         viewBox="0 0 24 24"
-                        className="h-4.5 w-4.5 text-safepalette-gold check-badge"
+                        className="h-4 w-4 text-safepalette-gold check-badge"
                         fill="none"
                         stroke="currentColor"
                         strokeWidth="2"
@@ -92,16 +93,11 @@ export default function SafeServicios() {
                       >
                         <path d="M20 6L9 17l-5-5" />
                       </svg>
-                      {/* Doble halo para que se note más */}
+                      {/* Halo (ping) */}
                       <span
                         className="check-ping"
                         aria-hidden="true"
-                        style={{ animationDelay: `calc(var(--i) * 0.18s + 0.2s)` }}
-                      />
-                      <span
-                        className="check-ping check-ping--late"
-                        aria-hidden="true"
-                        style={{ animationDelay: `calc(var(--i) * 0.18s + 0.8s)` }}
+                        style={{ animationDelay: `calc(var(--i) * 0.18s + 0.4s)` }}
                       />
                     </span>
 
@@ -141,8 +137,8 @@ export default function SafeServicios() {
                 desc: "Visualiza en vivo el interior del bus escolar (puerta, salón y conductor) de forma segura.",
                 icon: (
                   <span className="inline-flex h-16 w-16 items-center justify-center rounded-xl bg-safepalette-gold/15 text-safepalette-gold">
-                    {/* PULSE MÁS NOTORIO */}
-                    <svg viewBox="0 0 24 24" className="h-10 w-10 icon-throb-strong" fill="none" stroke="currentColor" strokeWidth="2">
+                    {/* PULSE */}
+                    <svg viewBox="0 0 24 24" className="h-10 w-10 icon-throb" fill="none" stroke="currentColor" strokeWidth="2">
                       <path d="M3 7h13a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2H3z" />
                       <path d="M22 8l-4 3v2l4 3z" />
                     </svg>
@@ -154,8 +150,8 @@ export default function SafeServicios() {
                 desc: "Recibe alertas sobre ETA, inicio/fin de recorrido, retrasos y novedades relevantes.",
                 icon: (
                   <span className="inline-flex h-16 w-16 items-center justify-center rounded-xl bg-safepalette-gold/15 text-safepalette-gold">
-                    {/* WIGGLE MÁS AMPLIO */}
-                    <svg viewBox="0 0 24 24" className="h-10 w-10 icon-wiggle-strong" fill="none" stroke="currentColor" strokeWidth="2">
+                    {/* WIGGLE */}
+                    <svg viewBox="0 0 24 24" className="h-10 w-10 icon-wiggle" fill="none" stroke="currentColor" strokeWidth="2">
                       <path d="M18 8a6 6 0 1 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9" />
                       <path d="M13.73 21a2 2 0 0 1-3.46 0" />
                     </svg>
@@ -167,19 +163,18 @@ export default function SafeServicios() {
                 desc: "Sigue la ubicación exacta del bus y las paradas del estudiante desde una sola app.",
                 icon: (
                   <span className="relative inline-flex h-16 w-16 items-center justify-center rounded-xl bg-safepalette-gold/15 text-safepalette-gold">
-                    {/* GPS + DOBLE PING + DIBUJO DE RUTA */}
-                    <svg viewBox="0 0 24 24" className="h-10 w-10 icon-gps-strong" fill="none" stroke="currentColor" strokeWidth="2">
-                      {/* Ruta en S animada */}
-                      <path d="M5 18c3-4 6-2 9-6 2-3 3-4 5-5" className="opacity-60 path-s" />
+                    {/* GPS + PING */}
+                    <svg viewBox="0 0 24 24" className="h-10 w-10 icon-gps" fill="none" stroke="currentColor" strokeWidth="2">
+                      {/* Ruta en S (decorativa) */}
+                      <path d="M5 18c3-4 6-2 9-6 2-3 3-4 5-5" className="opacity-50" />
                       {/* Pin */}
                       <path d="M21 10c0 6-9 12-9 12S3 16 3 10a9 9 0 1 1 18 0z" />
                       <circle cx="12" cy="10" r="3" />
-                      {/* Punto animado más largo */}
-                      <circle cx="6" cy="17" r="2" className="fill-current opacity-95 icon-gps-dot-strong" />
+                      {/* Punto animado */}
+                      <circle cx="6" cy="17" r="1.7" className="fill-current opacity-90 icon-gps-dot" />
                     </svg>
-                    {/* Doble ping más visible */}
-                    <span className="absolute inset-0 icon-ping-strong rounded-xl" aria-hidden="true" />
-                    <span className="absolute inset-0 icon-ping-strong icon-ping-strong--late rounded-xl" aria-hidden="true" />
+                    {/* Onda (ping) */}
+                    <span className="absolute inset-0 icon-ping rounded-xl" aria-hidden="true" />
                   </span>
                 ),
               },
@@ -292,112 +287,79 @@ export default function SafeServicios() {
           background: transparent !important; background-image: none !important; box-shadow: none !important; border: none !important;
         }
 
-        /* ========= Animaciones de iconos (más notorias) ========= */
+        /* ========= Animaciones de iconos ========= */
 
-        /* 1) PULSE FUERTE para "Acceso a videos" */
-        @keyframes throbStrong {
+        /* 1) PULSE (latido) para "Acceso a videos" */
+        @keyframes throb {
           0%   { transform: scale(1); filter: drop-shadow(0 0 0 rgba(250,204,21,0)); }
-          35%  { transform: scale(1.28); filter: drop-shadow(0 0 18px rgba(250,204,21,0.7)); }
-          55%  { transform: scale(1.16); filter: drop-shadow(0 0 10px rgba(250,204,21,0.55)); }
+          50%  { transform: scale(1.12); filter: drop-shadow(0 0 10px rgba(250,204,21,0.45)); }
           100% { transform: scale(1); filter: drop-shadow(0 0 0 rgba(250,204,21,0)); }
         }
-        .icon-throb-strong { animation: throbStrong 1.25s ease-in-out infinite; transform-origin: center; }
+        .icon-throb { animation: throb 1.6s ease-in-out infinite; transform-origin: center; }
 
-        /* 2) WIGGLE FUERTE para "Notificaciones" */
-        @keyframes wiggleStrong {
-          0%, 100% { transform: translateX(0) rotate(0deg); filter: drop-shadow(0 0 0 rgba(250,204,21,0)); }
-          12% { transform: translateX(-5px) rotate(-10deg); filter: drop-shadow(0 0 12px rgba(250,204,21,0.5)); }
-          24% { transform: translateX(5px) rotate(10deg);  filter: drop-shadow(0 0 12px rgba(250,204,21,0.5)); }
-          36% { transform: translateX(-4px) rotate(-8deg); }
-          48% { transform: translateX(4px) rotate(8deg); }
-          60% { transform: translateX(-3px) rotate(-6deg); }
-          72% { transform: translateX(3px) rotate(6deg); }
+        /* 2) WIGGLE (vibración lateral) para "Notificaciones" */
+        @keyframes wiggle {
+          0%, 100% { transform: translateX(0) rotate(0); }
+          15% { transform: translateX(-2px) rotate(-6deg); }
+          30% { transform: translateX(2px) rotate(6deg); }
+          45% { transform: translateX(-1.5px) rotate(-4deg); }
+          60% { transform: translateX(1.5px) rotate(4deg); }
+          75% { transform: translateX(-1px) rotate(-2deg); }
         }
-        .icon-wiggle-strong { animation: wiggleStrong 1.1s ease-in-out infinite; transform-origin: 50% 10%; }
+        .icon-wiggle { animation: wiggle 1.4s ease-in-out infinite; transform-origin: 50% 10%; }
 
-        /* 3) GPS FUERTE: punto recorre más y línea se dibuja */
-        @keyframes gpsDotStrong {
-          0%   { transform: translate(0px, 0px) scale(1);   opacity: 0.95; }
-          20%  { transform: translate(4px, -4px) scale(1.08); }
-          40%  { transform: translate(9px, -8px) scale(1.02); }
-          60%  { transform: translate(5px, 0px)  scale(1.12); }
-          80%  { transform: translate(10px, 6px) scale(1.04); }
-          100% { transform: translate(14px, -2px) scale(1.16); opacity: 1; }
+        /* 3) GPS (trayectoria en S + ping) para "Conoce la ruta" */
+        @keyframes gpsDot {
+          0%   { transform: translate(0px, 0px) scale(1); opacity: 0.9; }
+          20%  { transform: translate(2px, -2px) scale(1.05); }
+          40%  { transform: translate(6px, -5px) scale(1); }
+          60%  { transform: translate(3px, 0px) scale(1.08); }
+          80%  { transform: translate(6px, 4px) scale(1); }
+          100% { transform: translate(10px, -2px) scale(1.1); opacity: 1; }
         }
-        .icon-gps-strong { overflow: visible; }
-        .icon-gps-dot-strong { transform-origin: center; animation: gpsDotStrong 2.2s ease-in-out infinite; }
+        .icon-gps { overflow: visible; }
+        .icon-gps-dot { transform-origin: center; animation: gpsDot 2.2s ease-in-out infinite; }
 
-        /* Trazado en S que se dibuja */
-        .path-s {
-          stroke-dasharray: 60;
-          stroke-dashoffset: 60;
-          animation: drawS 1.6s ease-out forwards;
+        @keyframes pingOnce {
+          0%   { transform: scale(0.8); opacity: 0.45; }
+          70%  { transform: scale(1.25); opacity: 0; }
+          100% { transform: scale(1.25); opacity: 0; }
         }
-        @keyframes drawS {
-          to { stroke-dashoffset: 0; }
+        .icon-ping {
+          background: radial-gradient(circle, rgba(250,204,21,0.25) 0%, rgba(250,204,21,0.18) 40%, transparent 70%);
+          animation: pingOnce 1.8s ease-out infinite;
         }
 
-        /* Pings más visibles (doble) */
-        @keyframes pingStrong {
-          0%   { transform: scale(0.7); opacity: .55; }
-          60%  { transform: scale(1.45); opacity: 0; }
-          100% { transform: scale(1.45); opacity: 0; }
-        }
-        .icon-ping-strong {
-          background: radial-gradient(circle, rgba(250,204,21,0.35) 0%, rgba(250,204,21,0.22) 45%, transparent 70%);
-          animation: pingStrong 1.8s ease-out infinite;
-        }
-        .icon-ping-strong--late { animation-delay: .6s; }
-
-        /* ======= Vistos amarillos (más notorios) ======= */
-        @keyframes checkPopBig {
-          0%   { transform: scale(0.4) rotate(-18deg); opacity: 0; filter: drop-shadow(0 0 0 rgba(250,204,21,0)); }
-          55%  { transform: scale(1.25) rotate(2deg);  opacity: 1; filter: drop-shadow(0 0 20px rgba(250,204,21,0.75)); }
-          100% { transform: scale(1.05) rotate(0deg);  opacity: 1; filter: drop-shadow(0 0 6px rgba(250,204,21,0.4)); }
-        }
-        @keyframes checkGlowPulse {
-          0%, 100% { filter: drop-shadow(0 0 0 rgba(250,204,21,0)); transform: translateZ(0); }
-          50%      { filter: drop-shadow(0 0 16px rgba(250,204,21,0.6)); transform: translateZ(0) scale(1.06); }
+        /* ======= Animación vistos amarillos (¿Qué es SAFE SCHOOL?) ======= */
+        @keyframes checkPop {
+          0%   { transform: scale(0.6) rotate(-12deg); opacity: 0; filter: drop-shadow(0 0 0 rgba(250,204,21,0)); }
+          60%  { transform: scale(1.15) rotate(0deg);  opacity: 1; filter: drop-shadow(0 0 10px rgba(250,204,21,0.35)); }
+          100% { transform: scale(1)    rotate(0deg);  opacity: 1; filter: drop-shadow(0 0 0 rgba(250,204,21,0)); }
         }
         .check-badge {
           transform-origin: center;
-          /* pop inicial escalonado + brillo periódico que se nota */
-          animation:
-            checkPopBig 720ms cubic-bezier(.2,.7,.2,1) both,
-            checkGlowPulse 2.8s 1.2s ease-in-out infinite;
+          animation: checkPop 620ms cubic-bezier(.2,.7,.2,1) both;
         }
 
-        @keyframes checkPingStrong {
-          0%   { transform: scale(0.65); opacity: .55; }
-          60%  { transform: scale(1.55); opacity: 0; }
-          100% { transform: scale(1.55); opacity: 0; }
+        @keyframes checkPing {
+          0%   { transform: scale(0.7); opacity: .35; }
+          60%  { transform: scale(1.35); opacity: 0; }
+          100% { transform: scale(1.35); opacity: 0; }
         }
         .check-ping {
           position: absolute;
-          inset: -10px;
+          inset: -8px;
           border-radius: 9999px;
           pointer-events: none;
-          background: radial-gradient(circle, rgba(250,204,21,0.35) 0%, rgba(250,204,21,0.18) 45%, transparent 70%);
-          animation: checkPingStrong 1.6s ease-out infinite both;
-        }
-        .check-ping--late {
-          animation-delay: .45s !important;
-          opacity: .85;
+          background: radial-gradient(circle, rgba(250,204,21,0.22) 0%, rgba(250,204,21,0.12) 45%, transparent 70%);
+          animation: checkPing 2.2s ease-out infinite both;
+          animation-delay: 1.2s; /* base; + stagger inline */
         }
 
         /* Accesibilidad */
         @media (prefers-reduced-motion: reduce) {
-          .icon-throb-strong,
-          .icon-wiggle-strong,
-          .icon-gps-dot-strong,
-          .icon-ping-strong,
-          .icon-ping-strong--late,
-          .path-s,
-          .check-badge,
-          .check-ping,
-          .check-ping--late {
-            animation: none !important;
-          }
+          .icon-throb, .icon-wiggle, .icon-gps-dot, .icon-ping,
+          .check-badge, .check-ping { animation: none !important; }
         }
       `}</style>
     </div>
